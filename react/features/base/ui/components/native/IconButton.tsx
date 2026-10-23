@@ -40,9 +40,9 @@ const IconButton: React.FC<IIconButtonProps> = ({
         iconButtonContainerStyles = [ styles.iconButtonContainerPrimary, { backgroundColor: theme.palette.actionDanger } ];
         underlayColor = theme.palette.actionDanger;
     } else if (type === SECONDARY) {
-        color = BaseTheme.palette.icon04;
-        iconButtonContainerStyles = styles.iconButtonContainerSecondary;
-        underlayColor = BaseTheme.palette.action02;
+        color = theme.palette.icon04;
+        iconButtonContainerStyles = [ styles.iconButtonContainerSecondary, { backgroundColor: theme.palette.action02 } ];
+        underlayColor = theme.palette.action02Hover;
     } else if (type === TERTIARY) {
         color = iconColor;
         iconButtonContainerStyles = styles.iconButtonContainer;
@@ -53,8 +53,8 @@ const IconButton: React.FC<IIconButtonProps> = ({
     }
 
     if (disabled) {
-        color = BaseTheme.palette.icon03;
-        iconButtonContainerStyles = styles.iconButtonContainerDisabled;
+        color = theme.palette.icon03;
+        iconButtonContainerStyles = [ styles.iconButtonContainerDisabled, { backgroundColor: theme.palette.ui08 } ];
         underlayColor = 'transparent';
     }
 

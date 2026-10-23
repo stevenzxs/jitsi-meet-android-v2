@@ -13,7 +13,6 @@ import {
 import { getFeatureFlag } from '../../../base/flags/functions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconDotsHorizontal, IconRingGroup } from '../../../base/icons/svg';
-import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import IconButton from '../../../base/ui/components/native/IconButton';
 import { View } from '../../../base/ui/components/native/ThemedPrimitives';
@@ -58,9 +57,9 @@ const ParticipantsPaneFooter = (): JSX.Element => {
                 && <Button
                     accessibilityLabel = 'participantsPane.actions.breakoutRooms'
                     // eslint-disable-next-line react/jsx-no-bind, no-confusing-arrow
-                    icon = { () => (
+                    icon = { ({ color }: { color: string; }) => (
                         <Icon
-                            color = { BaseTheme.palette.icon04 }
+                            color = { color }
                             size = { 20 }
                             src = { IconRingGroup } />
                     ) }

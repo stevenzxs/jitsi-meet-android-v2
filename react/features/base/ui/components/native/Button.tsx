@@ -8,7 +8,7 @@ import { useNativeStyles, useNativeTheme } from '../../NativeThemeContext';
 import { BUTTON_MODES, BUTTON_TYPES } from '../../constants.native';
 import { IButtonProps } from '../types';
 
-import { TouchableHighlight } from './ThemedPrimitives';
+import { NativeForegroundContext, TouchableHighlight } from './ThemedPrimitives';
 import styles from './buttonStyles';
 
 
@@ -44,16 +44,20 @@ const Button: React.FC<IProps> = ({
     let buttonLabelStyles;
     let buttonStyles;
     let color;
+    let foreground;
 
     if (type === PRIMARY) {
+        foreground = mode === TEXT ? theme.palette.action01 : '#FFFFFF';
         buttonLabelStyles = mode === TEXT
             ? themedStyles.buttonLabelPrimaryText
             : themedStyles.buttonLabelPrimary;
         color = mode === CONTAINED && theme.palette.action01;
     } else if (type === SECONDARY) {
+        foreground = theme.palette.text04;
         buttonLabelStyles = themedStyles.buttonLabelSecondary;
         color = mode === CONTAINED && theme.palette.action02;
     } else if (type === DESTRUCTIVE) {
+        foreground = mode === TEXT ? theme.palette.actionDanger : '#FFFFFF';
         buttonLabelStyles = mode === TEXT
             ? themedStyles.buttonLabelDestructiveText
             : themedStyles.buttonLabelDestructive;
@@ -64,8 +68,9 @@ const Button: React.FC<IProps> = ({
     }
 
     if (disabled) {
-        buttonLabelStyles = styles.buttonLabelDisabled;
-        buttonStyles = styles.buttonDisabled;
+        foreground = theme.palette.text03;
+        buttonLabelStyles = { ...themedStyles.buttonLabelDisabled, color: foreground };
+        buttonStyles = { ...themedStyles.buttonDisabled, backgroundColor: theme.palette.ui08 };
     } else {
         buttonStyles = styles.button;
     }
@@ -95,27 +100,31 @@ const Button: React.FC<IProps> = ({
     }
 
     return (
-        <NativePaperButton
-            accessibilityLabel = { t(accessibilityLabel ?? '') }
-            buttonColor = { color }
-            children = { t(labelKey ?? '') }
-            contentStyle = { [
-                styles.buttonContent,
-                contentStyle
-            ] as StyleProp<object> }
-            disabled = { disabled }
-            icon = { icon as IconSource | undefined }
-            id = { id }
-            labelStyle = { [
-                buttonLabelStyles,
-                labelStyle
-            ] as StyleProp<object> }
-            mode = { mode }
-            onPress = { onPress }
-            style = { [
-                buttonStyles,
-                style
-            ] as StyleProp<object> } />
+        <NativeForegroundContext.Provider value = { foreground }>
+            <NativePaperButton
+                accessibilityLabel = { t(accessibilityLabel ?? '') }
+                buttonColor = { color }
+                children = { t(labelKey ?? '') }
+                contentStyle = { [
+                    styles.buttonContent,
+                    contentStyle
+                ] as StyleProp<object> }
+                disabled = { disabled }
+                icon = { icon as IconSource | undefined }
+                id = { id }
+                labelStyle = { [
+                    buttonLabelStyles,
+                    foreground && { color: foreground },
+                    labelStyle
+                ] as StyleProp<object> }
+                mode = { mode }
+                onPress = { onPress }
+                style = { [
+                    buttonStyles,
+                    style
+                ] as StyleProp<object> }
+                textColor = { foreground } />
+        </NativeForegroundContext.Provider>
     );
 };
 
