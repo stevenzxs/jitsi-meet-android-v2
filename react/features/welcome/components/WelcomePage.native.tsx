@@ -1,8 +1,9 @@
 import React from 'react';
-import { Animated, BlurEvent, FocusEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { Alert, Animated, BlurEvent, FocusEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
+import { appNavigate } from '../../app/actions.native';
 import { getName } from '../../app/functions.native';
 import { IReduxState } from '../../app/types';
 import { translate } from '../../base/i18n/functions';
@@ -10,12 +11,17 @@ import Icon from '../../base/icons/components/Icon';
 import { IconWarning } from '../../base/icons/svg';
 import LoadingIndicator from '../../base/react/components/native/LoadingIndicator';
 import Text from '../../base/react/components/native/Text';
+import { getServerURL } from '../../base/settings/functions.native';
+import { ISettingsState } from '../../base/settings/reducer';
 import BaseTheme from '../../base/ui/components/BaseTheme.native';
 import Button from '../../base/ui/components/native/Button';
 import Input from '../../base/ui/components/native/Input';
 import { TouchableHighlight, View } from '../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../base/ui/constants.native';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.native';
+import CreateMeetingDialog from '../../cloudmeet/CreateMeetingDialog.native';
+import { enterCreatedMeeting } from '../../cloudmeet/actions.native';
+import { CLOUDMEET_ORIGIN, joinMeeting } from '../../cloudmeet/meetingService';
 import WelcomePageTabs
     from '../../mobile/navigation/components/welcome/components/WelcomePageTabs';
 
@@ -27,6 +33,7 @@ import {
 import styles from './styles.native';
 
 interface IProps extends AbstractProps {
+    cloudMeetEnabled: boolean;
 
     /**
      * Function for getting the unsafe room text.
@@ -45,8 +52,65 @@ interface IProps extends AbstractProps {
  * @augments AbstractWelcomePage
  */
 class WelcomePage extends AbstractWelcomePage<IProps> {
+    /**
+     * Validate CloudMeet IDs rather than silently creating arbitrary rooms.
+     *
+     * @returns {Promise<void>} Navigation completion.
+     */
+    override async _onJoin() {
+        if (!this.props.cloudMeetEnabled) {
+            return super._onJoin();
+        }
+        if (this.state.joining) {
+            return;
+        }
+        this.setState({ joining: true });
+        try {
+            const url = await joinMeeting(this.state.room, this.state.meetingPassword || '');
+
+            await this.props.dispatch(appNavigate(url));
+        } catch (error) {
+            Alert.alert('加入会议失败', error instanceof Error ? error.message : '请检查网络后重试');
+        } finally {
+            this._mounted && this.setState({ joining: false });
+        }
+    }
+
     _onFieldBlur: (e: BlurEvent) => void;
     _onFieldFocus: (e: FocusEvent) => void;
+
+    /**
+     * Show the create form.
+     *
+     * @returns {void}
+     */
+    _onOpenCreate = () => this.setState({ createDialogVisible: true });
+
+    /**
+     * Close the create form.
+     *
+     * @returns {void}
+     */
+    _onCloseCreate = () => this.setState({ createDialogVisible: false });
+
+    /**
+     * Set the business meeting password.
+     *
+     * @param {string} value - Password.
+     * @returns {void}
+     */
+    _onMeetingPasswordChange = (value: string) => this.setState({ meetingPassword: value });
+
+    /**
+     * Enter a registered room.
+     *
+     * @param {string} url - Token-bearing URL.
+     * @param {string} name - Nickname.
+     * @returns {Promise<void>}
+     */
+    _onEnterCreated = async (url: string, name: string) => {
+        await this.props.dispatch(enterCreatedMeeting(url, name));
+    };
 
     /**
      * Constructor of the Component.
@@ -248,9 +312,9 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     _renderHintBox() {
         const { t } = this.props;
 
-        if (this.state._fieldFocused) {
+        if (this.state._fieldFocused || this.props.cloudMeetEnabled) {
             return (
-                <Animated.View style = { this._getHintBoxStyle() as ViewStyle[] }>
+                <Animated.View style = { this.props.cloudMeetEnabled ? undefined : this._getHintBoxStyle() as ViewStyle[] }>
                     <View style = { styles.hintTextContainer as ViewStyle } >
                         <Text style = { styles.hintText as TextStyle }>
                             { t('welcomepage.roomnameHint') }
@@ -298,7 +362,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
             joinButton = (
                 <Button
                     accessibilityLabel = { 'welcomepage.accessibilityLabel.join' }
-                    labelKey = { 'welcomepage.join' }
+                    labelKey = { this.props.cloudMeetEnabled ? 'cloudmeet.join' : 'welcomepage.join' }
                     labelStyle = { styles.joinButtonLabel }
                     onClick = { this._onJoin }
                     type = { BUTTON_TYPES.PRIMARY } />
@@ -343,6 +407,11 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         placeholder = { this.state.roomPlaceholder }
                         returnKeyType = { 'go' }
                         value = { this.state.room } />
+                    { this.props.cloudMeetEnabled && <Input
+                        label = '会议密码（如有）'
+                        onChange = { this._onMeetingPasswordChange }
+                        secureTextEntry = { true }
+                        value = { this.state.meetingPassword || '' } /> }
                     {
                         this._renderInsecureRoomNameWarning()
                     }
@@ -362,6 +431,16 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     _renderFullUI() {
         return (
             <>
+                { this.props.cloudMeetEnabled && <View style = { styles.createMeetingContainer }>
+                    <Button
+                        labelKey = 'cloudmeet.create'
+                        onClick = { this._onOpenCreate }
+                        type = { BUTTON_TYPES.PRIMARY } />
+                </View> }
+                { this.state.createDialogVisible && <CreateMeetingDialog
+                    displayName = { (this.props._settings as ISettingsState).displayName || '' }
+                    onClose = { this._onCloseCreate }
+                    onJoin = { this._onEnterCreated } /> }
                 { this._renderRoomNameInput() }
                 <View style = { styles.welcomePage as ViewStyle }>
                     <WelcomePageTabs
@@ -400,6 +479,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
 function _mapStateToProps(state: IReduxState) {
     return {
         ..._abstractMapStateToProps(state),
+        cloudMeetEnabled: getServerURL(state).replace(/\/$/, '') === CLOUDMEET_ORIGIN,
 
         // _reducedUI: state['features/base/responsive-ui'].reducedUI
         getUnsafeRoomTextFn: (t: Function) => getUnsafeRoomText(state, t, 'welcome')

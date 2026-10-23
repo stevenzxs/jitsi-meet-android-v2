@@ -15,6 +15,9 @@ const TEXT_COLOR = BaseTheme.palette.text01;
  * {@code WelcomePage} and {@code BlankPage}.
  */
 export default {
+    createMeetingContainer: {
+        padding: 16
+    },
 
     blankPageText: {
         color: TEXT_COLOR,

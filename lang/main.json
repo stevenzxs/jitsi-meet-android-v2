@@ -1,4 +1,9 @@
 {
+    "cloudmeet": {
+        "create": "Create meeting",
+        "creating": "Creating…",
+        "join": "Join meeting"
+    },
     "addPeople": {
         "accessibilityLabel": {
             "meetingLink": "Meeting link: {{url}}"
