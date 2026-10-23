@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -9,6 +9,7 @@ import {
     TOGGLE_CAMERA_BUTTON_ENABLED
 } from '../../../base/flags/constants';
 import { getFeatureFlag } from '../../../base/flags/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import AudioDeviceToggleButton from '../../../mobile/audio-mode/components/AudioDeviceToggleButton';
 import PictureInPictureButton from '../../../mobile/picture-in-picture/components/PictureInPictureButton';
 import ParticipantsPaneButton from '../../../participants-pane/components/native/ParticipantsPaneButton';

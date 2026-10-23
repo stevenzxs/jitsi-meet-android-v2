@@ -4,6 +4,7 @@ import { Container } from '../../react/components/index';
 import { StyleType, styleTypeToObject } from '../../styles/functions';
 
 import { IIconProps } from './types';
+import useIconColor from './useIconColor';
 
 interface IProps extends IIconProps {
 
@@ -158,7 +159,7 @@ export default function Icon(props: IProps) {
         fontSize: styleSize,
         ...restStyle
     } = styleTypeToObject(style ?? {});
-    const calculatedColor = color ?? styleColor ?? DEFAULT_COLOR;
+    const calculatedColor = useIconColor(color ?? (typeof styleColor === 'string' ? styleColor : undefined) ?? DEFAULT_COLOR);
     const calculatedSize = size ?? styleSize ?? DEFAULT_SIZE;
 
     const onKeyPressHandler = useCallback(e => {

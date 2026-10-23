@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import ColorSchemeRegistry from '../../../base/color-scheme/ColorSchemeRegistry';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { isGifEnabled } from '../../../gifs/functions.native';
 import { navigate } from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';

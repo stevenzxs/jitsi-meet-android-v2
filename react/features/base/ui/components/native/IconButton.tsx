@@ -1,11 +1,14 @@
 import React from 'react';
-import { TouchableHighlight, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import Icon from '../../../icons/components/Icon';
 import styles from '../../../react/components/native/styles';
 import { IIconButtonProps } from '../../../react/types';
+import { useNativeTheme } from '../../NativeThemeContext';
 import { BUTTON_TYPES } from '../../constants.native';
 import BaseTheme from '../BaseTheme.native';
+
+import { TouchableHighlight } from './ThemedPrimitives';
 
 
 const IconButton: React.FC<IIconButtonProps> = ({
@@ -21,6 +24,7 @@ const IconButton: React.FC<IIconButtonProps> = ({
     tapColor,
     type
 }: IIconButtonProps) => {
+    const theme = useNativeTheme();
     const { PRIMARY, SECONDARY, TERTIARY } = BUTTON_TYPES;
 
     let color;
@@ -28,9 +32,9 @@ const IconButton: React.FC<IIconButtonProps> = ({
     let iconButtonContainerStyles;
 
     if (type === PRIMARY) {
-        color = BaseTheme.palette.icon01;
+        color = '#FFFFFF';
         iconButtonContainerStyles = styles.iconButtonContainerPrimary;
-        underlayColor = BaseTheme.palette.action01;
+        underlayColor = theme.palette.action01;
     } else if (type === SECONDARY) {
         color = BaseTheme.palette.icon04;
         iconButtonContainerStyles = styles.iconButtonContainerSecondary;

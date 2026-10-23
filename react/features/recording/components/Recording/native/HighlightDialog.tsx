@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 
 import { hideSheet } from '../../../../base/dialog/actions';
 import BottomSheet from '../../../../base/dialog/components/native/BottomSheet';
 import Button from '../../../../base/ui/components/native/Button';
+import { Text, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../../base/ui/constants.native';
 import { highlightMeetingMoment } from '../../../actions.any';
 import styles from '../styles.native';

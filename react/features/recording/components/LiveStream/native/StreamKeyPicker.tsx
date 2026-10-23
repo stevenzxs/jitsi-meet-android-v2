@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
-import {
-    Linking,
-    Text,
-    TouchableHighlight,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from 'react-native';
+import { Linking, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { _abstractMapStateToProps } from '../../../../base/dialog/functions';
 import { translate } from '../../../../base/i18n/functions';
+import { Text, TouchableHighlight, TouchableOpacity, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { YOUTUBE_LIVE_DASHBOARD_URL } from '../constants';
 
 import styles, { ACTIVE_OPACITY, TOUCHABLE_UNDERLAY } from './styles';

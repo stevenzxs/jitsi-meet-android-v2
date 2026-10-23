@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, Text, View, ViewStyle } from 'react-native';
+import { Linking, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../../app/types';
@@ -7,6 +7,7 @@ import { _abstractMapStateToProps } from '../../../../base/dialog/functions';
 import { translate } from '../../../../base/i18n/functions';
 import Button from '../../../../base/ui/components/native/Button';
 import Input from '../../../../base/ui/components/native/Input';
+import { Text, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../../base/ui/constants.native';
 import AbstractStreamKeyForm, {
     IProps as AbstractProps

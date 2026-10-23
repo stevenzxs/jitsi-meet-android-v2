@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { connect } from 'react-redux';
 
@@ -12,6 +12,7 @@ import {
     getParticipantById,
     getParticipantDisplayName
 } from '../../../base/participants/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import SharedVideoButton from '../../../shared-video/components/native/SharedVideoButton';
 
 import styles from './styles';

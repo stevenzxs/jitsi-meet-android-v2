@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, ImageStyle, View, ViewStyle } from 'react-native';
+import { Image, ImageStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -24,6 +24,7 @@ import {
 } from '../../../base/tracks/functions.native';
 import { useTrackStreamingStatus } from '../../../base/tracks/hooks.any';
 import { ITrack } from '../../../base/tracks/types';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import ConnectionIndicator from '../../../connection-indicator/components/native/ConnectionIndicator';
 import DisplayNameLabel from '../../../display-name/components/native/DisplayNameLabel';
 import { getGifDisplayMode, getGifForParticipant } from '../../../gifs/functions.native';

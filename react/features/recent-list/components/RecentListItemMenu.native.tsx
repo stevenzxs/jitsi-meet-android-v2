@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IStore } from '../../app/types';
@@ -7,6 +7,7 @@ import { hideSheet } from '../../base/dialog/actions';
 import BottomSheet from '../../base/dialog/components/native/BottomSheet';
 import { bottomSheetStyles } from '../../base/dialog/components/native/styles';
 import { Item } from '../../base/react/types';
+import { Text, View } from '../../base/ui/components/native/ThemedPrimitives';
 
 import DeleteItemButton from './DeleteItemButton.native';
 import ShowDialInInfoButton from './ShowDialInInfoButton.native';

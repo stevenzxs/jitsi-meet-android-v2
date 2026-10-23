@@ -1,15 +1,10 @@
 import { HeaderHeightContext } from '@react-navigation/elements';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import {
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    StatusBar,
-    ViewStyle
-} from 'react-native';
+import { Keyboard, Platform, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { StyleType } from '../../styles/functions.any';
+import { KeyboardAvoidingView, StatusBar } from '../../ui/components/native/ThemedPrimitives';
 
 interface IProps {
 

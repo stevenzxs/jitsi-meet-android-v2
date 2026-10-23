@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { getParticipantCountForDisplay } from '../../../base/participants/functions';
+import { Text } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

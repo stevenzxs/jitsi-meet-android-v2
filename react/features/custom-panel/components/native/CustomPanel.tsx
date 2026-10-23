@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
 
@@ -7,6 +6,7 @@ import { IReduxState } from '../../../app/types';
 import { getCurrentConference } from '../../../base/conference/functions';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { useCustomPanelApi } from '../../api.native';
 import { buildCustomPanelUrl, getCustomPanelOrigin, getCustomPanelUrl } from '../../functions.native';
 import logger from '../../logger';

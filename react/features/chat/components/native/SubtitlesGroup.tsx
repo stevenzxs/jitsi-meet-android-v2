@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import Avatar from '../../../base/avatar/components/Avatar';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { ISubtitle } from '../../../subtitles/types';
 
 import SubtitleMessage from './SubtitleMessage';

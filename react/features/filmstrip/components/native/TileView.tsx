@@ -1,10 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-    FlatList,
-    GestureResponderEvent,
-    TouchableWithoutFeedback,
-    ViewToken
-} from 'react-native';
+import { GestureResponderEvent, ViewToken } from 'react-native';
 import { EdgeInsets, SafeAreaView, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
@@ -12,6 +7,7 @@ import { IReduxState, IStore } from '../../../app/types';
 import { getLocalParticipant, getParticipantCountWithFake } from '../../../base/participants/functions';
 import { ILocalParticipant } from '../../../base/participants/types';
 import { getHideSelfView } from '../../../base/settings/functions.any';
+import { FlatList, TouchableWithoutFeedback } from '../../../base/ui/components/native/ThemedPrimitives';
 import { setVisibleRemoteParticipants } from '../../actions.native';
 
 import Thumbnail from './Thumbnail';

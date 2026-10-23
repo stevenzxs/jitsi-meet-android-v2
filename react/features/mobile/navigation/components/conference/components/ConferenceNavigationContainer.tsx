@@ -1,6 +1,6 @@
 /* eslint-disable lines-around-comment */
 
-import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import AudioTranslationDialog
     from '../../../../../audio-translation/components/native/AudioTranslationDialog';
+import { NavigationContainer, useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import BreakoutRooms
 // @ts-ignore
     from '../../../../../breakout-rooms/components/native/BreakoutRooms';
@@ -50,29 +51,7 @@ import { isCCTabEnabled } from '../../../../../subtitles/functions.any';
 import Whiteboard from '../../../../../whiteboard/components/native/Whiteboard';
 // @ts-ignore
 import { screen } from '../../../routes';
-import {
-    audioTranslationScreenOptions,
-    breakoutRoomsScreenOptions,
-    carmodeScreenOptions,
-    chatScreenOptions,
-    conferenceScreenOptions,
-    customPanelScreenOptions,
-    gifsMenuOptions,
-    inviteScreenOptions,
-    liveStreamScreenOptions,
-    lobbyNavigationContainerScreenOptions,
-    navigationContainerTheme,
-    participantsScreenOptions,
-    recordingScreenOptions,
-    salesforceScreenOptions,
-    securityScreenOptions,
-    settingsNavigationContainerScreenOptions,
-    sharedDocumentScreenOptions,
-    speakerStatsScreenOptions,
-    subtitlesScreenOptions,
-    whiteboardScreenOptions
-    // @ts-ignore
-} from '../../../screenOptions';
+import { audioTranslationScreenOptions as static_audioTranslationScreenOptions, breakoutRoomsScreenOptions as static_breakoutRoomsScreenOptions, carmodeScreenOptions as static_carmodeScreenOptions, chatScreenOptions as static_chatScreenOptions, conferenceScreenOptions as static_conferenceScreenOptions, customPanelScreenOptions as static_customPanelScreenOptions, gifsMenuOptions as static_gifsMenuOptions, inviteScreenOptions as static_inviteScreenOptions, liveStreamScreenOptions as static_liveStreamScreenOptions, lobbyNavigationContainerScreenOptions as static_lobbyNavigationContainerScreenOptions, navigationContainerTheme as static_navigationContainerTheme, participantsScreenOptions as static_participantsScreenOptions, recordingScreenOptions as static_recordingScreenOptions, salesforceScreenOptions as static_salesforceScreenOptions, securityScreenOptions as static_securityScreenOptions, settingsNavigationContainerScreenOptions as static_settingsNavigationContainerScreenOptions, sharedDocumentScreenOptions as static_sharedDocumentScreenOptions, speakerStatsScreenOptions as static_speakerStatsScreenOptions, subtitlesScreenOptions as static_subtitlesScreenOptions, whiteboardScreenOptions as static_whiteboardScreenOptions } from '../../../screenOptions';
 // @ts-ignore
 import ChatNavigator from '../../chat/components/ChatNavigator';
 // @ts-ignore
@@ -89,6 +68,26 @@ const ConferenceStack = createStackNavigator();
 
 
 const ConferenceNavigationContainer = () => {
+    const audioTranslationScreenOptions = useNativeScreenOptions(static_audioTranslationScreenOptions);
+    const breakoutRoomsScreenOptions = useNativeScreenOptions(static_breakoutRoomsScreenOptions);
+    const carmodeScreenOptions = useNativeScreenOptions(static_carmodeScreenOptions);
+    const chatScreenOptions = useNativeScreenOptions(static_chatScreenOptions);
+    const conferenceScreenOptions = useNativeScreenOptions(static_conferenceScreenOptions);
+    const customPanelScreenOptions = useNativeScreenOptions(static_customPanelScreenOptions);
+    const gifsMenuOptions = useNativeScreenOptions(static_gifsMenuOptions);
+    const inviteScreenOptions = useNativeScreenOptions(static_inviteScreenOptions);
+    const liveStreamScreenOptions = useNativeScreenOptions(static_liveStreamScreenOptions);
+    const lobbyNavigationContainerScreenOptions = useNativeScreenOptions(static_lobbyNavigationContainerScreenOptions);
+    const navigationContainerTheme = useNativeScreenOptions(static_navigationContainerTheme);
+    const participantsScreenOptions = useNativeScreenOptions(static_participantsScreenOptions);
+    const recordingScreenOptions = useNativeScreenOptions(static_recordingScreenOptions);
+    const salesforceScreenOptions = useNativeScreenOptions(static_salesforceScreenOptions);
+    const securityScreenOptions = useNativeScreenOptions(static_securityScreenOptions);
+    const settingsNavigationContainerScreenOptions = useNativeScreenOptions(static_settingsNavigationContainerScreenOptions);
+    const sharedDocumentScreenOptions = useNativeScreenOptions(static_sharedDocumentScreenOptions);
+    const speakerStatsScreenOptions = useNativeScreenOptions(static_speakerStatsScreenOptions);
+    const subtitlesScreenOptions = useNativeScreenOptions(static_subtitlesScreenOptions);
+    const whiteboardScreenOptions = useNativeScreenOptions(static_whiteboardScreenOptions);
     const isPollsDisabled = useSelector(arePollsDisabled);
     const _isPollsEnabled = !isPollsDisabled;
     const _isCCTabEnabled = useSelector(isCCTabEnabled);

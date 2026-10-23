@@ -1,15 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    BackHandler,
-    Platform,
-    StyleProp,
-    Text,
-    TextStyle,
-    View,
-    ViewStyle
-} from 'react-native';
+import { BackHandler, Platform, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setPermanentProperty } from '../../../analytics/actions';
@@ -29,6 +21,7 @@ import { ASPECT_RATIO_WIDE } from '../../../base/responsive-ui/constants';
 import { updateSettings } from '../../../base/settings/actions';
 import Button from '../../../base/ui/components/native/Button';
 import Input from '../../../base/ui/components/native/Input';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { openDisplayNamePrompt } from '../../../display-name/actions';
 import BrandingImageBackground from '../../../dynamic-branding/components/native/BrandingImageBackground';

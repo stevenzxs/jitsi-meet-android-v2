@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { EmitterSubscription, Keyboard, Platform, TextStyle, View, ViewStyle } from 'react-native';
+import { EmitterSubscription, Keyboard, Platform, TextStyle, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { translate } from '../../../base/i18n/functions.native';
 import { IconSend } from '../../../base/icons/svg';
 import IconButton from '../../../base/ui/components/native/IconButton';
 import Input from '../../../base/ui/components/native/Input';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { isSendGroupChatDisabled, isSendPrivateChatDisabled } from '../../functions';
 

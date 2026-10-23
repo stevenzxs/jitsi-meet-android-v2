@@ -39,6 +39,7 @@ const DEFAULT_STATE: ISettingsState = {
     startCarMode: false,
     startWithAudioMuted: false,
     startWithVideoMuted: false,
+    theme: 'dark',
     userSelectedAudioOutputDeviceId: undefined,
     userSelectedCameraDeviceId: undefined,
     userSelectedMicDeviceId: undefined,
@@ -86,6 +87,7 @@ export interface ISettingsState {
     startLowBandwidthMode?: boolean;
     startWithAudioMuted?: boolean;
     startWithVideoMuted?: boolean;
+    theme?: 'dark' | 'light';
     userSelectedAudioOutputDeviceId?: string;
     userSelectedAudioOutputDeviceLabel?: string;
     userSelectedCameraDeviceId?: string;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -8,6 +8,7 @@ import {
     getParticipantDisplayName,
     isScreenShareParticipant
 } from '../../../base/participants/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

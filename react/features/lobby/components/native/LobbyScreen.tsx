@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -12,6 +12,7 @@ import { ASPECT_RATIO_WIDE } from '../../../base/responsive-ui/constants';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import Input from '../../../base/ui/components/native/Input';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import BrandingImageBackground from '../../../dynamic-branding/components/native/BrandingImageBackground';
 import LargeVideo from '../../../large-video/components/LargeVideo.native';

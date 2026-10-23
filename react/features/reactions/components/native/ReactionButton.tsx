@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { ColorValue, GestureResponderEvent, Text, TouchableHighlight, ViewStyle } from 'react-native';
+import { ColorValue, GestureResponderEvent, ViewStyle } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { createReactionMenuEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { translate } from '../../../base/i18n/functions';
 import { StyleType } from '../../../base/styles/functions.native';
+import { Text, TouchableHighlight } from '../../../base/ui/components/native/ThemedPrimitives';
 import { addReactionToBuffer } from '../../actions.any';
 import { REACTIONS } from '../../constants';
 

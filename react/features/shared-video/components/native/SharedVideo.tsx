@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { getLocalParticipant } from '../../../base/participants/functions';
 import { ASPECT_RATIO_WIDE } from '../../../base/responsive-ui/constants';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { setToolboxVisible } from '../../../toolbox/actions';
 
 import VideoManager from './VideoManager';

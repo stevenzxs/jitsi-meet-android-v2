@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GestureResponderEvent, ScrollView, Text, TouchableHighlight, View, ViewStyle } from 'react-native';
+import { GestureResponderEvent, ViewStyle } from 'react-native';
 import { Edge } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ import { IconArrowLeft } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { updateSettings } from '../../../base/settings/actions';
 import BaseThemeNative from '../../../base/ui/components/BaseTheme.native';
+import { ScrollView, Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import HeaderNavigationButton from '../../../mobile/navigation/components/HeaderNavigationButton';
 
 import styles from './styles';

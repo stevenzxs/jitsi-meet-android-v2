@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import Icon from '../../../base/icons/components/Icon';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
 import Button from '../../../base/ui/components/native/Button';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 
 import styles from './styles';

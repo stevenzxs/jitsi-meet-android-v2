@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image, View, ViewStyle } from 'react-native';
+import { Image, ViewStyle } from 'react-native';
 import { SvgCssUri } from 'react-native-svg/css';
 import { connect } from 'react-redux';
 
 import { translate } from '../../../base/i18n/functions';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

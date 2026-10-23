@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
+
+import { Text, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 
 import EndMeetingButton from './EndMeetingButton';
 import SoundDeviceButton from './SoundDeviceButton';

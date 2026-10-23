@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
-import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
 import { equals } from '../../../base/redux/functions';
+import { FlatList } from '../../../base/ui/components/native/ThemedPrimitives';
 import {
     getBreakoutRooms,
     getCurrentRoomId,

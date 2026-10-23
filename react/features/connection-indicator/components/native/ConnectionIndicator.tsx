@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -14,6 +14,7 @@ import BaseIndicator from '../../../base/react/components/native/BaseIndicator';
 import {
     getTrackByMediaTypeAndParticipant
 } from '../../../base/tracks/functions.native';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import indicatorStyles from '../../../filmstrip/components/native/styles';
 import {
     isTrackStreamingStatusInactive,

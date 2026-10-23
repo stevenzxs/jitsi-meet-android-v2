@@ -1,8 +1,9 @@
 import React from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+
 
 import { translate } from '../../../base/i18n/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

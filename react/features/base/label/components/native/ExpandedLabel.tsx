@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Animated, Text, View } from 'react-native';
+import { Animated } from 'react-native';
+
+import { Text, View } from '../../../ui/components/native/ThemedPrimitives';
 
 import styles, { DEFAULT_COLOR } from './styles';
 

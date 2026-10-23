@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    Animated,
-    BlurEvent,
-    FocusEvent,
-    StyleProp,
-    TextStyle,
-    TouchableHighlight,
-    View,
-    ViewStyle
-} from 'react-native';
+import { Animated, BlurEvent, FocusEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
@@ -22,6 +13,7 @@ import Text from '../../base/react/components/native/Text';
 import BaseTheme from '../../base/ui/components/BaseTheme.native';
 import Button from '../../base/ui/components/native/Button';
 import Input from '../../base/ui/components/native/Input';
+import { TouchableHighlight, View } from '../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../base/ui/constants.native';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.native';
 import WelcomePageTabs

@@ -1,20 +1,15 @@
-import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { NavigationContainer, useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import LanguageSelectView from '../../../../../settings/components/native/LanguageSelectView';
 import ProfileView from '../../../../../settings/components/native/ProfileView';
 import SettingsView
     from '../../../../../settings/components/native/SettingsView';
 import { screen } from '../../../routes';
-import {
-    languageSelectScreenOptions,
-    navigationContainerTheme,
-    profileSettingsScreenOptions,
-    settingsScreenOptions,
-    welcomeScreenOptions
-} from '../../../screenOptions';
+import { languageSelectScreenOptions as static_languageSelectScreenOptions, navigationContainerTheme as static_navigationContainerTheme, profileSettingsScreenOptions as static_profileSettingsScreenOptions, settingsScreenOptions as static_settingsScreenOptions, welcomeScreenOptions as static_welcomeScreenOptions } from '../../../screenOptions';
 import {
     goBack,
     settingsNavigationContainerRef
@@ -36,6 +31,11 @@ interface IProps {
 
 
 const SettingsNavigationContainer = ({ isInWelcomePage }: IProps) => {
+    const languageSelectScreenOptions = useNativeScreenOptions(static_languageSelectScreenOptions);
+    const navigationContainerTheme = useNativeScreenOptions(static_navigationContainerTheme);
+    const profileSettingsScreenOptions = useNativeScreenOptions(static_profileSettingsScreenOptions);
+    const settingsScreenOptions = useNativeScreenOptions(static_settingsScreenOptions);
+    const welcomeScreenOptions = useNativeScreenOptions(static_welcomeScreenOptions);
     const baseSettingsScreenOptions = isInWelcomePage ? welcomeScreenOptions : settingsScreenOptions;
     const { t } = useTranslation();
 

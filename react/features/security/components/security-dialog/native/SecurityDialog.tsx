@@ -1,10 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-    Text,
-    TextStyle,
-    View,
-    ViewStyle
-} from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../../app/types';
@@ -18,6 +13,7 @@ import { isLocalParticipantModerator } from '../../../../base/participants/funct
 import Button from '../../../../base/ui/components/native/Button';
 import Input from '../../../../base/ui/components/native/Input';
 import Switch from '../../../../base/ui/components/native/Switch';
+import { Text, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../../base/ui/constants.native';
 import { copyText } from '../../../../base/util/copyText.native';
 import { isInBreakoutRoom } from '../../../../breakout-rooms/functions';

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -15,6 +15,7 @@ import Icon from '../../../../base/icons/components/Icon';
 import { IconMic, IconMicSlash } from '../../../../base/icons/svg';
 import { MEDIA_TYPE } from '../../../../base/media/constants';
 import { isLocalTrackMuted } from '../../../../base/tracks/functions.native';
+import { TouchableOpacity, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { isAudioMuteButtonDisabled } from '../../../../toolbox/functions.any';
 import { muteLocal } from '../../../../video-menu/actions.native';
 

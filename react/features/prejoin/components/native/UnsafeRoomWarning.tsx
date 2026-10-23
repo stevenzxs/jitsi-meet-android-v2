@@ -1,13 +1,6 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    Platform,
-    StyleProp,
-    Text,
-    TextStyle,
-    View,
-    ViewStyle
-} from 'react-native';
+import { Platform, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { appNavigate } from '../../../app/actions.native';
@@ -18,6 +11,7 @@ import { IconCloseLarge, IconWarning } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { ASPECT_RATIO_NARROW } from '../../../base/responsive-ui/constants';
 import Button from '../../../base/ui/components/native/Button';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import getUnsafeRoomText from '../../../base/util/getUnsafeRoomText.native';
 import HeaderNavigationButton from '../../../mobile/navigation/components/HeaderNavigationButton';

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,6 +9,7 @@ import BottomSheet from '../../../base/dialog/components/native/BottomSheet';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import { IParticipant } from '../../../base/participants/types';
+import { TouchableOpacity, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { setKnockingParticipantApproval } from '../../../lobby/actions.native';
 import { getKnockingParticipantsById } from '../../../lobby/functions';
 

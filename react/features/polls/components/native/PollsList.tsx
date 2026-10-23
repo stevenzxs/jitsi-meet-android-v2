@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -8,6 +8,7 @@ import { IReduxState } from '../../../app/types';
 import Icon from '../../../base/icons/components/Icon';
 import { IconMessage } from '../../../base/icons/svg';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { FlatList, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import PollItem from './PollItem';
 import { pollsStyles } from './styles';

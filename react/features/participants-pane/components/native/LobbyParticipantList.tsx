@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../../../base/ui/components/native/Button';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_MODES, BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { admitMultiple } from '../../../lobby/actions.native';
 import { getKnockingParticipants, getLobbyEnabled } from '../../../lobby/functions';

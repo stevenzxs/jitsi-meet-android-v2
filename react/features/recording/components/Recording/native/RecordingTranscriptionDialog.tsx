@@ -1,10 +1,10 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../../app/types';
 import { translate } from '../../../../base/i18n/functions';
 import JitsiScreen from '../../../../base/modal/components/JitsiScreen';
+import { ScrollView } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { goBack } from
     '../../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
 import AbstractStartRecordingDialog, {

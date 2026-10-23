@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
-import { StyleProp, TouchableHighlight, View, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import Icon from '../../../base/icons/components/Icon';
 import { IconCheck } from '../../../base/icons/svg';
+import { TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Text, TextStyle, View } from 'react-native';
+import { TextStyle } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -14,6 +14,7 @@ import {
 } from '../../../base/participants/functions';
 import Button from '../../../base/ui/components/native/Button';
 import Input from '../../../base/ui/components/native/Input';
+import { FlatList, Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import {
     getBreakoutRooms,

@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
-import { Linking, View, ViewStyle } from 'react-native';
+import { Linking, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { getLegalUrls } from '../../../base/config/functions.native';
 import Button from '../../../base/ui/components/native/Button';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 
 import FormSection from './FormSection';

@@ -1,12 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import {
-    BackHandler,
-    NativeModules,
-    StatusBar,
-    View,
-    ViewStyle
-} from 'react-native';
+import { BackHandler, NativeModules, ViewStyle } from 'react-native';
 import { Edge, EdgeInsets, SafeAreaView, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect, useDispatch } from 'react-redux';
 
@@ -23,6 +17,7 @@ import {
 } from '../../../base/responsive-ui/constants';
 import { StyleType } from '../../../base/styles/functions.any';
 import TestConnectionInfo from '../../../base/testing/components/TestConnectionInfo';
+import { StatusBar, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { isCalendarEnabled } from '../../../calendar-sync/functions.native';
 import DisplayNameLabel from '../../../display-name/components/native/DisplayNameLabel';
 import BrandingImageBackground from '../../../dynamic-branding/components/native/BrandingImageBackground';

@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react';
-import { AppState, NativeModules, Platform, StyleSheet, View } from 'react-native';
+import { AppState, NativeModules, Platform, StyleSheet } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 // @ts-ignore
@@ -13,6 +13,7 @@ import { clientResized, setSafeAreaInsets } from '../../base/responsive-ui/actio
 import DimensionsDetector from '../../base/responsive-ui/components/DimensionsDetector.native';
 import { updateSettings } from '../../base/settings/actions';
 import JitsiThemePaperProvider from '../../base/ui/components/JitsiThemeProvider.native';
+import { View } from '../../base/ui/components/native/ThemedPrimitives';
 import { isEmbedded } from '../../base/util/embedUtils.native';
 import { _getRouteToRender } from '../getRouteToRender.native';
 import logger from '../logger';
@@ -100,9 +101,7 @@ export class App extends AbstractApp<IProps> {
      */
     override render() {
         return (
-            <JitsiThemePaperProvider>
-                { super.render() }
-            </JitsiThemePaperProvider>
+            super.render()
         );
     }
 
@@ -193,13 +192,15 @@ export class App extends AbstractApp<IProps> {
      */
     _createMainElement(component: ComponentType<any>, props: Object) {
         return (
-            <SafeAreaProvider>
-                <DimensionsDetector
-                    onDimensionsChanged = { this._onDimensionsChanged }
-                    onSafeAreaInsetsChanged = { this._onSafeAreaInsetsChanged }>
-                    { super._createMainElement(component, props) }
-                </DimensionsDetector>
-            </SafeAreaProvider>
+            <JitsiThemePaperProvider>
+                <SafeAreaProvider>
+                    <DimensionsDetector
+                        onDimensionsChanged = { this._onDimensionsChanged }
+                        onSafeAreaInsetsChanged = { this._onSafeAreaInsetsChanged }>
+                        { super._createMainElement(component, props) }
+                    </DimensionsDetector>
+                </SafeAreaProvider>
+            </JitsiThemePaperProvider>
         );
     }
 

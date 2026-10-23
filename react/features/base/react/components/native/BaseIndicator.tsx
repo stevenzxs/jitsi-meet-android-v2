@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import Icon from '../../../icons/components/Icon';
 import { StyleType } from '../../../styles/functions.any';
+import { View } from '../../../ui/components/native/ThemedPrimitives';
 
 import styles from './indicatorStyles';
 import { BASE_INDICATOR } from './styles';

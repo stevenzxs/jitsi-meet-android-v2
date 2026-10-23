@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { openSheet } from '../../../base/dialog/actions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
+import { FlatList, Text, TouchableOpacity, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { IRoom } from '../../types';
 
 import BreakoutRoomContextMenu from './BreakoutRoomContextMenu';

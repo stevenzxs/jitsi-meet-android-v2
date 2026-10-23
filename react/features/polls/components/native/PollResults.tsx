@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { FlatList, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 
 import Button from '../../../base/ui/components/native/Button';
+import { FlatList, Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import {
     default as AbstractPollResults,

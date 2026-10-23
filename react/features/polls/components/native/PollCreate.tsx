@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, Platform, SafeAreaView, TextInput, View, ViewStyle } from 'react-native';
+import { Platform, SafeAreaView, ViewStyle } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 
@@ -7,6 +7,7 @@ import { useKeyboardVisible } from '../../../base/modal/hooks.native';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import Input from '../../../base/ui/components/native/Input';
+import { FlatList, TextInput, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { editPoll } from '../../actions';
 import { ANSWERS_LIMIT, CHAR_LIMIT } from '../../constants';

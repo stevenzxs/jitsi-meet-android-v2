@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Animated, TextStyle, ViewStyle } from 'react-native';
 
 import Icon from '../../../base/icons/components/Icon';
 import {
@@ -12,6 +12,7 @@ import {
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import IconButton from '../../../base/ui/components/native/IconButton';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_MODES, BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { CHAR_LIMIT } from '../../../chat/constants';
 import { replaceNonUnicodeEmojis } from '../../../chat/functions';

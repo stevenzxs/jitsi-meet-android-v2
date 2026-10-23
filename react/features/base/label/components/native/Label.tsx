@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Animated, Text, ViewStyle } from 'react-native';
+import { Animated, ViewStyle } from 'react-native';
 
 import Icon from '../../../icons/components/Icon';
 import { StyleType, combineStyles } from '../../../styles/functions.native';
+import { Text } from '../../../ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

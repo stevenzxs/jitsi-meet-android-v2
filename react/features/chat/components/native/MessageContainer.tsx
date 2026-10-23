@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { FlatList, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions.native';
+import { FlatList, Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { groupMessagesBySender } from '../../../base/util/messageGrouping';
 import { MESSAGE_TYPE_LOCAL, MESSAGE_TYPE_REMOTE } from '../../constants';
 import { getActiveChatSearchMatch } from '../../functions';

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import StatelessAvatar from '../../../base/avatar/components/native/StatelessAvatar';
 import { getInitials } from '../../../base/avatar/functions';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import TimeElapsed from './TimeElapsed';
 import style from './styles';

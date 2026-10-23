@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FlatList, ViewStyle, ViewToken } from 'react-native';
+import { ViewStyle, ViewToken } from 'react-native';
 import { Edge, SafeAreaView, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ import { getLocalParticipant } from '../../../base/participants/functions';
 import Platform from '../../../base/react/Platform.native';
 import { ASPECT_RATIO_NARROW } from '../../../base/responsive-ui/constants';
 import { getHideSelfView } from '../../../base/settings/functions.any';
+import { FlatList } from '../../../base/ui/components/native/ThemedPrimitives';
 import { isToolboxVisible } from '../../../toolbox/functions.native';
 import { setVisibleRemoteParticipants } from '../../actions.native';
 import { calculateFullyVisibleParticipantsCount } from '../../functions.any';

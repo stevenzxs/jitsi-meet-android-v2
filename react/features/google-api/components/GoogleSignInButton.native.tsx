@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { GestureResponderEvent, Image, ImageStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { GestureResponderEvent, Image, ImageStyle, ViewStyle } from 'react-native';
 
 import { translate } from '../../base/i18n/functions';
 import Button from '../../base/ui/components/native/Button';
+import { TouchableOpacity } from '../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../base/ui/constants.native';
 
 import styles from './styles';

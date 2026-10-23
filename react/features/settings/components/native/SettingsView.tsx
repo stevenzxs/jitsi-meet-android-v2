@@ -1,13 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    ScrollView,
-    Text,
-    TextStyle,
-    TouchableHighlight,
-    View,
-    ViewStyle
-} from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { Edge } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -18,6 +11,7 @@ import Icon from '../../../base/icons/components/Icon';
 import { IconArrowRight } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { getLocalParticipant } from '../../../base/participants/functions';
+import { ScrollView, Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { navigate } from '../../../mobile/navigation/components/settings/SettingsNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';
 import { shouldShowModeratorSettings } from '../../functions.native';

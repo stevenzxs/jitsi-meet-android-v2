@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-no-bind */
 
 import React from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { IconCloseLarge } from '../../../base/icons/svg';
 import Button from '../../../base/ui/components/native/Button';
 import IconButton from '../../../base/ui/components/native/IconButton';
 import Switch from '../../../base/ui/components/native/Switch';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { editPoll, removePoll } from '../../actions';
 import { isSubmitAnswerDisabled } from '../../functions';

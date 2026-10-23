@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -14,6 +14,7 @@ import {
     getParticipantDisplayName
 } from '../../../base/participants/functions';
 import { ILocalParticipant } from '../../../base/participants/types';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import ToggleSelfViewButton from '../../../toolbox/components/native/ToggleSelfViewButton';
 
 import ConnectionStatusButton from './ConnectionStatusButton';

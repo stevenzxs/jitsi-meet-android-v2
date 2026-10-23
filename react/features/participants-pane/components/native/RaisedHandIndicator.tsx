@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 import Icon from '../../../base/icons/components/Icon';
 import { IconRaiseHand } from '../../../base/icons/svg';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

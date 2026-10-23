@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import {
-    SectionList as ReactNativeSectionList,
-    SectionListRenderItemInfo,
-    ViewStyle
-} from 'react-native';
+import { SectionListRenderItemInfo, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SectionList as ReactNativeSectionList } from '../../../ui/components/native/ThemedPrimitives';
 import { Item, Section } from '../../types';
 
 import styles from './styles';

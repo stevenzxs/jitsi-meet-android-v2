@@ -4,15 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import CalendarList from '../../../../../calendar-sync/components/CalendarList.native';
 import { isCalendarEnabled } from '../../../../../calendar-sync/functions.native';
 import RecentList from '../../../../../recent-list/components/RecentList.native';
-import {
-    calendarListTabBarOptions,
-    recentListTabBarOptions,
-    settingsTabBarOptions,
-    tabBarOptions
-} from '../../../../../welcome/constants';
+import { calendarListTabBarOptions as static_calendarListTabBarOptions, recentListTabBarOptions as static_recentListTabBarOptions, settingsTabBarOptions as static_settingsTabBarOptions, tabBarOptions as static_tabBarOptions } from '../../../../../welcome/constants';
 import { screen } from '../../../routes';
 import SettingsNavigationContainer
     from '../../settings/components/SettingsNavigationContainer';
@@ -42,6 +38,10 @@ interface IProps {
 
 
 const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocused }: IProps) => {
+    const calendarListTabBarOptions = useNativeScreenOptions(static_calendarListTabBarOptions);
+    const recentListTabBarOptions = useNativeScreenOptions(static_recentListTabBarOptions);
+    const settingsTabBarOptions = useNativeScreenOptions(static_settingsTabBarOptions);
+    const tabBarOptions = useNativeScreenOptions(static_tabBarOptions);
     const { t } = useTranslation();
     const RecentListScreen = useCallback(() =>
         (

@@ -3,7 +3,7 @@
 import Slider from '@react-native-community/slider';
 import { throttle } from 'lodash-es';
 import React, { PureComponent } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -15,6 +15,7 @@ import {
     getTrackState
 } from '../../../base/tracks/functions.native';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { setVolume } from '../../../participants-pane/actions.native';
 import { NATIVE_VOLUME_SLIDER_SCALE } from '../../constants';
 

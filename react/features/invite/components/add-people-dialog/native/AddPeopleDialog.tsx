@@ -1,13 +1,7 @@
 import { matchesProperty, sortBy } from 'lodash-es';
 import React, { ReactElement } from 'react';
 import { WithTranslation } from 'react-i18next';
-import {
-    ActivityIndicator,
-    FlatList,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../../app/types';
@@ -28,6 +22,7 @@ import AvatarListItem from '../../../../base/react/components/native/AvatarListI
 import { Item } from '../../../../base/react/types';
 import BaseTheme from '../../../../base/ui/components/BaseTheme.native';
 import Input from '../../../../base/ui/components/native/Input';
+import { ActivityIndicator, FlatList, TouchableOpacity, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import HeaderNavigationButton
     from '../../../../mobile/navigation/components/HeaderNavigationButton';
 import { beginShareRoom } from '../../../../share-room/actions';

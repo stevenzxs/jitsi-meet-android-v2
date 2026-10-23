@@ -1,12 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    StyleProp,
-    Text,
-    TextStyle,
-    View,
-    ViewStyle
-} from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import { preJoinStyles as styles } from './styles';
 

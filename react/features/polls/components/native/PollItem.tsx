@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { shouldShowResults } from '../../functions';
 
 import PollAnswer from './PollAnswer';

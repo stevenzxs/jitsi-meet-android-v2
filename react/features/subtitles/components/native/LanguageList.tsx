@@ -1,5 +1,7 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+
+import { ScrollView } from '../../../base/ui/components/native/ThemedPrimitives';
+
 
 import LanguageListItem from './LanguageListItem';
 import styles from './styles';

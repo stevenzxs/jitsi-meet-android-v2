@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ReactLinkify from 'react-linkify';
-import { Text } from 'react-native';
+
 
 import { StyleType } from '../../../styles/functions.any';
+import { Text } from '../../../ui/components/native/ThemedPrimitives';
 import { formatURLText } from '../../functions';
 
 import Link from './Link';

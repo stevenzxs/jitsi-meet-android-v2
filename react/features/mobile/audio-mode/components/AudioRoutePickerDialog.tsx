@@ -1,6 +1,6 @@
 import { sortBy } from 'lodash-es';
 import React, { Component } from 'react';
-import { NativeModules, Text, TextStyle, TouchableHighlight, View, ViewStyle } from 'react-native';
+import { NativeModules, TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -18,6 +18,7 @@ import {
 } from '../../../base/icons/svg';
 import { StyleType } from '../../../base/styles/functions.any';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles from './styles';
 

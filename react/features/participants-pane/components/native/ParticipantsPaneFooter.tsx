@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -16,6 +16,7 @@ import { IconDotsHorizontal, IconRingGroup } from '../../../base/icons/svg';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import IconButton from '../../../base/ui/components/native/IconButton';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import {
     navigate

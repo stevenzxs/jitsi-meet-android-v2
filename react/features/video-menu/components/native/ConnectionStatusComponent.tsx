@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 
@@ -17,6 +17,7 @@ import BaseIndicator from '../../../base/react/components/native/BaseIndicator';
 import {
     getTrackByMediaTypeAndParticipant
 } from '../../../base/tracks/functions.native';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import {
     isTrackStreamingStatusInactive,
     isTrackStreamingStatusInterrupted

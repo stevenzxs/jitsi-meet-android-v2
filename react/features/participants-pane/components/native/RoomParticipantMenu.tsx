@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -9,6 +9,7 @@ import { hideSheet } from '../../../base/dialog/actions';
 import BottomSheet from '../../../base/dialog/components/native/BottomSheet';
 import { bottomSheetStyles } from '../../../base/dialog/components/native/styles';
 import { translate } from '../../../base/i18n/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { getBreakoutRooms } from '../../../breakout-rooms/functions';
 // eslint-disable-next-line lines-around-comment
 // @ts-ignore

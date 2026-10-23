@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../../app/types';
 import { _abstractMapStateToProps } from '../../../../base/dialog/functions';
 import { translate } from '../../../../base/i18n/functions';
+import { Text, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { setGoogleAPIState } from '../../../../google-api/actions';
 import GoogleSignInButton from '../../../../google-api/components/GoogleSignInButton.native';
 import {

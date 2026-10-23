@@ -3,6 +3,7 @@ import { GestureResponderEvent } from 'react-native';
 import { MediaStream, RTCView } from 'react-native-webrtc';
 
 import Pressable from '../../../react/components/native/Pressable';
+import { NativeThemeContext } from '../../../ui/NativeThemeContext';
 
 import VideoTransform from './VideoTransform';
 import styles from './styles';
@@ -59,6 +60,7 @@ interface IProps {
  * {@link RTCView}.
  */
 export default class Video extends Component<IProps> {
+    static contextType = NativeThemeContext;
     /**
      * React Component method that executes once component is mounted.
      *
@@ -83,7 +85,9 @@ export default class Video extends Component<IProps> {
 
         if (stream) {
             // RTCView
-            const style = styles.video;
+            const style = [ styles.video, {
+                backgroundColor: (this.context as React.ContextType<typeof NativeThemeContext>).palette.largeVideoBackground
+            } ];
             const objectFit
                 = zoomEnabled
                     ? 'contain'

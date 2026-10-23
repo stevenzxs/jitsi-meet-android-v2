@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,6 +24,7 @@ import { IconCheck, IconRaiseHand, IconVideoOff } from '../../../base/icons/svg'
 import { raiseHand } from '../../../base/participants/actions';
 import { getRaiseHandsQueue, isLocalParticipantModerator } from '../../../base/participants/functions';
 import { LOWER_HAND_MESSAGE } from '../../../base/tracks/constants';
+import { TouchableOpacity, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import MuteEveryonesVideoDialog
     from '../../../video-menu/components/native/MuteEveryonesVideoDialog';
 

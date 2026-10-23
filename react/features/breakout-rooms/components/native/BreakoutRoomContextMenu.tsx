@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ import BottomSheet from '../../../base/dialog/components/native/BottomSheet';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge, IconEdit, IconRingGroup } from '../../../base/icons/svg';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
+import { TouchableOpacity } from '../../../base/ui/components/native/ThemedPrimitives';
 import styles from '../../../participants-pane/components/native/styles';
 import { isBreakoutRoomRenameAllowed } from '../../../participants-pane/functions';
 import { BREAKOUT_CONTEXT_MENU_ACTIONS as ACTIONS } from '../../../participants-pane/types';

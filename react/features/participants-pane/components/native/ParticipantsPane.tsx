@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
+import { FlatList } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import LobbyParticipantList from './LobbyParticipantList';
 import MeetingParticipantList from './MeetingParticipantList';

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { Edge } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +15,7 @@ import { updateSettings } from '../../../base/settings/actions';
 import BaseThemeNative from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import Input from '../../../base/ui/components/native/Input';
+import { ScrollView, Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import HeaderNavigationButton
     from '../../../mobile/navigation/components/HeaderNavigationButton';

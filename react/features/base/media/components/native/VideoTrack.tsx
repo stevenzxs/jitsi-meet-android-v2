@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
 import { connect } from 'react-redux';
 
+import { View } from '../../../ui/components/native/ThemedPrimitives';
 import AbstractVideoTrack, { IProps } from '../AbstractVideoTrack';
 
 import styles from './styles';

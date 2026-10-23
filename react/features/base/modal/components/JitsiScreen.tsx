@@ -1,9 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
 
 import { StyleType } from '../../styles/functions.any';
 import BaseTheme from '../../ui/components/BaseTheme.native';
+import { View } from '../../ui/components/native/ThemedPrimitives';
 import { useKeyboardVisible } from '../hooks.native';
 
 import JitsiKeyboardAvoidingView from './JitsiKeyboardAvoidingView';

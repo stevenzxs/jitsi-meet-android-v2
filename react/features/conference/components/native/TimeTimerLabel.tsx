@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Animated, TextStyle, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { getLocalizedDurationFormatter } from '../../../base/i18n/dateUtil';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import Disk from '../../../time-timer/components/native/Disk';
 import { getTimerVisualState, isTimeTimerEnabled } from '../../../time-timer/functions';
 

@@ -1,17 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    GestureResponderEvent,
-    StyleProp,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from 'react-native';
+import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import Icon from '../../../base/icons/components/Icon';
+import { TouchableOpacity, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { AudioStateIcons, MEDIA_STATE, type MediaState, VideoStateIcons } from '../../constants';
 
 import { RaisedHandIndicator } from './RaisedHandIndicator';

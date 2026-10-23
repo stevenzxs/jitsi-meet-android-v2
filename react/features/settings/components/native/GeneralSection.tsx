@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TouchableHighlight, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -9,11 +9,13 @@ import Icon from '../../../base/icons/components/Icon';
 import { IconArrowRight } from '../../../base/icons/svg';
 import { updateSettings } from '../../../base/settings/actions';
 import Switch from '../../../base/ui/components/native/Switch';
+import { Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { navigate } from '../../../mobile/navigation/components/settings/SettingsNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';
 
 import FormRow from './FormRow';
 import FormSection from './FormSection';
+import ThemeSelect from './ThemeSelect';
 import styles from './styles';
 
 
@@ -38,6 +40,9 @@ const GeneralSection = () => {
 
     return (
         <FormSection>
+            <FormRow label = 'settings.theme'>
+                <ThemeSelect />
+            </FormRow>
             <FormRow label = 'videothumbnail.hideSelfView'>
                 <Switch
                     checked = { Boolean(disableSelfView) }

@@ -1,10 +1,11 @@
-import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { getConferenceState } from '../../../base/conference/functions';
+import { NavigationContainer, useNativeScreenOptions } from '../../../base/ui/components/native/ThemedNavigation';
 import DialInSummary from '../../../invite/components/dial-in-summary/native/DialInSummary';
 import Prejoin from '../../../prejoin/components/native/Prejoin';
 import UnsafeRoomWarning from '../../../prejoin/components/native/UnsafeRoomWarning';
@@ -16,16 +17,7 @@ import { isWelcomePageEnabled } from '../../../welcome/functions';
 import { _ROOT_NAVIGATION_READY } from '../actionTypes';
 import { rootNavigationRef } from '../rootNavigationContainerRef';
 import { screen } from '../routes';
-import {
-    conferenceNavigationContainerScreenOptions,
-    connectingScreenOptions,
-    dialInSummaryScreenOptions,
-    navigationContainerTheme,
-    preJoinScreenOptions,
-    unsafeMeetingScreenOptions,
-    visitorsScreenOptions,
-    welcomeScreenOptions
-} from '../screenOptions';
+import { conferenceNavigationContainerScreenOptions as static_conferenceNavigationContainerScreenOptions, connectingScreenOptions as static_connectingScreenOptions, dialInSummaryScreenOptions as static_dialInSummaryScreenOptions, navigationContainerTheme as static_navigationContainerTheme, preJoinScreenOptions as static_preJoinScreenOptions, unsafeMeetingScreenOptions as static_unsafeMeetingScreenOptions, visitorsScreenOptions as static_visitorsScreenOptions, welcomeScreenOptions as static_welcomeScreenOptions } from '../screenOptions';
 
 import ConnectingPage from './ConnectingPage';
 import ConferenceNavigationContainer
@@ -54,6 +46,14 @@ interface IProps {
 
 
 const RootNavigationContainer = ({ dispatch, hasRoomOnLaunch, isWelcomePageAvailable }: IProps) => {
+    const conferenceNavigationContainerScreenOptions = useNativeScreenOptions(static_conferenceNavigationContainerScreenOptions);
+    const connectingScreenOptions = useNativeScreenOptions(static_connectingScreenOptions);
+    const dialInSummaryScreenOptions = useNativeScreenOptions(static_dialInSummaryScreenOptions);
+    const navigationContainerTheme = useNativeScreenOptions(static_navigationContainerTheme);
+    const preJoinScreenOptions = useNativeScreenOptions(static_preJoinScreenOptions);
+    const unsafeMeetingScreenOptions = useNativeScreenOptions(static_unsafeMeetingScreenOptions);
+    const visitorsScreenOptions = useNativeScreenOptions(static_visitorsScreenOptions);
+    const welcomeScreenOptions = useNativeScreenOptions(static_welcomeScreenOptions);
     // Background SDK launch goes straight to conference; normal launch shows the connecting spinner.
     const initialRouteName = isWelcomePageAvailable
         ? screen.welcome.main

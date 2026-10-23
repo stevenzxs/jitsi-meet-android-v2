@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -8,6 +8,7 @@ import Icon from '../../../base/icons/components/Icon';
 import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Input from '../../../base/ui/components/native/Input';
+import { Text, TouchableOpacity, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { setChatSearchMatchIndex, setChatSearchQuery } from '../../actions.native';
 import { getChatSearchMatchIndex, getChatSearchMatches, getChatSearchQuery } from '../../functions';
 

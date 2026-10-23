@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import {
     IconRecordAccount,
@@ -8,6 +8,7 @@ import {
     IconRecordLead,
     IconRecordOpportunity
 } from '../../../base/icons/svg';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { formatAmount } from '../../functions';
 import { ISalesforceData, SalesforceObjectType } from '../../types';

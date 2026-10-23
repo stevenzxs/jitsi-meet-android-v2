@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TextStyle } from 'react-native';
+import { TextStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import ConfirmDialog from '../../../base/dialog/components/native/ConfirmDialog';
 import Link from '../../../base/react/components/native/Link';
+import { Text } from '../../../base/ui/components/native/ThemedPrimitives';
 import { getWhiteboardConfig } from '../../functions';
 
 import styles from './styles';

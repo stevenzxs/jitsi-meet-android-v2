@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, NativeModules, Platform, Text } from 'react-native';
+import { Alert, NativeModules, Platform } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { updateSettings } from '../../../base/settings/actions';
 import Switch from '../../../base/ui/components/native/Switch';
+import { Text } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import FormRow from './FormRow';
 import FormSection from './FormSection';

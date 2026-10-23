@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import { TEXT_COLOR, navigationStyles } from './styles';
 

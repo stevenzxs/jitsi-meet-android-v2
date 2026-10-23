@@ -1,7 +1,7 @@
 import { Route } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Platform, View, ViewStyle } from 'react-native';
+import { Platform, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
@@ -13,6 +13,7 @@ import { translate } from '../../../base/i18n/functions.native';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { safeDecodeURIComponent } from '../../../base/util/uri';
 import HeaderNavigationButton
     from '../../../mobile/navigation/components/HeaderNavigationButton';

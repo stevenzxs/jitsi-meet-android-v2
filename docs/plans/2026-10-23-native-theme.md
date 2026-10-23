@@ -8,6 +8,16 @@
 
 **Tech Stack:** React Native, TypeScript, Redux, React Navigation, React Native Paper, Node test runner, Android Gradle.
 
+## Implementation refinement
+
+Static native styles are widespread, including shared components and navigation options.
+Use explicit themed native primitives at native component import boundaries to subscribe
+to context and resolve legacy style props, rather than mutable globals or remount keys.
+Preserve forwarded refs and inherited foreground contrast on media/action surfaces.
+Navigation option objects and Paper-only controls still need explicit themed resolution.
+The primitive migration is generated from TypeScript AST import declarations and is
+restricted to native UI modules; it never wraps RTCView or changes media tracks.
+
 ---
 
 ### Task 1: Theme model and regression tests

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { GestureResponderEvent, TouchableWithoutFeedback } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
+
+import { TouchableWithoutFeedback } from '../../../ui/components/native/ThemedPrimitives';
 
 /**
  * The type of the React {@link Component} props of {@link Pressable}.

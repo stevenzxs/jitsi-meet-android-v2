@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableHighlight, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -7,6 +7,7 @@ import { translate } from '../../../base/i18n/functions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconCloseLarge } from '../../../base/icons/svg';
 import { ILocalParticipant } from '../../../base/participants/types';
+import { Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import {
     setParams
 } from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';

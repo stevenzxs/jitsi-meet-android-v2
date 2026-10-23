@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import { translate } from '../../../base/i18n/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import styles, { ANDROID_UNDERLINE_COLOR, PLACEHOLDER_COLOR } from './styles';
 

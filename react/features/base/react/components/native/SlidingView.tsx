@@ -1,14 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
-import {
-    Animated,
-    BackHandler,
-    Dimensions,
-    TouchableWithoutFeedback,
-    View,
-    ViewStyle
-} from 'react-native';
+import { Animated, BackHandler, Dimensions, ViewStyle } from 'react-native';
 
 import { StyleType } from '../../../styles/functions.any';
+import { TouchableWithoutFeedback, View } from '../../../ui/components/native/ThemedPrimitives';
 
 import styles from './slidingviewstyles';
 

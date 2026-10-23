@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
+
+import { Text } from '../ui/components/native/ThemedPrimitives';
+
 
 export { changeLanguageBundle, translate } from './functions.any';
 

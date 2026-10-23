@@ -1,6 +1,6 @@
 import React from 'react';
 import { WithTranslation } from 'react-i18next';
-import { GestureResponderEvent, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import { GestureResponderEvent, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { getDefaultURL } from '../../app/functions.native';
@@ -9,6 +9,7 @@ import { openSheet } from '../../base/dialog/actions';
 import { translate } from '../../base/i18n/functions';
 import NavigateSectionList from '../../base/react/components/native/NavigateSectionList';
 import { Item, Section } from '../../base/react/types';
+import { TouchableWithoutFeedback, View } from '../../base/ui/components/native/ThemedPrimitives';
 import styles from '../../welcome/components/styles.native';
 import { isRecentListEnabled, toDisplayableList } from '../functions.native';
 

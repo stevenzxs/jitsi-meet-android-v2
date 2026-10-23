@@ -135,7 +135,9 @@ public class JitsiMeetActivity extends AppCompatActivity
                 v.setLayoutParams(params);
             }
 
-            view.setBackgroundColor(JitsiMeetView.BACKGROUND_COLOR);
+            if (v.getContext() instanceof Activity) {
+                SystemThemeModule.apply((Activity) v.getContext());
+            }
 
             // Return CONSUMED to prevent double-application of margins
             return WindowInsetsCompat.CONSUMED;
@@ -165,6 +167,7 @@ public class JitsiMeetActivity extends AppCompatActivity
         JitsiMeetActivityDelegate.onHostResume(this);
 
         setContentView(R.layout.activity_jitsi_meet);
+        SystemThemeModule.apply(this);
 
        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM 

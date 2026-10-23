@@ -1,7 +1,7 @@
 import { Route } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Linking, View, ViewStyle } from 'react-native';
+import { Linking, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
@@ -10,6 +10,7 @@ import { openDialog } from '../../../../base/dialog/actions';
 import { translate } from '../../../../base/i18n/functions';
 import JitsiScreen from '../../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../../base/react/components/native/LoadingIndicator';
+import { View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { getDialInfoPageURLForURIString } from '../../../functions';
 
 import DialInSummaryErrorDialog from './DialInSummaryErrorDialog';

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { getParticipantDisplayName } from '../../../base/participants/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { ISubtitle } from '../../../subtitles/types';
 
 import { closedCaptionsStyles } from './styles';

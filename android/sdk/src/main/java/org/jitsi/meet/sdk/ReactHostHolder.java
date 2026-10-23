@@ -66,6 +66,7 @@ class ReactHostHolder {
         List<NativeModule> nativeModules
             = new ArrayList<>(Arrays.<NativeModule>asList(
                 new AndroidSettingsModule(reactContext),
+                new SystemThemeModule(reactContext),
                 new AppInfoModule(reactContext),
                 new AudioModeModule(reactContext),
                 new DropboxModule(reactContext),

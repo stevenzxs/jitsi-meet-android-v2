@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../../../base/ui/components/native/Button';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_MODES, BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { admitMultiple, goLive } from '../../../visitors/actions';
 import {

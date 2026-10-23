@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
+
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import Thumbnail from './Thumbnail';
 import styles from './styles';

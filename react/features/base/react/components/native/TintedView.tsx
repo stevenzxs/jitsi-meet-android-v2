@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
+
+import { View } from '../../../ui/components/native/ThemedPrimitives';
 
 import { TINTED_VIEW_DEFAULT } from './styles';
 

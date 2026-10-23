@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle, View } from 'react-native';
+import { StyleProp, TextStyle } from 'react-native';
+
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import { navigationStyles } from './styles';
 

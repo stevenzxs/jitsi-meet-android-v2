@@ -1,6 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
 
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import abstractSpeakerStatsList from '../AbstractSpeakerStatsList';
 
 import SpeakerStatsItem from './SpeakerStatsItem';

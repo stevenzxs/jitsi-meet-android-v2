@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { GestureResponderEvent, Text, TextStyle } from 'react-native';
+import { GestureResponderEvent, TextStyle } from 'react-native';
 
 import Avatar from '../../../avatar/components/Avatar';
 import { StyleType } from '../../../styles/functions.native';
+import { Text } from '../../../ui/components/native/ThemedPrimitives';
 import { Item } from '../../types';
 
 import Container from './Container';

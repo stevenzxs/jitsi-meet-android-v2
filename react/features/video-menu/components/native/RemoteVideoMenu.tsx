@@ -1,7 +1,7 @@
 /* eslint-disable lines-around-comment */
 
 import React, { PureComponent } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { connect } from 'react-redux';
 
@@ -20,6 +20,7 @@ import {
     isLocalParticipantModerator,
     isPrivateChatEnabled
 } from '../../../base/participants/functions';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { getBreakoutRooms, getCurrentRoomId, isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { IRoom } from '../../../breakout-rooms/types';
 import PrivateMessageButton from '../../../chat/components/native/PrivateMessageButton';

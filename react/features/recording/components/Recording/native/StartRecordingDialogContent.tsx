@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { IconArrowDown, IconArrowRight } from '../../../../base/icons/svg';
 import LoadingIndicator from '../../../../base/react/components/native/LoadingIndicator';
 import Button from '../../../../base/ui/components/native/Button';
 import Switch from '../../../../base/ui/components/native/Switch';
+import { TouchableOpacity, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../../base/ui/constants.native';
 import LanguageListItem from '../../../../subtitles/components/native/LanguageListItem';
 import { RECORDING_TYPES } from '../../../constants';

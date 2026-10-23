@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { PanResponder, PixelRatio, View } from 'react-native';
+import { PanResponder, PixelRatio } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../../app/types';
 import { ASPECT_RATIO_WIDE } from '../../../responsive-ui/constants';
+import { View } from '../../../ui/components/native/ThemedPrimitives';
 import { storeVideoTransform } from '../../actions';
 
 import styles from './styles';

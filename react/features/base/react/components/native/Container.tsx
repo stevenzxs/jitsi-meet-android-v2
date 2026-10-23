@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-    GestureResponderEvent,
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-    View
-} from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 
+import { TouchableHighlight, TouchableWithoutFeedback, View } from '../../../ui/components/native/ThemedPrimitives';
 import AbstractContainer, { IProps as AbstractProps } from '../AbstractContainer';
 
 interface IProps extends AbstractProps {

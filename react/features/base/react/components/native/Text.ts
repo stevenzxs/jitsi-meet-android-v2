@@ -1,1 +1,1 @@
-export { Text as default } from 'react-native';
+export { Text as default } from '../../../ui/components/native/ThemedPrimitives';

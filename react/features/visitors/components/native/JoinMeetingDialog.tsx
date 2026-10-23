@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import Dialog from 'react-native-dialog';
 
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { StandaloneRaiseHandButton as RaiseHandButton } from '../../../reactions/components/native/RaiseHandButton';
 import styles from '../../components/native/styles';
 

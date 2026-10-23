@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TranslationLabel from '../../../audio-translation/components/native/TranslationLabel';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
+import { TouchableOpacity } from '../../../base/ui/components/native/ThemedPrimitives';
 import { openHighlightDialog } from '../../../recording/actions.native';
 import HighlightButton from '../../../recording/components/Recording/native/HighlightButton';
 import RecordingLabel from '../../../recording/components/native/RecordingLabel';

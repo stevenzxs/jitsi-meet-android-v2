@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
 import { connect } from 'react-redux';
+
+import { Text } from '../../ui/components/native/ThemedPrimitives';
 
 import { TestHintProps, _mapStateToProps } from './AbstractTestHint';
 

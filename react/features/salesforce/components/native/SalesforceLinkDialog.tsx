@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import { IconSearch } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
 import { StyleType } from '../../../base/styles/functions.any';
 import Input from '../../../base/ui/components/native/Input';
+import { ScrollView, Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { useSalesforceLinkDialog } from '../../useSalesforceLinkDialog';
 
 import { CurrentLinksSection } from './CurrentLinksSection';

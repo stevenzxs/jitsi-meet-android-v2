@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import JitsiScreen from '../../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../../base/react/components/native/LoadingIndicator';
 import TintedView from '../../../../base/react/components/native/TintedView';
 import { isLocalVideoTrackDesktop } from '../../../../base/tracks/functions.native';
+import { View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import { setPictureInPictureEnabled } from '../../../../mobile/picture-in-picture/functions';
 import { setIsCarmode } from '../../../../video-layout/actions';
 import ConferenceTimer from '../../ConferenceTimer';

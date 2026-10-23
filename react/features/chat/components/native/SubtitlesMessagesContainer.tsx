@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, View, ViewStyle } from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, ViewStyle } from 'react-native';
 
 import Icon from '../../../base/icons/components/Icon';
 import { IconArrowDown } from '../../../base/icons/svg';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
+import { ScrollView, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { ISubtitle } from '../../../subtitles/types';
 

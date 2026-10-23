@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GestureResponderEvent, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { GestureResponderEvent, TextStyle, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -20,6 +20,8 @@ import { StyleType } from '../../styles/functions.any';
 import TestHint from '../../testing/components/TestHint';
 import { getVideoTrackByParticipant } from '../../tracks/functions';
 import { ITrack } from '../../tracks/types';
+import { NativeThemeContext } from '../../ui/NativeThemeContext';
+import { Text, View } from '../../ui/components/native/ThemedPrimitives';
 import { getParticipantById, getParticipantDisplayName, isSharedVideoParticipant } from '../functions';
 
 import styles from './styles';
@@ -130,6 +132,7 @@ interface IProps {
  * @augments Component
  */
 class ParticipantView extends Component<IProps> {
+    static contextType = NativeThemeContext;
 
     /**
      * Renders the inactive connection status label.
@@ -191,6 +194,7 @@ class ParticipantView extends Component<IProps> {
                 onClick = { renderVideo || renderSharedVideo ? undefined : onPress }
                 style = {{
                     ...styles.participantView,
+                    backgroundColor: (this.context as React.ContextType<typeof NativeThemeContext>).palette.largeVideoBackground,
                     ...this.props.style
                 }}
                 touchFeedback = { false }>

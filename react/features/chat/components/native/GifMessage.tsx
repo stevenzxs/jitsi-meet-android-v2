@@ -1,7 +1,8 @@
 import { GiphyMediaView } from '@giphy/react-native-sdk';
 import React from 'react';
-import { Image, ImageStyle, View } from 'react-native';
+import { Image, ImageStyle } from 'react-native';
 
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { extractGifMediaId, extractGifURL } from '../../../gifs/function.any';
 
 import styles from './styles';

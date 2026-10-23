@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, TextStyle, TouchableHighlight, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 
 import Icon from '../../icons/components/Icon';
+import { Text, TouchableHighlight, View } from '../../ui/components/native/ThemedPrimitives';
 
 import AbstractToolboxItem, { IProps } from './AbstractToolboxItem';
 

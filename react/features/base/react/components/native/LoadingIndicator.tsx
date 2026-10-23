@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { ActivityIndicator } from 'react-native';
+
 
 import { ColorPalette } from '../../../styles/components/styles/ColorPalette';
+import { ActivityIndicator } from '../../../ui/components/native/ThemedPrimitives';
 
 interface IProps {
 

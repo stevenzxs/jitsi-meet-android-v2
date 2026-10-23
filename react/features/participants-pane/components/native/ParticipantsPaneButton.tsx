@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
@@ -7,6 +7,7 @@ import { translate } from '../../../base/i18n/functions';
 import { IconUsers } from '../../../base/icons/svg';
 import { getParticipantCountForDisplay } from '../../../base/participants/functions';
 import AbstractButton, { IProps as AbstractButtonProps } from '../../../base/toolbox/components/AbstractButton';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { navigate }
     from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';

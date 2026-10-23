@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text } from 'react-native';
 
 
 import { IReduxState } from '../../app/types';
 import Link from '../react/components/native/Link';
 import BaseTheme from '../ui/components/BaseTheme.native';
+import { Text } from '../ui/components/native/ThemedPrimitives';
 
 import { SECURITY_URL } from './contants';
 

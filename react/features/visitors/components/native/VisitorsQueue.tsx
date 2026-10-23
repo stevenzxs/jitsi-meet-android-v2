@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { hangup } from '../../../base/connection/actions.native';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import lobbyStyles from '../../../lobby/components/native/styles';
 

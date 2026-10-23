@@ -8,6 +8,7 @@ import {
     getClientHeight,
     getClientWidth
 } from '../../../../../base/modal/components/functions.native';
+import { useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import { setFocusedTab } from '../../../../../chat/actions.native';
 import Chat from '../../../../../chat/components/native/Chat';
 import ClosedCaptions from '../../../../../chat/components/native/ClosedCaptions';
@@ -18,13 +19,14 @@ import { resetUnreadPollsCount } from '../../../../../polls/actions';
 import PollsPane from '../../../../../polls/components/native/PollsPane';
 import { isCCTabEnabled } from '../../../../../subtitles/functions.any';
 import { screen } from '../../../routes';
-import { chatTabBarOptions } from '../../../screenOptions';
+import { chatTabBarOptions as static_chatTabBarOptions } from '../../../screenOptions';
 
 import ChatTabBar from './ChatTabBar';
 
 const ChatTab = createMaterialTopTabNavigator();
 
 const ChatNavigator = () => {
+    const chatTabBarOptions = useNativeScreenOptions(static_chatTabBarOptions);
     const dispatch = useDispatch();
 
     const clientHeight = useSelector(getClientHeight);

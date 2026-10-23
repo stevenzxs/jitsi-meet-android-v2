@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -15,6 +15,7 @@ import {
     setShareDialogVisiblity
 } from '../../../base/participants/functions';
 import Button from '../../../base/ui/components/native/Button';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { isInBreakoutRoom } from '../../../breakout-rooms/functions';
 import { doInvitePeople } from '../../../invite/actions.native';

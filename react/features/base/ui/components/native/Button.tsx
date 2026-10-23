@@ -1,13 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleProp, TouchableHighlight } from 'react-native';
+import { StyleProp } from 'react-native';
 import { Button as NativePaperButton, Text } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
+import { useNativeStyles, useNativeTheme } from '../../NativeThemeContext';
 import { BUTTON_MODES, BUTTON_TYPES } from '../../constants.native';
-import BaseTheme from '../BaseTheme.native';
 import { IButtonProps } from '../types';
 
+import { TouchableHighlight } from './ThemedPrimitives';
 import styles from './buttonStyles';
 
 
@@ -35,6 +36,8 @@ const Button: React.FC<IProps> = ({
     type
 }: IProps) => {
     const { t } = useTranslation();
+    const themedStyles = useNativeStyles(styles);
+    const theme = useNativeTheme();
     const { DESTRUCTIVE, PRIMARY, SECONDARY, TERTIARY } = BUTTON_TYPES;
     const { CONTAINED, TEXT } = BUTTON_MODES;
 
@@ -44,17 +47,17 @@ const Button: React.FC<IProps> = ({
 
     if (type === PRIMARY) {
         buttonLabelStyles = mode === TEXT
-            ? styles.buttonLabelPrimaryText
-            : styles.buttonLabelPrimary;
-        color = mode === CONTAINED && BaseTheme.palette.action01;
+            ? themedStyles.buttonLabelPrimaryText
+            : themedStyles.buttonLabelPrimary;
+        color = mode === CONTAINED && theme.palette.action01;
     } else if (type === SECONDARY) {
-        buttonLabelStyles = styles.buttonLabelSecondary;
-        color = mode === CONTAINED && BaseTheme.palette.action02;
+        buttonLabelStyles = themedStyles.buttonLabelSecondary;
+        color = mode === CONTAINED && theme.palette.action02;
     } else if (type === DESTRUCTIVE) {
         buttonLabelStyles = mode === TEXT
-            ? styles.buttonLabelDestructiveText
-            : styles.buttonLabelDestructive;
-        color = mode === CONTAINED && BaseTheme.palette.actionDanger;
+            ? themedStyles.buttonLabelDestructiveText
+            : themedStyles.buttonLabelDestructive;
+        color = mode === CONTAINED && theme.palette.actionDanger;
     } else {
         color = buttonColor;
         buttonLabelStyles = styles.buttonLabel;

@@ -1,22 +1,6 @@
 import React, { forwardRef, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    BlurEvent,
-    FocusEvent,
-    KeyboardTypeOptions,
-    NativeSyntheticEvent,
-    ReturnKeyTypeOptions,
-    StyleProp,
-    Text,
-    TextInput,
-    TextInputChangeEventData,
-    TextInputKeyPressEventData,
-    TextInputSubmitEditingEventData,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from 'react-native';
+import { BlurEvent, FocusEvent, KeyboardTypeOptions, NativeSyntheticEvent, ReturnKeyTypeOptions, StyleProp, TextInputChangeEventData, TextInputKeyPressEventData, TextInputSubmitEditingEventData, TextStyle, ViewStyle } from 'react-native';
 
 
 import Icon from '../../../icons/components/Icon';
@@ -24,6 +8,7 @@ import { IconCloseCircle } from '../../../icons/svg';
 import BaseTheme from '../../../ui/components/BaseTheme.native';
 import { IInputProps } from '../types';
 
+import { Text, TextInput, TouchableOpacity, View } from './ThemedPrimitives';
 import styles from './inputStyles';
 
 interface IProps extends IInputProps {

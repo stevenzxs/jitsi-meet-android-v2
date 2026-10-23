@@ -1,16 +1,12 @@
 import React from 'react';
 import { WithTranslation } from 'react-i18next';
-import {
-    Text,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../app/types';
 import { translate } from '../../base/i18n/functions';
 import AbstractPage from '../../base/react/components/AbstractPage';
+import { Text, TouchableOpacity, View } from '../../base/ui/components/native/ThemedPrimitives';
 import { openSettings } from '../../mobile/permissions/functions';
 import { refreshCalendar } from '../actions.native';
 

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ import { IReduxState } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
+import { View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { getSharedDocumentUrl } from '../../functions';
 
 import styles, { INDICATOR_COLOR } from './styles';

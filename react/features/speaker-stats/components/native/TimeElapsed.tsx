@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Text } from 'react-native';
+
 
 import { translate } from '../../../base/i18n/functions';
+import { Text } from '../../../base/ui/components/native/ThemedPrimitives';
 import { createLocalizedTime } from '../timeFunctions';
 
 /**

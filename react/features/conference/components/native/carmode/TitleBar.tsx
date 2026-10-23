@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../../app/types';
 import { getConferenceName } from '../../../../base/conference/functions';
 import { JitsiRecordingConstants } from '../../../../base/lib-jitsi-meet';
 import { getLocalParticipant } from '../../../../base/participants/functions';
+import { Text, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 import ConnectionIndicator from '../../../../connection-indicator/components/native/ConnectionIndicator';
 import { isRoomNameEnabled } from '../../../../prejoin/functions';
 import RecordingLabel from '../../../../recording/components/native/RecordingLabel';

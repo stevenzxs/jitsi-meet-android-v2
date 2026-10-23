@@ -1,5 +1,4 @@
 import React, { ComponentType, PureComponent } from 'react';
-import { TouchableWithoutFeedback, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
@@ -8,6 +7,7 @@ import { hideDialog } from '../../../base/dialog/actions';
 import { isDialogOpen } from '../../../base/dialog/functions';
 import { getParticipantCount } from '../../../base/participants/functions';
 import { StyleType } from '../../../base/styles/functions.native';
+import { TouchableWithoutFeedback, View } from '../../../base/ui/components/native/ThemedPrimitives';
 
 import ReactionMenu from './ReactionMenu';
 

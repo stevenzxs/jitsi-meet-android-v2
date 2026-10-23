@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import Avatar from '../../../base/avatar/components/Avatar';
 import { translate } from '../../../base/i18n/functions';
 import Linkify from '../../../base/react/components/native/Linkify';
+import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { isGifEnabled, isGifMessage } from '../../../gifs/functions.native';
 import { CHAR_LIMIT, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_LOCAL } from '../../constants';
 import {

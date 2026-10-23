@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableHighlight, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
@@ -12,6 +12,7 @@ import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { StyleType } from '../../../base/styles/functions.any';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
+import { TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { TabBarLabelCounter } from '../../../mobile/navigation/components/TabBarLabelCounter';
 import { navigate } from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';

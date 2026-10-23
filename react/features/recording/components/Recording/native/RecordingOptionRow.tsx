@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import Icon from '../../../../base/icons/components/Icon';
 import { IconCheck } from '../../../../base/icons/svg';
 import BaseTheme from '../../../../base/ui/components/BaseTheme.native';
+import { TouchableOpacity, View } from '../../../../base/ui/components/native/ThemedPrimitives';
 
 interface IProps {
 

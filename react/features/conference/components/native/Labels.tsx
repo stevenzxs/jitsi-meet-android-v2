@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
+import { TouchableOpacity, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import VideoQualityLabel from '../../../video-quality/components/VideoQualityLabel.native';
 
 import InsecureRoomNameLabel from './InsecureRoomNameLabel';

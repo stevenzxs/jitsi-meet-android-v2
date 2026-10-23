@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native';
 
+import { Text } from '../../../base/ui/components/native/ThemedPrimitives';
 import { IDisplayProps } from '../ConferenceTimer';
 
 /**
