@@ -19,7 +19,7 @@ test('draft uses nine digits and cryptographically supplied host/recovery creden
     const draft = newMeetingDraft(bytes => require('node:crypto').randomFillSync(bytes));
     assert.match(draft.roomName, /^\d{9}$/);
     assert.match(draft.hostKey, /^[A-HJ-NP-Z2-9]{4}(-[A-HJ-NP-Z2-9]{4}){3}$/);
-    assert.ok(draft.creatorRecoveryKey.length >= 32);
+    assert.match(draft.creatorRecoveryKey, /^[A-Za-z0-9_-]{43}$/);
 });
 
 test('create must register then acquire token before returning native meeting URL', async () => {

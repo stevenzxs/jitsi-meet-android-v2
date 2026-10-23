@@ -31,6 +31,15 @@ export async function loadConfig(url: string): Promise<Object> {
                 // Used IIFE wrapper to capture config object from config.js
                 const configObj = eval(
                     '(function(){\n'
+                    // Native config is not a browser page. Do not expose a host JWT
+                    // to server-side UI visibility checks; native roles come from XMPP.
+                    + 'var window = { location: { search: "" } };\n'
+                    + 'var URLSearchParams = function(search) { this.search = search; };\n'
+                    + 'URLSearchParams.prototype.get = function(key) { '
+                    + 'var parts = this.search.replace(/^\\?/, "").split("&"); '
+                    + 'for (var i = 0; i < parts.length; i++) { var pair = parts[i].split("="); '
+                    + 'if (decodeURIComponent(pair[0]) === key) return decodeURIComponent(pair.slice(1).join("=").replace(/\\+/g, " ")); } '
+                    + 'return null; };\n'
                     + configText
                     + '\n; return (typeof config !== "undefined" ? config : globalThis.config); })()'
                 );

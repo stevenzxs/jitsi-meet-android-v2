@@ -23,3 +23,15 @@
 - 官方 join-check 只读校验探测返回 HTTP 200、业务码 40401、消息“会议不存在”；客户端须处理 HTTP 200 中的业务失败。
 - 首次构建触发 120 秒工具超时，不能视为编译失败或成功；已扩大超时重新构建。APK 尚待此次构建结果及实机验收。
 - 已保存其他服务器地址的用户不会被无条件迁移；无自定义设置时默认使用官方 Jitsi 根地址。
+
+## Final device verification
+
+- 首轮实机创建 HTTP 400：恢复凭据必须与 Web 一致，采用 32 字节 Base64URL（43 字符），原十六进制不兼容现网；已补回归断言。
+- 第二轮业务创建/token 成功但 config.js 解析失败：Worklet 无 URLSearchParams/window。已在隔离解析 IIFE 内提供最小查询读取兼容层，空查询不会把 Web 专用主持菜单注入原生；角色仍由真实 JWT/XMPP 确认。新增 `scripts/tests/native-config.test.cjs` 先失败后通过。
+- 最终 Libre Release 构建成功（1m43s），覆盖安装成功；20 项测试通过，ESLint 通过，最终 TypeScript 对比原基线新增诊断 0，diff check 通过。
+- m66Pro Android 11 创建会议 `327451379`，预加入页面视频预览正常；为避免测试传送环境音视频，入会前关闭麦克风及摄像头。
+- 14:15:56 原生日志确认 `Conference joined`；参会者列表显示 1 人及“主持人”，创建、JWT、配置加载、XMPP 入会全链路验收通过。测试后点击挂断离开。
+- 证据（本机临时目录）：`cloudmeet-final-join.png`、`cloudmeet-inroom.png`、`cloudmeet-role.png`；过滤后的进程日志 `cloudmeet-success-log.txt`。
+- 联调产生少量 AndroidTest 测试会议记录；未擅自删除服务端记录。多人音视频互通、已有加密会议加入、Android 15 未验收。
+- 会议内浅色主题仍存在黑色工具栏/部分弱对比文字，是原主题适配未闭环项，不宣称已修复。
+- 主持人密钥仅存于当前创建流程内，重启后主持身份恢复未实现；本次不将安全存储/服务端历史同步扩展进来。未推送 GitHub。

@@ -246,6 +246,12 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {void}
      */
     _onFieldFocusChange(focused: boolean) {
+        if (this.props.cloudMeetEnabled) {
+            this._clearTimeouts();
+            this.setState({ _fieldFocused: focused, roomPlaceholder: '' });
+
+            return;
+        }
         if (focused) {
             // Stop placeholder animation.
             this._clearTimeouts();
@@ -317,7 +323,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                 <Animated.View style = { this.props.cloudMeetEnabled ? undefined : this._getHintBoxStyle() as ViewStyle[] }>
                     <View style = { styles.hintTextContainer as ViewStyle } >
                         <Text style = { styles.hintText as TextStyle }>
-                            { t('welcomepage.roomnameHint') }
+                            { t(this.props.cloudMeetEnabled ? 'cloudmeet.joinHint' : 'welcomepage.roomnameHint') }
                         </Text>
                     </View>
                     <View style = { styles.hintButtonContainer as ViewStyle } >
@@ -404,12 +410,13 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         onChange = { this._onRoomChange }
                         onFocus = { this._onFieldFocus }
                         onSubmitEditing = { this._onJoin }
-                        placeholder = { this.state.roomPlaceholder }
+                        placeholder = { this.props.cloudMeetEnabled ? '请输入九位会议号' : this.state.roomPlaceholder }
                         returnKeyType = { 'go' }
                         value = { this.state.room } />
                     { this.props.cloudMeetEnabled && <Input
                         label = '会议密码（如有）'
                         onChange = { this._onMeetingPasswordChange }
+                        placeholder = '会议密码（如有）'
                         secureTextEntry = { true }
                         value = { this.state.meetingPassword || '' } /> }
                     {

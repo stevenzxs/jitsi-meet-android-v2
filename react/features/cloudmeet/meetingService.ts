@@ -23,7 +23,13 @@ export function newMeetingDraft(fill: (bytes: Uint8Array) => Uint8Array): IMeeti
     return {
         roomName: Array.from(bytes.slice(0, 9), value => String(value % 10)).join(''),
         hostKey: key.match(/.{4}/g)!.join('-'),
-        creatorRecoveryKey: Array.from(bytes.slice(25), value => value.toString(16).padStart(2, '0')).join('')
+        creatorRecoveryKey: Array.from({ length: 43 }, (_, index) => {
+            const offset = index * 6;
+            const byte = Math.floor(offset / 8);
+            const bits = ((bytes[25 + byte] << 8) | (bytes[26 + byte] || 0)) >> (10 - offset % 8);
+
+            return 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'[bits & 63];
+        }).join('')
     };
 }
 

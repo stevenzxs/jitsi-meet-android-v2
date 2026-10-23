@@ -1,5 +1,6 @@
 {
     "cloudmeet": {
+        "joinHint": "Enter a nine-digit meeting ID to join, or use Create meeting above.",
         "create": "Create meeting",
         "creating": "Creating…",
         "join": "Join meeting"

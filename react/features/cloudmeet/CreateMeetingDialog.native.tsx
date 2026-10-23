@@ -67,16 +67,18 @@ export default function CreateMeetingDialog({ displayName, onClose, onJoin }: {
                 <View style = { styles.panel }>
                     <Text style = { styles.title }>创建会议</Text>
                     <Input
-                        editable = { !locked }
+                        disabled = { locked }
                         label = '会议主题（可选）'
                         maxLength = { 40 }
                         onChange = { setSubject }
+                        placeholder = '会议主题（可选）'
                         value = { subject } />
                     <Input
-                        editable = { !locked }
+                        disabled = { locked }
                         label = '昵称'
                         maxLength = { 20 }
                         onChange = { setName }
+                        placeholder = '请输入昵称'
                         value = { name } />
                     <Button
                         accessibilityLabel = '创建会议'
