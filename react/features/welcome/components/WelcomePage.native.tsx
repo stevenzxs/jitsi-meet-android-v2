@@ -12,18 +12,16 @@ import { IconWarning } from '../../base/icons/svg';
 import LoadingIndicator from '../../base/react/components/native/LoadingIndicator';
 import Text from '../../base/react/components/native/Text';
 import { getServerURL } from '../../base/settings/functions.native';
-import { ISettingsState } from '../../base/settings/reducer';
 import BaseTheme from '../../base/ui/components/BaseTheme.native';
 import Button from '../../base/ui/components/native/Button';
 import Input from '../../base/ui/components/native/Input';
 import { TouchableHighlight, View } from '../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../base/ui/constants.native';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.native';
-import CreateMeetingDialog from '../../cloudmeet/CreateMeetingDialog.native';
-import { enterCreatedMeeting } from '../../cloudmeet/actions.native';
 import { CLOUDMEET_ORIGIN, joinMeeting } from '../../cloudmeet/meetingService';
 import WelcomePageTabs
     from '../../mobile/navigation/components/welcome/components/WelcomePageTabs';
+import { screen } from '../../mobile/navigation/routes';
 
 import {
     IProps as AbstractProps,
@@ -84,14 +82,7 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      *
      * @returns {void}
      */
-    _onOpenCreate = () => this.setState({ createDialogVisible: true });
-
-    /**
-     * Close the create form.
-     *
-     * @returns {void}
-     */
-    _onCloseCreate = () => this.setState({ createDialogVisible: false });
+    _onOpenCreate = () => this.props.navigation.navigate(screen.quickMeeting);
 
     /**
      * Set the business meeting password.
@@ -101,16 +92,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      */
     _onMeetingPasswordChange = (value: string) => this.setState({ meetingPassword: value });
 
-    /**
-     * Enter a registered room.
-     *
-     * @param {string} url - Token-bearing URL.
-     * @param {string} name - Nickname.
-     * @returns {Promise<void>}
-     */
-    _onEnterCreated = async (url: string, name: string) => {
-        await this.props.dispatch(enterCreatedMeeting(url, name));
-    };
 
     /**
      * Constructor of the Component.
@@ -444,10 +425,6 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
                         onClick = { this._onOpenCreate }
                         type = { BUTTON_TYPES.PRIMARY } />
                 </View> }
-                { this.state.createDialogVisible && <CreateMeetingDialog
-                    displayName = { (this.props._settings as ISettingsState).displayName || '' }
-                    onClose = { this._onCloseCreate }
-                    onJoin = { this._onEnterCreated } /> }
                 { this._renderRoomNameInput() }
                 <View style = { styles.welcomePage as ViewStyle }>
                     <WelcomePageTabs

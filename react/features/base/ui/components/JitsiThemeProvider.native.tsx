@@ -13,6 +13,9 @@ interface IProps {
     * The children of the component.
     */
     children: React.ReactNode;
+
+    /** Only provide colors to overlay siblings without adding a full-screen Portal host. */
+    contextOnly?: boolean;
 }
 
 /**
@@ -26,10 +29,18 @@ export default function JitsiThemePaperProvider(props: IProps) {
     const theme = nativeThemes[mode];
 
     React.useEffect(() => {
-        if (Platform.OS === 'android') {
+        if (!props.contextOnly && Platform.OS === 'android') {
             NativeModules.SystemTheme?.setTheme(mode);
         }
-    }, [ mode ]);
+    }, [ mode, props.contextOnly ]);
+
+    if (props.contextOnly) {
+        return (
+            <NativeThemeContext.Provider value = { theme }>
+                { props.children }
+            </NativeThemeContext.Provider>
+        );
+    }
 
     return (
         <NativeThemeContext.Provider value = { theme }>

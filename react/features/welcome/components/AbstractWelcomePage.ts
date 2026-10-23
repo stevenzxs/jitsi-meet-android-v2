@@ -61,7 +61,6 @@ export interface IProps extends WithTranslation {
 interface IState {
     _fieldFocused?: boolean;
     animateTimeoutId?: number;
-    createDialogVisible?: boolean;
     generateRoomNames?: string;
     generatedRoomName: string;
     hintBoxAnimation?: any;

@@ -167,7 +167,7 @@ export default {
     },
 
     roomNameView: {
-        backgroundColor: 'rgba(0,0,0,0.6)',
+        backgroundColor: BaseTheme.palette.ui02,
         borderBottomLeftRadius: 3,
         borderTopLeftRadius: 3,
         flexShrink: 1,

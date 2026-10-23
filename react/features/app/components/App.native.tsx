@@ -286,8 +286,10 @@ export class App extends AbstractApp<IProps> {
             <DialogContainerWrapper
                 pointerEvents = 'box-none'
                 style = { StyleSheet.absoluteFill }>
-                <BottomSheetContainer />
-                <DialogContainer />
+                <JitsiThemePaperProvider contextOnly = { true }>
+                    <BottomSheetContainer />
+                    <DialogContainer />
+                </JitsiThemePaperProvider>
             </DialogContainerWrapper>
         );
     }

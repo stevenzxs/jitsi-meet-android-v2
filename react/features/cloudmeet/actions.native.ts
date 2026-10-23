@@ -12,6 +12,7 @@ import { updateSettings } from '../base/settings/actions';
 export function enterCreatedMeeting(url: string, displayName: string) {
     return async (dispatch: IStore['dispatch']) => {
         dispatch(updateSettings({ displayName }));
-        await dispatch(appNavigate(url));
+        // This per-navigation override must not disable prejoin for ordinary joins.
+        await dispatch(appNavigate(`${url}#config.prejoinConfig.enabled=false`));
     };
 }

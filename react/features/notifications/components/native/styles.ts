@@ -7,7 +7,7 @@ const contentColumn = {
 };
 
 const notification = {
-    backgroundColor: BaseTheme.palette.ui10,
+    backgroundColor: BaseTheme.palette.ui01,
     borderRadius: BaseTheme.shape.borderRadius,
     borderLeftColor: BaseTheme.palette.link01Active,
     borderLeftWidth: BaseTheme.spacing[1],
@@ -44,26 +44,26 @@ export default {
     },
 
     contentText: {
-        color: BaseTheme.palette.text04,
+        color: BaseTheme.palette.text01,
         paddingLeft: BaseTheme.spacing[4],
         paddingTop: BaseTheme.spacing[1]
     },
 
     contentTextDescription: {
-        color: BaseTheme.palette.text04,
+        color: BaseTheme.palette.text01,
         paddingLeft: BaseTheme.spacing[4],
         paddingTop: BaseTheme.spacing[2]
     },
 
     contentTextTitleDescription: {
-        color: BaseTheme.palette.text04,
+        color: BaseTheme.palette.text01,
         fontWeight: 'bold',
         paddingLeft: BaseTheme.spacing[4],
         paddingTop: BaseTheme.spacing[2]
     },
 
     contentTextTitle: {
-        color: BaseTheme.palette.text04,
+        color: BaseTheme.palette.text01,
         fontWeight: 'bold',
         paddingLeft: BaseTheme.spacing[4],
         paddingTop: BaseTheme.spacing[3]
@@ -95,7 +95,7 @@ export default {
     },
 
     participantName: {
-        color: BaseTheme.palette.text04,
+        color: BaseTheme.palette.text01,
         overflow: 'hidden'
     },
 

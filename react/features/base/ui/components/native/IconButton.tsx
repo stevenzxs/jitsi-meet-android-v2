@@ -25,7 +25,7 @@ const IconButton: React.FC<IIconButtonProps> = ({
     type
 }: IIconButtonProps) => {
     const theme = useNativeTheme();
-    const { PRIMARY, SECONDARY, TERTIARY } = BUTTON_TYPES;
+    const { DESTRUCTIVE, PRIMARY, SECONDARY, TERTIARY } = BUTTON_TYPES;
 
     let color;
     let underlayColor;
@@ -35,6 +35,10 @@ const IconButton: React.FC<IIconButtonProps> = ({
         color = '#FFFFFF';
         iconButtonContainerStyles = styles.iconButtonContainerPrimary;
         underlayColor = theme.palette.action01;
+    } else if (type === DESTRUCTIVE) {
+        color = '#FFFFFF';
+        iconButtonContainerStyles = [ styles.iconButtonContainerPrimary, { backgroundColor: theme.palette.actionDanger } ];
+        underlayColor = theme.palette.actionDanger;
     } else if (type === SECONDARY) {
         color = BaseTheme.palette.icon04;
         iconButtonContainerStyles = styles.iconButtonContainerSecondary;

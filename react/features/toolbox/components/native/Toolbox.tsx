@@ -1,12 +1,12 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import { Edge, SafeAreaView } from 'react-native-safe-area-context';
+import { Edge } from 'react-native-safe-area-context';
 import { connect, useSelector } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import ColorSchemeRegistry from '../../../base/color-scheme/ColorSchemeRegistry';
 import Platform from '../../../base/react/Platform.native';
-import { View } from '../../../base/ui/components/native/ThemedPrimitives';
+import { SafeAreaView, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { iAmVisitor } from '../../../visitors/functions';
 import { customButtonPressed } from '../../actions.native';
 import { getVisibleNativeButtons, isToolboxVisible } from '../../functions.native';

@@ -1,11 +1,10 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { ViewStyle } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { IStore } from '../../../../app/types';
 import SlidingView from '../../../react/components/native/SlidingView';
-import { ScrollView, View } from '../../../ui/components/native/ThemedPrimitives';
+import { SafeAreaView, ScrollView, View } from '../../../ui/components/native/ThemedPrimitives';
 import { hideSheet } from '../../actions';
 
 import { bottomSheetStyles as styles } from './styles';

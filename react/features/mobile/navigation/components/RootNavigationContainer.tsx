@@ -1,11 +1,13 @@
 import { NavigationIndependentTree } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
+import { Animated } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { getConferenceState } from '../../../base/conference/functions';
 import { NavigationContainer, useNativeScreenOptions } from '../../../base/ui/components/native/ThemedNavigation';
+import QuickMeetingPage from '../../../cloudmeet/QuickMeetingPage.native';
 import DialInSummary from '../../../invite/components/dial-in-summary/native/DialInSummary';
 import Prejoin from '../../../prejoin/components/native/Prejoin';
 import UnsafeRoomWarning from '../../../prejoin/components/native/UnsafeRoomWarning';
@@ -17,7 +19,7 @@ import { isWelcomePageEnabled } from '../../../welcome/functions';
 import { _ROOT_NAVIGATION_READY } from '../actionTypes';
 import { rootNavigationRef } from '../rootNavigationContainerRef';
 import { screen } from '../routes';
-import { conferenceNavigationContainerScreenOptions as static_conferenceNavigationContainerScreenOptions, connectingScreenOptions as static_connectingScreenOptions, dialInSummaryScreenOptions as static_dialInSummaryScreenOptions, navigationContainerTheme as static_navigationContainerTheme, preJoinScreenOptions as static_preJoinScreenOptions, unsafeMeetingScreenOptions as static_unsafeMeetingScreenOptions, visitorsScreenOptions as static_visitorsScreenOptions, welcomeScreenOptions as static_welcomeScreenOptions } from '../screenOptions';
+import { settingsScreenOptions, conferenceNavigationContainerScreenOptions as static_conferenceNavigationContainerScreenOptions, connectingScreenOptions as static_connectingScreenOptions, dialInSummaryScreenOptions as static_dialInSummaryScreenOptions, navigationContainerTheme as static_navigationContainerTheme, preJoinScreenOptions as static_preJoinScreenOptions, unsafeMeetingScreenOptions as static_unsafeMeetingScreenOptions, visitorsScreenOptions as static_visitorsScreenOptions, welcomeScreenOptions as static_welcomeScreenOptions } from '../screenOptions';
 
 import ConnectingPage from './ConnectingPage';
 import ConferenceNavigationContainer
@@ -54,6 +56,23 @@ const RootNavigationContainer = ({ dispatch, hasRoomOnLaunch, isWelcomePageAvail
     const unsafeMeetingScreenOptions = useNativeScreenOptions(static_unsafeMeetingScreenOptions);
     const visitorsScreenOptions = useNativeScreenOptions(static_visitorsScreenOptions);
     const welcomeScreenOptions = useNativeScreenOptions(static_welcomeScreenOptions);
+    const quickMeetingScreenOptions = useNativeScreenOptions({
+        ...settingsScreenOptions,
+        gestureEnabled: false,
+        transitionSpec: {
+            open: { animation: 'timing' as const, config: { duration: 200 } },
+            close: { animation: 'timing' as const, config: { duration: 200 } }
+        },
+        cardStyleInterpolator: ({ current }: { current: { progress: Animated.AnimatedInterpolation<number>; }; }) => ({
+            cardStyle: { opacity: current.progress }
+        }),
+        headerStyleInterpolator: ({ current }: { current: { progress: Animated.AnimatedInterpolation<number>; }; }) => ({
+            leftButtonStyle: { opacity: current.progress },
+            rightButtonStyle: { opacity: current.progress },
+            titleStyle: { opacity: current.progress },
+            backgroundStyle: { opacity: current.progress }
+        })
+    });
     // Background SDK launch goes straight to conference; normal launch shows the connecting spinner.
     const initialRouteName = isWelcomePageAvailable
         ? screen.welcome.main
@@ -87,6 +106,10 @@ const RootNavigationContainer = ({ dispatch, hasRoomOnLaunch, isWelcomePageAvail
                         component = { ConnectingPage }
                         name = { screen.connecting }
                         options = { connectingScreenOptions } />
+                    <RootStack.Screen
+                        component = { QuickMeetingPage }
+                        name = { screen.quickMeeting }
+                        options = { quickMeetingScreenOptions } />
                     <RootStack.Screen
                         component = { Prejoin }
                         name = { screen.preJoin }

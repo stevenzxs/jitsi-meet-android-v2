@@ -1,4 +1,5 @@
 export const screen = {
+    quickMeeting: 'Quick Meeting',
     conference: {
         audioTranslation: 'Audio Translation',
         breakoutRooms: 'Breakout Rooms',

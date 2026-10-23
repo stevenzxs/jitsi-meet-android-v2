@@ -1,5 +1,6 @@
 import React, { createContext, forwardRef, useContext } from 'react';
 import * as Native from 'react-native';
+import { SafeAreaView as NativeSafeAreaView } from 'react-native-safe-area-context';
 
 import { useNativeTheme } from '../../NativeThemeContext';
 import { getNativeForeground, resolveNativeColor, resolveNativeStyles } from '../../nativeTheme';
@@ -14,7 +15,7 @@ export const NativeForegroundContext = createContext<string | undefined>(undefin
  * @returns {Object} Ref-forwarding component.
  */
 function themedPrimitive(name: string) {
-    const Component = (Native as any)[name];
+    const Component = name === 'SafeAreaView' ? NativeSafeAreaView : (Native as any)[name];
     const Themed = forwardRef<any, any>((props, ref) => {
         const theme = useNativeTheme();
         const inheritedForeground = useContext(NativeForegroundContext);
@@ -62,6 +63,7 @@ function themedPrimitive(name: string) {
 }
 
 export const View = themedPrimitive('View');
+export const SafeAreaView = themedPrimitive('SafeAreaView');
 export const Text = themedPrimitive('Text');
 export const TextInput = themedPrimitive('TextInput');
 export const ScrollView = themedPrimitive('ScrollView');
