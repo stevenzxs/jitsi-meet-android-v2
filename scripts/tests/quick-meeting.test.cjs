@@ -1,6 +1,18 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const test = require('node:test');
+test('quick meeting entry hides on settings and returns on meeting tabs', () => {
+    const source = fs.readFileSync('react/features/welcome/components/WelcomePage.native.tsx', 'utf8');
+    const match = source.match(/\{ ([^\n]+) && <MeetingShortcuts/);
+    assert.ok(match, 'quick meeting entry must have a visibility condition');
+    const visible = new Function(`return Boolean(${match[1]});`);
+    for (const enabled of [ true, false ]) {
+        for (const focused of [ true, false ]) {
+            assert.equal(visible.call({ props: { cloudMeetEnabled: enabled }, state: { isSettingsScreenFocused: focused } }),
+                enabled && !focused, `enabled=${enabled}, settings focused=${focused}`);
+        }
+    }
+});
 test('only created meeting navigation skips prejoin and splash uses launcher icon', () => {
     const actions = fs.readFileSync('react/features/cloudmeet/actions.native.ts', 'utf8');
     assert.match(actions, /config\.prejoinConfig\.enabled=false/);

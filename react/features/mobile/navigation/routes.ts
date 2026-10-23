@@ -1,5 +1,7 @@
 export const screen = {
     quickMeeting: 'Quick Meeting',
+    joinMeeting: 'Join Meeting',
+    scheduleMeeting: 'Schedule Meeting',
     conference: {
         audioTranslation: 'Audio Translation',
         breakoutRooms: 'Breakout Rooms',

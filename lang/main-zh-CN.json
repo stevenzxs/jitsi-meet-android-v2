@@ -3,6 +3,13 @@
         "joinHint": "输入九位会议号加入已有会议；新会议请使用上方“快速会议”。",
         "create": "快速会议",
         "creating": "正在创建…",
+        "joining": "正在加入…",
+        "schedule": "预定会议",
+        "scheduleAndJoin": "预定并加入",
+        "saving": "正在保存…",
+        "backToList": "返回列表",
+        "joinAsHost": "以主持人身份加入",
+        "retrySchedule": "核对预定并加入",
         "join": "加入会议"
     },
     "addPeople": {

@@ -18,6 +18,7 @@ import Input from '../../base/ui/components/native/Input';
 import { TouchableHighlight, View } from '../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../base/ui/constants.native';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.native';
+import MeetingShortcuts from '../../cloudmeet/MeetingShortcuts.native';
 import { CLOUDMEET_ORIGIN, joinMeeting } from '../../cloudmeet/meetingService';
 import WelcomePageTabs
     from '../../mobile/navigation/components/welcome/components/WelcomePageTabs';
@@ -83,6 +84,20 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
      * @returns {void}
      */
     _onOpenCreate = () => this.props.navigation.navigate(screen.quickMeeting);
+
+    /**
+     * Open the existing meeting form.
+     *
+     * @returns {void}
+     */
+    _onOpenJoin = () => this.props.navigation.navigate(screen.joinMeeting);
+
+    /**
+     * Open the schedule form.
+     *
+     * @returns {void}
+     */
+    _onOpenSchedule = () => this.props.navigation.navigate(screen.scheduleMeeting);
 
     /**
      * Set the business meeting password.
@@ -419,13 +434,11 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
     _renderFullUI() {
         return (
             <>
-                { this.props.cloudMeetEnabled && <View style = { styles.createMeetingContainer }>
-                    <Button
-                        labelKey = 'cloudmeet.create'
-                        onClick = { this._onOpenCreate }
-                        type = { BUTTON_TYPES.PRIMARY } />
-                </View> }
-                { this._renderRoomNameInput() }
+                { this.props.cloudMeetEnabled && !this.state.isSettingsScreenFocused && <MeetingShortcuts
+                    onCreate = { this._onOpenCreate }
+                    onJoin = { this._onOpenJoin }
+                    onSchedule = { this._onOpenSchedule } /> }
+                { !this.props.cloudMeetEnabled && this._renderRoomNameInput() }
                 <View style = { styles.welcomePage as ViewStyle }>
                     <WelcomePageTabs
                         disabled = { Boolean(this.state._fieldFocused) } // @ts-ignore

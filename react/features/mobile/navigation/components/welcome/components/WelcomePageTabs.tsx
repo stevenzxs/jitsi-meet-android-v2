@@ -4,9 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { GestureResponderEvent } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { IReduxState } from '../../../../../app/types';
+import { getServerURL } from '../../../../../base/settings/functions.native';
 import { useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import CalendarList from '../../../../../calendar-sync/components/CalendarList.native';
 import { isCalendarEnabled } from '../../../../../calendar-sync/functions.native';
+import ScheduledMeetings from '../../../../../cloudmeet/ScheduledMeetings.native';
+import { CLOUDMEET_ORIGIN } from '../../../../../cloudmeet/meetingService';
 import RecentList from '../../../../../recent-list/components/RecentList.native';
 import { calendarListTabBarOptions as static_calendarListTabBarOptions, recentListTabBarOptions as static_recentListTabBarOptions, settingsTabBarOptions as static_settingsTabBarOptions, tabBarOptions as static_tabBarOptions } from '../../../../../welcome/constants';
 import { screen } from '../../../routes';
@@ -51,12 +55,13 @@ const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocus
         ), []);
 
     const calendarEnabled = useSelector(isCalendarEnabled);
+    const cloudMeetEnabled = useSelector((state: IReduxState) => getServerURL(state).replace(/\/$/, '') === CLOUDMEET_ORIGIN);
 
     const CalendarListScreen = useCallback(() =>
         (
-            <CalendarList
+            cloudMeetEnabled ? <ScheduledMeetings /> : <CalendarList
                 disabled = { disabled } />
-        ), []);
+        ), [ cloudMeetEnabled, disabled ]);
 
     const SettingsScreen = useCallback(() =>
         (
@@ -85,7 +90,7 @@ const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocus
                 { RecentListScreen }
             </WelcomePage.Screen>
             {
-                calendarEnabled
+                (calendarEnabled || cloudMeetEnabled)
             && <WelcomePage.Screen
                 listeners = {{
                     tabPress: () => {

@@ -7,7 +7,9 @@ import { connect } from 'react-redux';
 import { IReduxState, IStore } from '../../../app/types';
 import { getConferenceState } from '../../../base/conference/functions';
 import { NavigationContainer, useNativeScreenOptions } from '../../../base/ui/components/native/ThemedNavigation';
+import JoinMeetingPage from '../../../cloudmeet/JoinMeetingPage.native';
 import QuickMeetingPage from '../../../cloudmeet/QuickMeetingPage.native';
+import ScheduleMeetingPage from '../../../cloudmeet/ScheduleMeetingPage.native';
 import DialInSummary from '../../../invite/components/dial-in-summary/native/DialInSummary';
 import Prejoin from '../../../prejoin/components/native/Prejoin';
 import UnsafeRoomWarning from '../../../prejoin/components/native/UnsafeRoomWarning';
@@ -109,6 +111,14 @@ const RootNavigationContainer = ({ dispatch, hasRoomOnLaunch, isWelcomePageAvail
                     <RootStack.Screen
                         component = { QuickMeetingPage }
                         name = { screen.quickMeeting }
+                        options = { quickMeetingScreenOptions } />
+                    <RootStack.Screen
+                        component = { JoinMeetingPage }
+                        name = { screen.joinMeeting }
+                        options = { quickMeetingScreenOptions } />
+                    <RootStack.Screen
+                        component = { ScheduleMeetingPage }
+                        name = { screen.scheduleMeeting }
                         options = { quickMeetingScreenOptions } />
                     <RootStack.Screen
                         component = { Prejoin }

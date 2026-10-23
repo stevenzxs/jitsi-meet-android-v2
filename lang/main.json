@@ -3,6 +3,13 @@
         "joinHint": "Enter a nine-digit meeting ID to join, or use Quick meeting above.",
         "create": "Quick meeting",
         "creating": "Creating…",
+        "joining": "Joining…",
+        "schedule": "Schedule Meeting",
+        "scheduleAndJoin": "Schedule and Join",
+        "saving": "Saving…",
+        "backToList": "Back to List",
+        "joinAsHost": "Join as Host",
+        "retrySchedule": "Verify Schedule and Join",
         "join": "Join meeting"
     },
     "addPeople": {
