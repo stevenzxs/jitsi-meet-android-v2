@@ -28,3 +28,25 @@ test('selected theme uses a blue icon, never a selected blue background', () => 
     assert.ok(option.includes('backgroundColor: theme.palette.ui02'));
     assert.ok(!option.includes('backgroundColor: selected'));
 });
+
+test('tertiary buttons use themed labels and preserve disabled styling', () => {
+    const source = fs.readFileSync('react/features/base/ui/components/native/Button.tsx', 'utf8');
+    const branch = source.slice(source.indexOf('if (type === TERTIARY)'));
+    assert.ok(branch.includes('? themedStyles.buttonLabelTertiaryDisabled'));
+    assert.ok(branch.includes(': themedStyles.buttonLabelTertiary'));
+    assert.ok(!branch.includes('= styles.buttonLabelTertiary'));
+});
+
+test('settings no longer renders help terms or privacy section', () => {
+    const source = fs.readFileSync('react/features/settings/components/native/SettingsView.tsx', 'utf8');
+    assert.ok(!source.includes('LinksSection'));
+});
+
+test('software information shows app 1.0.0 without SDK or build number', () => {
+    const source = fs.readFileSync('react/features/settings/components/native/AdvancedSection.tsx', 'utf8');
+    const zh = JSON.parse(fs.readFileSync('lang/main-zh-CN.json', 'utf8'));
+    assert.equal(zh.settingsView.buildInfoSection, '软件信息');
+    assert.ok(source.includes('1.0.0'));
+    assert.ok(!source.includes('settingsView.sdkVersion'));
+    assert.ok(!source.includes('AppInfo.buildNumber'));
+});

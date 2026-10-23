@@ -71,10 +71,9 @@ const Button: React.FC<IProps> = ({
     }
 
     if (type === TERTIARY) {
-        if (disabled) {
-            buttonLabelStyles = styles.buttonLabelTertiaryDisabled;
-        }
-        buttonLabelStyles = styles.buttonLabelTertiary;
+        buttonLabelStyles = disabled
+            ? themedStyles.buttonLabelTertiaryDisabled
+            : themedStyles.buttonLabelTertiary;
 
         return (
             <TouchableHighlight

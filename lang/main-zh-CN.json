@@ -1222,7 +1222,7 @@
         "alertTitle": "警告",
         "alertURLText": "输入的服务器地址无效",
         "apply": "应用",
-        "buildInfoSection": "构建信息",
+        "buildInfoSection": "软件信息",
         "conferenceSection": "会议设置",
         "disableCallIntegration": "禁用系统通话集成",
         "disableCrashReporting": "关闭崩溃报告",

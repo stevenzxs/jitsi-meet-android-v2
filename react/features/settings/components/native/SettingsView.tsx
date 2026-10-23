@@ -19,7 +19,6 @@ import { shouldShowModeratorSettings } from '../../functions.native';
 import AdvancedSection from './AdvancedSection';
 import ConferenceSection from './ConferenceSection';
 import GeneralSection from './GeneralSection';
-import LinksSection from './LinksSection';
 import ModeratorSection from './ModeratorSection';
 import NotificationsSection from './NotificationsSection';
 import { AVATAR_SIZE } from './constants';
@@ -93,8 +92,6 @@ const SettingsView = ({ isInWelcomePage }: IProps) => {
                     </> }
                 <Divider style = { styles.fieldSeparator as ViewStyle } />
                 <AdvancedSection />
-                <Divider style = { styles.fieldSeparator as ViewStyle } />
-                <LinksSection />
             </ScrollView>
         </JitsiScreen>
     );

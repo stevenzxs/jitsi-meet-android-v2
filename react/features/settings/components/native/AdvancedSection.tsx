@@ -98,13 +98,7 @@ const AdvancedSection = () => {
                 <FormRow
                     label = 'settingsView.version'>
                     <Text style = { styles.text }>
-                        {`${AppInfo.version} build ${AppInfo.buildNumber}`}
-                    </Text>
-                </FormRow>
-                <FormRow
-                    label = 'settingsView.sdkVersion'>
-                    <Text style = { styles.text }>
-                        {AppInfo.sdkVersion}
+                        { '1.0.0' }
                     </Text>
                 </FormRow>
             </FormSection>
