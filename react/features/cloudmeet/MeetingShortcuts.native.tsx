@@ -7,14 +7,14 @@ import BaseTheme from '../base/ui/components/BaseTheme.native';
 import { Text, TouchableOpacity, View } from '../base/ui/components/native/ThemedPrimitives';
 
 const styles = StyleSheet.create({
-    row: { flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 16, paddingVertical: 24, gap: 16 },
-    shortcut: { alignItems: 'center', padding: 8, gap: 12, flexShrink: 1 },
-    icon: { width: 72, height: 72, borderRadius: 20, backgroundColor: BaseTheme.palette.action01, alignItems: 'center', justifyContent: 'center' },
-    label: { color: BaseTheme.palette.text01, fontSize: 16, fontWeight: '600', textAlign: 'center' }
+    row: { flexDirection: 'row', justifyContent: 'flex-start', paddingHorizontal: 16, paddingVertical: 16, gap: 16 },
+    shortcut: { alignItems: 'center', padding: 8, gap: 8, flexShrink: 1, minWidth: 48, minHeight: 48 },
+    icon: { width: 60, height: 60, borderRadius: 16, backgroundColor: BaseTheme.palette.action01, alignItems: 'center', justifyContent: 'center' },
+    label: { ...BaseTheme.typography.bodyShortRegular, color: BaseTheme.palette.text01, fontWeight: '500', textAlign: 'center' }
 });
 
 /**
- * Desktop-inspired meeting launchers, with theme-aware labels and fixed white glyphs.
+ * Compact meeting launchers, with theme-aware labels and consistent white outline glyphs.
  *
  * @param {Object} props - Existing navigation callbacks.
  * @returns {ReactElement} Three shortcuts in one left-aligned row.
@@ -27,8 +27,8 @@ export default function MeetingShortcuts({ onCreate, onJoin, onSchedule }: {
     const { t } = useTranslation();
     const shortcuts = [
         { label: 'cloudmeet.create', onPress: onCreate, path: 'M13.3 2 5 13h6.2L9.9 22 19 10.2h-6.4z' },
-        { label: 'cloudmeet.join', onPress: onJoin, path: 'M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z' },
-        { label: 'cloudmeet.schedule', onPress: onSchedule, path: 'M7 2h2v3h6V2h2v3h3v17H4V5h3V2zm-1 8v10h12V10H6zm2 2h3v3H8v-3z' }
+        { label: 'cloudmeet.join', onPress: onJoin, path: 'M12 5v14M5 12h14' },
+        { label: 'cloudmeet.schedule', onPress: onSchedule, path: 'M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1ZM8 13h2M14 13h2M8 17h2' }
     ];
 
     return (
@@ -42,12 +42,16 @@ export default function MeetingShortcuts({ onCreate, onJoin, onSchedule }: {
                     style = { styles.shortcut }>
                     <View style = { styles.icon }>
                         <Svg
-                            height = { 38 }
+                            height = { 30 }
                             viewBox = '0 0 24 24'
-                            width = { 38 }>
+                            width = { 30 }>
                             <Path
                                 d = { path }
-                                fill = '#FFFFFF' />
+                                fill = 'none'
+                                stroke = '#FFFFFF'
+                                strokeLinecap = 'round'
+                                strokeLinejoin = 'round'
+                                strokeWidth = { 2 } />
                         </Svg>
                     </View>
                     <Text style = { styles.label }>{ t(label) }</Text>

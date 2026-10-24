@@ -25,6 +25,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
+import android.widget.RemoteViews;
 
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
@@ -79,8 +81,11 @@ class OngoingNotification {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ONGOING_CONFERENCE_CHANNEL_ID);
 
         if (startingTime == 0) {
-            startingTime = System.currentTimeMillis();
+            startingTime = SystemClock.elapsedRealtime();
         }
+
+        RemoteViews content = new RemoteViews(context.getPackageName(), R.layout.ongoing_meeting_notification);
+        content.setChronometer(R.id.meeting_duration, startingTime, context.getString(R.string.ongoing_notification_duration), true);
 
         builder
             .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -89,8 +94,11 @@ class OngoingNotification {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
-            .setWhen(startingTime)
-            .setUsesChronometer(true)
+            .setShowWhen(false)
+            .setUsesChronometer(false)
+            .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+            .setCustomContentView(content)
+            .setCustomBigContentView(content)
             .setAutoCancel(false)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)

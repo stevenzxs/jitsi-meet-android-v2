@@ -46,6 +46,16 @@ test('participant names use theme-aware text rather than unadapted Paper text', 
     assert.ok(!/import \{ Text \} from 'react-native-paper'/.test(source));
     assert.match(source, /import \{ Text, TouchableOpacity, View \}.*ThemedPrimitives/);
 });
+test('participants more menu uses theme-aware text for legacy white labels', () => {
+    const source = fs.readFileSync('react/features/participants-pane/components/native/ContextMenuMore.tsx', 'utf8');
+    const imports = ts.createSourceFile('ContextMenuMore.tsx', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+        .statements.filter(ts.isImportDeclaration);
+    const textImport = imports.find(statement => statement.importClause?.namedBindings
+        && ts.isNamedImports(statement.importClause.namedBindings)
+        && statement.importClause.namedBindings.elements.some(element => element.name.text === 'Text'));
+    assert.ok(textImport, 'Menu text must have an explicit component import');
+    assert.equal(textImport.moduleSpecifier.text, '../../../base/ui/components/native/ThemedPrimitives');
+});
 test('Android ongoing meeting notification includes Chinese title and actions', () => {
     const path = 'android/sdk/src/main/res/values-zh/strings.xml';
     assert.ok(fs.existsSync(path), 'Chinese native notification resources must exist');
