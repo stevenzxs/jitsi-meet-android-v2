@@ -208,6 +208,7 @@ class ParticipantView extends Component<IProps> {
 
                 { renderVideo
                     && <VideoTrack
+                        objectFit = { this.props.zoomEnabled ? 'contain' : undefined }
                         onPress = { onPress }
                         videoTrack = { videoTrack }
                         waitForVideoStarted = { false }

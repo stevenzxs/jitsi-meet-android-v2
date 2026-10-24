@@ -148,6 +148,11 @@ interface IProps {
     stream?: any;
 
     /**
+     * Used on native only.
+     */
+    objectFit?: 'contain' | 'cover';
+
+    /**
      * A styles that will be applied on the video element.
      */
     style?: Object;

@@ -17,6 +17,11 @@ export interface IProps {
     dispatch: IStore['dispatch'];
 
     /**
+     * Native video fitting preference, independent of gesture support.
+     */
+    objectFit?: 'contain' | 'cover';
+
+    /**
      * Callback to invoke when the {@link Video} of {@code AbstractVideoTrack}
      * is clicked/pressed.
      */
@@ -112,6 +117,7 @@ export default class AbstractVideoTrack<P extends IProps> extends Component<P> {
         return (
             <Video
                 mirror = { videoTrack?.mirror }
+                objectFit = { this.props.objectFit }
                 onPlaying = { this._onVideoPlaying }
 
                 // @ts-ignore

@@ -14,6 +14,11 @@ import styles from './styles';
 interface IProps {
     mirror: boolean;
 
+    /**
+     * Override fitting without enabling pinch-to-zoom for camera streams.
+     */
+    objectFit?: 'contain' | 'cover';
+
     onPlaying: Function;
 
     /**
@@ -88,10 +93,9 @@ export default class Video extends Component<IProps> {
             const style = [ styles.video, {
                 backgroundColor: (this.context as React.ContextType<typeof NativeThemeContext>).palette.largeVideoBackground
             } ];
-            const objectFit
-                = zoomEnabled
-                    ? 'contain'
-                    : 'cover';
+            const objectFit = this.props.objectFit ?? (zoomEnabled
+                ? 'contain'
+                : 'cover');
             const rtcView
                 = (
                     <RTCView
