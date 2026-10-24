@@ -2,7 +2,7 @@ import React from 'react';
 
 import Icon from '../../base/icons/components/Icon';
 import { StyleType } from '../../base/styles/functions.any';
-import BaseTheme from '../../base/ui/components/BaseTheme';
+import { useNativeTheme } from '../../base/ui/NativeThemeContext';
 import { INACTIVE_TAB_COLOR } from '../constants';
 
 interface IProps {
@@ -23,13 +23,17 @@ interface IProps {
     style?: StyleType;
 }
 
-const TabIcon = ({ focused, src, style }: IProps) => (
-    <Icon
-        color = { focused ? BaseTheme.palette.icon01 : INACTIVE_TAB_COLOR }
-        size = { 24 }
-        src = { src }
-        style = { style } />
-);
+const TabIcon = ({ focused, src, style }: IProps) => {
+    const theme = useNativeTheme();
+
+    return (
+        <Icon
+            color = { focused ? theme.palette.action01 : INACTIVE_TAB_COLOR }
+            size = { 24 }
+            src = { src }
+            style = { style } />
+    );
+};
 
 
 export default TabIcon;

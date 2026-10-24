@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { IReduxState } from '../../../../../app/types';
 import { getServerURL } from '../../../../../base/settings/functions.native';
+import { useNativeTheme } from '../../../../../base/ui/NativeThemeContext';
 import { useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import CalendarList from '../../../../../calendar-sync/components/CalendarList.native';
 import { isCalendarEnabled } from '../../../../../calendar-sync/functions.native';
@@ -43,6 +44,7 @@ interface IProps {
 
 
 const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocused }: IProps) => {
+    const theme = useNativeTheme();
     const calendarListTabBarOptions = useNativeScreenOptions(static_calendarListTabBarOptions);
     const recentListTabBarOptions = useNativeScreenOptions(static_recentListTabBarOptions);
     const settingsTabBarOptions = useNativeScreenOptions(static_settingsTabBarOptions);
@@ -77,6 +79,7 @@ const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocus
             initialRouteName = { cloudMeetEnabled ? screen.welcome.tabs.calendar : screen.welcome.tabs.recent }
             screenOptions = {{
                 ...tabBarOptions,
+                tabBarActiveTintColor: theme.palette.action01,
                 headerShown: false
             }}>
             {

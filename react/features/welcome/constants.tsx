@@ -1,3 +1,5 @@
+import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+import { PlatformPressable } from '@react-navigation/elements';
 import React from 'react';
 
 import { IconCalendar, IconGear, IconRestore } from '../base/icons/svg';
@@ -9,6 +11,14 @@ export const ACTIVE_TAB_COLOR = BaseTheme.palette.welcomeTabActive;
 export const INACTIVE_TAB_COLOR = BaseTheme.palette.welcomeTabInactive;
 
 export const tabBarOptions = {
+    tabBarButton: (props: BottomTabBarButtonProps) => (
+        <PlatformPressable
+            { ...props }
+            pressColor = 'transparent'
+            pressOpacity = { 1 } />
+    ),
+    tabBarActiveBackgroundColor: 'transparent',
+    tabBarInactiveBackgroundColor: 'transparent',
     tabBarActiveTintColor: ACTIVE_TAB_COLOR,
     tabBarInactiveTintColor: INACTIVE_TAB_COLOR,
     tabBarLabelStyle: {
