@@ -2,6 +2,16 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const test = require('node:test');
 
+test('native conference settings hide the server address without rewriting connection settings', () => {
+    const source = fs.readFileSync('react/features/settings/components/native/ConferenceSection.tsx', 'utf8');
+
+    assert.doesNotMatch(source, /serverURL|ServerURL|<Input\b|useEffect/);
+    for (const name of [ 'startCarMode', 'startWithAudioMuted', 'startWithVideoMuted' ]) {
+        assert.match(source, new RegExp(`name: '${name}'`));
+    }
+    assert.match(source, /dispatch\(updateSettings\(\{ \[name\]: enabled \}\)\)/);
+});
+
 test('profile card clips its themed press feedback to rounded corners', () => {
     const source = fs.readFileSync('react/features/settings/components/native/SettingsView.tsx', 'utf8');
     const styles = fs.readFileSync('react/features/settings/components/native/styles.ts', 'utf8');
