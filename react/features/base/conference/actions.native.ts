@@ -1,12 +1,32 @@
 import { IStore } from '../../app/types';
 import { endManagedMeeting } from '../../cloudmeet/endMeetingService';
+import { consumeJoinPassword } from '../../cloudmeet/joinPassword.native';
 import { postMeetingApi } from '../../cloudmeet/meetingService';
 import { readMeetingHostKey } from '../../cloudmeet/scheduleStorage.native';
 import { getCurrentConferenceUrl } from '../connection/functions';
 import { setAudioMuted, setVideoMuted } from '../media/actions';
 import { MEDIA_TYPE, MediaType, VIDEO_MUTISM_AUTHORITY } from '../media/constants';
 
+import { createConference as createConferenceInternal } from './actions.any';
+
 export * from './actions.any';
+
+/**
+ * Supply the validated form password only to its matching native conference.
+ *
+ * @param {string} overrideRoom - Optional room override.
+ * @returns {Function} Conference creation action.
+ */
+export function createConference(overrideRoom?: string | String) {
+    return (dispatch: IStore['dispatch'], getState: IStore['getState']) => {
+        const { locationURL } = getState()['features/base/connection'];
+        const url = locationURL?.toString();
+        const matchesRoom = !overrideRoom || (url && new URL(url).pathname.slice(1) === String(overrideRoom));
+        const password = consumeJoinPassword(matchesRoom ? url : undefined);
+
+        return dispatch(createConferenceInternal(overrideRoom, password));
+    };
+}
 
 /**
  * Explicit native end synchronizes the official business record before media.

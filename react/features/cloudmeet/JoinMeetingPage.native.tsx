@@ -14,6 +14,7 @@ import { useNativeScreenOptions } from '../base/ui/components/native/ThemedNavig
 import { Text, TouchableOpacity, View } from '../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../base/ui/constants.native';
 
+import { stageJoinPassword } from './joinPassword.native';
 import { joinMeeting } from './meetingService';
 
 /* eslint-disable react-native/no-unused-styles */
@@ -79,12 +80,16 @@ export default function JoinMeetingPage({ navigation }: { navigation: StackNavig
         submitting.current = true;
         setBusy(true);
         Keyboard.dismiss();
+        let clearJoinPassword: (() => void) | undefined;
+
         try {
             const url = await joinMeeting(room, password);
 
+            clearJoinPassword = stageJoinPassword(url, password);
             submitting.current = false;
             await dispatch(appNavigate(`${url}#config.prejoinConfig.enabled=false`));
         } catch (error) {
+            clearJoinPassword?.();
             Alert.alert('加入会议失败', error instanceof Error ? error.message : '请检查网络后重试');
         } finally {
             submitting.current = false;
