@@ -1,17 +1,20 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
-import { GestureResponderEvent } from 'react-native';
+import { GestureResponderEvent, RefreshControl } from 'react-native';
 
+import { useNativeTheme } from '../base/ui/NativeThemeContext';
 import { useNativeScreenOptions } from '../base/ui/components/native/ThemedNavigation';
-import { Text, View } from '../base/ui/components/native/ThemedPrimitives';
-import RecentList from '../recent-list/components/RecentList.native';
+import { FlatList, Text, View } from '../base/ui/components/native/ThemedPrimitives';
 
+import HistoryMeetingCard from './HistoryMeetingCard.native';
 import { IMeetingHistory, fetchMeetingHistory } from './historyService';
-import staticStyles from './plannerStyles.native';
+import staticStyles from './historyStyles.native';
 import { getPlannerIdentity } from './scheduleStorage.native';
 
+const meetingKey = (meeting: IMeetingHistory) => meeting.roomName;
+
 /**
- * Enhance local history with installation-scoped server meeting facts.
+ * Display server history directly, independently of local attendance records.
  *
  * @param {Object} props - Existing list interaction props.
  * @returns {ReactElement} History list with silent focus sync and pull-to-refresh.
@@ -21,10 +24,16 @@ export default function HistoryMeetings(props: {
     onListContainerPress?: (e?: GestureResponderEvent) => void;
 }) {
     const styles = useNativeScreenOptions(staticStyles);
+    const theme = useNativeTheme();
     const [ meetings, setMeetings ] = useState<IMeetingHistory[]>([]);
     const [ message, setMessage ] = useState('');
     const [ refreshing, setRefreshing ] = useState(false);
     const sessionRef = useRef({ active: false, loading: false });
+    const renderMeeting = useCallback(({ item }: { item: IMeetingHistory; }) => (
+        <HistoryMeetingCard
+            disabled = { props.disabled }
+            meeting = { item } />
+    ), [ props.disabled ]);
     const refresh = useCallback(async (showIndicator = true) => {
         const session = sessionRef.current;
 
@@ -64,12 +73,27 @@ export default function HistoryMeetings(props: {
         <View style = { styles.screen }>
             { Boolean(message) && <Text
                 accessibilityRole = 'alert'
-                style = { styles.hint }>{ message }</Text> }
-            <RecentList
-                { ...props }
-                meetings = { meetings }
-                onRefresh = { refresh }
-                refreshing = { refreshing } />
+                style = { styles.message }>{ message }</Text> }
+            <FlatList
+                ListEmptyComponent = {
+                    <View style = { styles.empty }>
+                        <Text style = { styles.emptyTitle }>{ message ? '暂时无法读取历史会议' : '暂无历史会议' }</Text>
+                        <Text style = { styles.detail }>本机身份创建过的历史会议会显示在这里</Text>
+                    </View>
+                }
+                contentContainerStyle = { styles.content }
+                data = { meetings }
+                extraData = { props.disabled }
+                keyExtractor = { meetingKey }
+                refreshControl = {
+                    <RefreshControl
+                        colors = { [ theme.palette.action01 ] }
+                        onRefresh = { refresh }
+                        progressBackgroundColor = { theme.palette.ui01 }
+                        refreshing = { refreshing }
+                        tintColor = { theme.palette.action01 } />
+                }
+                renderItem = { renderMeeting } />
         </View>
     );
 }

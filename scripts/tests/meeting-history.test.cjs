@@ -13,21 +13,24 @@ function service() {
     return module.exports;
 }
 
-test('history uses actual meeting timestamps, never scheduled or personal duration', () => {
+test('history labels API scheduled timestamps and duration explicitly as planned', () => {
     const m = service();
     const record = { roomName: '123456789', subject: '周会', status: 'ENDED',
         startedAt: '2026-10-24T01:00:00Z', endedAt: '2026-10-24T01:35:00Z',
         scheduledStartTime: '2026-10-24T00:00:00Z', scheduledEndTime: '2026-10-24T03:00:00Z' };
     assert.deepEqual(m.historyLines(record).slice(0, 2), ['会议号：123456789', '会议状态：已结束']);
-    assert.equal(m.historyLines(record)[3], '会议时长：35分钟');
-    assert.equal(m.historyLines({ ...record, startedAt: null })[2], '会议时间：暂无数据');
-    assert.equal(m.historyLines({ ...record, startedAt: null })[3], '会议时长：暂无数据');
-    assert.equal(m.historyLines({ ...record, endedAt: 'invalid' })[3], '会议时长：暂无数据');
-    assert.equal(m.historyLines({ ...record, status: 'RUNNING', endedAt: null }, Date.parse(record.startedAt) + 120000)[3], '会议时长：已进行2分钟');
+    assert.equal(m.historyLines(record)[3], '计划时长：180分钟');
+    assert.equal(m.historyLines({ ...record, startedAt: null })[3], '计划时长：180分钟');
+    assert.match(m.historyLines(record)[2], /^计划时间：/);
+    assert.equal(m.historyLines({ ...record, scheduledStartTime: null })[2], '计划时间：暂无数据');
+    assert.equal(m.historyLines({ ...record, scheduledStartTime: null })[3], '计划时长：暂无数据');
+    assert.equal(m.historyLines({ ...record, scheduledEndTime: 'invalid' })[3], '计划时长：暂无数据');
+    assert.equal(m.historyLines({ ...record, scheduledEndTime: '2026-10-23T00:00:00Z' })[3], '计划时长：暂无数据');
+    assert.equal(m.historyLines({ ...record, status: 'CANCELLED' })[3], '计划时长：180分钟');
     assert.equal(m.historyLines({ roomName: record.roomName, status: 'unexpected' })[1], '会议状态：状态未知');
 });
 
-test('history requests are identity scoped and validate both visible and historical responses', async () => {
+test('history requests only the scoped history endpoint and validates responses', async () => {
     const m = service();
     await assert.rejects(m.fetchMeetingHistory('', () => assert.fail('unscoped request')));
     const urls = [];
@@ -36,20 +39,43 @@ test('history requests are identity scoped and validate both visible and histori
         return { ok: true, json: async () => ({ data: [{ roomName: '123456789', creatorId: 'android-owner' }] }) };
     });
     assert.equal(records.length, 1);
-    assert.equal(urls.length, 2);
+    assert.equal(urls.length, 1);
+    assert.match(urls[0], /meetings\/history\?/);
     assert.ok(urls.every(url => url.includes('creatorId=android-owner')));
     await assert.rejects(m.fetchMeetingHistory('owner', async () => ({ ok: true, json: async () => ({ data: {} }) })), /格式/);
     await assert.rejects(m.fetchMeetingHistory('owner', async () => ({ ok: false, json: async () => ({ message: 'offline' }) })), /offline/);
 });
 
-test('history excludes another creator and upcoming reservations', async () => {
+test('server history supplies cards directly without local recent entries or avatars', () => {
+    const source = fs.readFileSync('react/features/cloudmeet/HistoryMeetings.native.tsx', 'utf8');
+    assert.doesNotMatch(source, /import RecentList|<RecentList|<Avatar|<Icon/);
+    assert.match(source, /data = \{ meetings \}/);
+    assert.match(source, /<RefreshControl/);
+    assert.match(source, /<HistoryMeetingCard/);
+    const card = fs.readFileSync('react/features/cloudmeet/HistoryMeetingCard.native.tsx', 'utf8');
+    assert.match(card, /onLongPress/);
+    assert.match(card, /meeting.status === 'RUNNING'/);
+});
+
+test('history excludes another creator but preserves server historical records with any status', async () => {
     const m = service();
     const records = await m.fetchMeetingHistory('owner', async () => ({ ok: true, json: async () => ([
         { roomName: '123456789', creatorId: 'someone-else', status: 'ENDED' },
         { roomName: '123456788', creatorId: 'owner', status: 'SCHEDULED' },
         { roomName: '123456787', creatorId: 'owner', status: 'RUNNING' }
     ]) }));
-    assert.deepEqual(records.map(record => record.roomName), ['123456787']);
+    assert.deepEqual(records.map(record => record.roomName), ['123456788', '123456787']);
+});
+
+test('history retains API planned timestamps and sorts by planned rather than actual start', async () => {
+    const records = await service().fetchMeetingHistory('owner', async () => ({ ok: true, json: async () => ([
+        { roomName: '123456789', creatorId: 'owner', scheduledStartTime: '2026-10-24T01:00:00Z', scheduledEndTime: '2026-10-24T02:00:00Z', startedAt: '2026-10-25T01:00:00Z' },
+        { roomName: '123456788', creatorId: 'owner', scheduledStartTime: '2026-10-24T03:00:00Z', scheduledEndTime: '2026-10-24T04:00:00Z' }
+    ]) }));
+    assert.deepEqual(records.map(record => record.roomName), ['123456788', '123456789']);
+    assert.equal(records[0].scheduledStartTime, '2026-10-24T03:00:00Z');
+    assert.equal(records[0].scheduledEndTime, '2026-10-24T04:00:00Z');
+    assert.equal(service().historyLines(records[0])[3], '计划时长：60分钟');
 });
 
 test('history merge preserves local entries and never displays attendance as meeting duration', () => {
@@ -73,7 +99,7 @@ test('history merge preserves local entries and never displays attendance as mee
     assert.equal(output.length, 1);
     assert.equal(local.length, 1);
     assert.equal(output[0].title, '真实主题');
-    assert.ok(output[0].lines.includes('会议时长：暂无数据'));
+    assert.ok(output[0].lines.includes('计划时长：暂无数据'));
     assert.equal(output[0].id.url, local[0].conference);
     assert.equal(output[0].id.date, local[0].date);
 });
@@ -87,7 +113,7 @@ test('CloudMeet navigation prioritizes schedules and wires history refresh witho
 
 test('history UI compiles with native Babel and preserves long press and refresh wiring', () => {
     const babel = require('@babel/core');
-    for (const filename of ['react/features/cloudmeet/HistoryMeetings.native.tsx', 'react/features/recent-list/components/RecentList.native.tsx']) {
+    for (const filename of ['react/features/cloudmeet/HistoryMeetings.native.tsx', 'react/features/cloudmeet/HistoryMeetingCard.native.tsx', 'react/features/cloudmeet/historyStyles.native.ts', 'react/features/recent-list/components/RecentList.native.tsx']) {
         assert.doesNotThrow(() => babel.transformFileSync(filename));
     }
     const source = fs.readFileSync('react/features/recent-list/components/RecentList.native.tsx', 'utf8');
