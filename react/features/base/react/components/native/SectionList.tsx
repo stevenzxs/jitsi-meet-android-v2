@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { SectionListRenderItemInfo, ViewStyle } from 'react-native';
+import { RefreshControl, SectionListRenderItemInfo, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { NativeThemeContext } from '../../../ui/NativeThemeContext';
 import { SectionList as ReactNativeSectionList } from '../../../ui/components/native/ThemedPrimitives';
 import { Item, Section } from '../../types';
 
@@ -64,6 +65,8 @@ interface IProps {
  * @augments Component
  */
 export default class SectionList extends Component<IProps> {
+    static contextType = NativeThemeContext;
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -71,6 +74,8 @@ export default class SectionList extends Component<IProps> {
      * @returns {ReactElement}
      */
     override render() {
+        const theme = this.context as React.ContextType<typeof NativeThemeContext>;
+
         return (
             <SafeAreaView
                 edges = { [ 'left', 'right' ] }
@@ -79,8 +84,14 @@ export default class SectionList extends Component<IProps> {
                     ListEmptyComponent = { this.props.ListEmptyComponent }
                     contentContainerStyle = { styles.listContentContainer as ViewStyle }
                     keyExtractor = { this.props.keyExtractor }
-                    onRefresh = { this.props.onRefresh }
-                    refreshing = { this.props.refreshing }
+                    refreshControl = {
+                        <RefreshControl
+                            colors = { [ theme.palette.action01 ] }
+                            onRefresh = { this.props.onRefresh }
+                            progressBackgroundColor = { theme.palette.ui01 }
+                            refreshing = { Boolean(this.props.refreshing) }
+                            tintColor = { theme.palette.action01 } />
+                    }
                     renderItem = { this.props.renderItem }
                     renderSectionHeader = { this.props.renderSectionHeader }
                     sections = { this.props.sections }

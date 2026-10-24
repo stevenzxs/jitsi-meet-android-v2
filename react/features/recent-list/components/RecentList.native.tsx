@@ -10,6 +10,7 @@ import { translate } from '../../base/i18n/functions';
 import NavigateSectionList from '../../base/react/components/native/NavigateSectionList';
 import { Item, Section } from '../../base/react/types';
 import { TouchableWithoutFeedback, View } from '../../base/ui/components/native/ThemedPrimitives';
+import { IMeetingHistory } from '../../cloudmeet/historyService';
 import styles from '../../welcome/components/styles.native';
 import { isRecentListEnabled, toDisplayableList } from '../functions.native';
 
@@ -20,17 +21,14 @@ import RecentListItemMenu from './RecentListItemMenu.native';
  * The type of the React {@code Component} props of {@link RecentList}.
  */
 interface IProps extends WithTranslation {
-
     /**
      * The default server URL.
      */
     _defaultServerURL: string;
-
     /**
      * The recent list from the Redux store.
      */
     _recentList: Array<Section>;
-
     /**
      * Renders the list disabled.
      */
@@ -41,10 +39,16 @@ interface IProps extends WithTranslation {
      */
     dispatch: IStore['dispatch'];
 
+    meetings?: IMeetingHistory[];
+
     /**
      * Callback to be invoked when pressing the list container.
      */
     onListContainerPress?: (e?: GestureResponderEvent) => void;
+
+    onRefresh?: () => void;
+
+    refreshing?: boolean;
 }
 
 /**
@@ -80,7 +84,7 @@ class RecentList extends AbstractRecentList<IProps> {
             _defaultServerURL,
             _recentList
         } = this.props; // @ts-ignore
-        const recentList = toDisplayableList(_recentList, t, _defaultServerURL);
+        const recentList = toDisplayableList(_recentList, t, _defaultServerURL, this.props.meetings);
 
         return (
             <TouchableWithoutFeedback
@@ -90,6 +94,8 @@ class RecentList extends AbstractRecentList<IProps> {
                         disabled = { disabled }
                         onLongPress = { this._onLongPress }
                         onPress = { this._onPress }
+                        onRefresh = { this.props.onRefresh }
+                        refreshing = { this.props.refreshing }
                         renderListEmptyComponent
                             = { this._getRenderListEmptyComponent() }
 

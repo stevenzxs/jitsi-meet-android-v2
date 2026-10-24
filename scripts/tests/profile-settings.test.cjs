@@ -17,3 +17,10 @@ test('native profile edits display name without exposing or overwriting email', 
     assert.match(source, /dispatch\(updateSettings\(\{\s*displayName\s*\}\)\)/);
     assert.match(source, /onChange = \{ onDisplayNameChanged \}/);
 });
+
+test('header navigation icons use theme-aware press feedback', () => {
+    const source = fs.readFileSync('react/features/mobile/navigation/components/HeaderNavigationButton.tsx', 'utf8');
+
+    assert.match(source, /const theme = useNativeTheme\(\)/);
+    assert.match(source, /tapColor = \{ theme.palette.ui03 \}/);
+});

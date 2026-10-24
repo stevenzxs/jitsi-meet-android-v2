@@ -4,6 +4,8 @@ import {
 } from '../base/i18n/dateUtil';
 import NavigateSectionList from '../base/react/components/native/NavigateSectionList';
 import { parseURIString, safeDecodeURIComponent } from '../base/util/uri';
+import { IMeetingHistory, historyLines } from '../cloudmeet/historyService';
+import { CLOUDMEET_ORIGIN } from '../cloudmeet/meetingService';
 
 import { IRecentItem } from './types';
 
@@ -14,13 +16,16 @@ import { IRecentItem } from './types';
  * @param {Object} item - The recent list entry.
  * @param {string} defaultServerURL - The default server URL.
  * @param {Function} t - The translate function.
+ * @param {Array} meetings - Optional authoritative meeting metadata.
  * @returns {Object}
  */
 function toDisplayableItem(item: IRecentItem,
-        defaultServerURL: string, t: Function) {
+        defaultServerURL: string, t: Function, meetings?: IMeetingHistory[]) {
     const location = parseURIString(item.conference);
     const baseURL = `${location.protocol}//${location.host}`;
     const serverName = baseURL === defaultServerURL ? null : location.host;
+    const metadata: IMeetingHistory | undefined = meetings && baseURL === CLOUDMEET_ORIGIN
+        ? meetings.find(record => record.roomName === location.room) || { roomName: location.room } : undefined;
 
     return {
         colorBase: serverName,
@@ -29,12 +34,12 @@ function toDisplayableItem(item: IRecentItem,
             url: item.conference
         },
         key: `key-${item.conference}-${item.date}`,
-        lines: [
+        lines: metadata ? historyLines(metadata) : [
             _toDateString(item.date, t),
             _toDurationString(item.duration),
             serverName
         ],
-        title: safeDecodeURIComponent(location.room),
+        title: metadata ? metadata.subject || '未命名会议' : safeDecodeURIComponent(location.room),
         url: item.conference
     };
 }
@@ -95,10 +100,11 @@ function _toDateString(itemDate: number, t: Function) {
  * @param {Array<Object>} recentList - The recent list form the redux store.
  * @param {Function} t - The translate function.
  * @param {string} defaultServerURL - The default server URL.
+ * @param {Array} meetings - Optional authoritative meeting metadata.
  * @returns {Array<Object>}
  */
 export function toDisplayableList(recentList: IRecentItem[],
-        t: Function, defaultServerURL: string) {
+        t: Function, defaultServerURL: string, meetings?: IMeetingHistory[]) {
     const { createSection } = NavigateSectionList;
     const todaySection = createSection(t('dateUtils.today'), 'today');
     const yesterdaySection
@@ -112,9 +118,12 @@ export function toDisplayableList(recentList: IRecentItem[],
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayString = yesterday.toDateString();
 
-    for (const item of recentList) {
+    const entries = [ ...recentList ];
+
+    entries.sort((a, b) => a.date - b.date);
+    for (const item of entries) {
         const itemDateString = new Date(item.date).toDateString();
-        const displayableItem = toDisplayableItem(item, defaultServerURL, t);
+        const displayableItem = toDisplayableItem(item, defaultServerURL, t, meetings);
 
         if (itemDateString === todayString) {
             todaySection.data.push(displayableItem);

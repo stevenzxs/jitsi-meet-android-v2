@@ -55,6 +55,21 @@ export async function readPlanner(): Promise<IPlanner> {
 }
 
 /**
+ * Persist an installation identity before any server listing or quick creation.
+ *
+ * @returns {Promise<string>} Stable creator identity.
+ */
+export function getPlannerIdentity(): Promise<string> {
+    return serialized(async () => {
+        const planner = await readPlanner();
+
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+
+        return planner.creatorId;
+    });
+}
+
+/**
  * Persist before sending credentials to the server. Retry reconciles a lost response.
  *
  * @param {Object} meeting - Stable draft and frozen input.

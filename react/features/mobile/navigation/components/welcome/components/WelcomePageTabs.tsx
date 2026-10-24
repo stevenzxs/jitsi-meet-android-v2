@@ -9,6 +9,7 @@ import { getServerURL } from '../../../../../base/settings/functions.native';
 import { useNativeScreenOptions } from '../../../../../base/ui/components/native/ThemedNavigation';
 import CalendarList from '../../../../../calendar-sync/components/CalendarList.native';
 import { isCalendarEnabled } from '../../../../../calendar-sync/functions.native';
+import HistoryMeetings from '../../../../../cloudmeet/HistoryMeetings.native';
 import ScheduledMeetings from '../../../../../cloudmeet/ScheduledMeetings.native';
 import { CLOUDMEET_ORIGIN } from '../../../../../cloudmeet/meetingService';
 import RecentList from '../../../../../recent-list/components/RecentList.native';
@@ -47,15 +48,16 @@ const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocus
     const settingsTabBarOptions = useNativeScreenOptions(static_settingsTabBarOptions);
     const tabBarOptions = useNativeScreenOptions(static_tabBarOptions);
     const { t } = useTranslation();
-    const RecentListScreen = useCallback(() =>
-        (
-            <RecentList
-                disabled = { disabled }
-                onListContainerPress = { onListContainerPress } />
-        ), []);
-
     const calendarEnabled = useSelector(isCalendarEnabled);
     const cloudMeetEnabled = useSelector((state: IReduxState) => getServerURL(state).replace(/\/$/, '') === CLOUDMEET_ORIGIN);
+    const RecentListScreen = useCallback(() =>
+        (
+            cloudMeetEnabled ? <HistoryMeetings
+                disabled = { disabled }
+                onListContainerPress = { onListContainerPress } /> : <RecentList
+                disabled = { disabled }
+                onListContainerPress = { onListContainerPress } />
+        ), [ cloudMeetEnabled, disabled, onListContainerPress ]);
 
     const CalendarListScreen = useCallback(() =>
         (
@@ -72,23 +74,11 @@ const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocus
     return (
         <WelcomePage.Navigator
             backBehavior = { 'none' }
+            initialRouteName = { cloudMeetEnabled ? screen.welcome.tabs.calendar : screen.welcome.tabs.recent }
             screenOptions = {{
                 ...tabBarOptions,
                 headerShown: false
             }}>
-            <WelcomePage.Screen
-                listeners = {{
-                    tabPress: () => {
-                        onSettingsScreenFocused(false);
-                    }
-                }}
-                name = { screen.welcome.tabs.recent }
-                options = {{
-                    ...recentListTabBarOptions,
-                    title: t('welcomepage.recentList')
-                }}>
-                { RecentListScreen }
-            </WelcomePage.Screen>
             {
                 (calendarEnabled || cloudMeetEnabled)
             && <WelcomePage.Screen
@@ -105,6 +95,19 @@ const WelcomePageTabs = ({ disabled, onListContainerPress, onSettingsScreenFocus
                 { CalendarListScreen }
             </WelcomePage.Screen>
             }
+            <WelcomePage.Screen
+                listeners = {{
+                    tabPress: () => {
+                        onSettingsScreenFocused(false);
+                    }
+                }}
+                name = { screen.welcome.tabs.recent }
+                options = {{
+                    ...recentListTabBarOptions,
+                    title: t('welcomepage.recentList')
+                }}>
+                { RecentListScreen }
+            </WelcomePage.Screen>
             <WelcomePage.Screen
                 listeners = {{
                     tabPress: () => {

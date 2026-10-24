@@ -16,6 +16,7 @@ import { BUTTON_TYPES } from '../base/ui/constants.native';
 
 import { enterCreatedMeeting } from './actions.native';
 import { IMeetingDraft, createMeeting, newMeetingDraft } from './meetingService';
+import { getPlannerIdentity } from './scheduleStorage.native';
 
 // Styles are consumed through the reactive theme resolver below.
 /* eslint-disable react-native/no-unused-styles */
@@ -89,7 +90,7 @@ export default function QuickMeetingPage({ navigation }: {
         setBusy(true);
         setLocked(true);
         try {
-            const url = meetingUrl || await createMeeting(draft, { displayName: name, subject });
+            const url = meetingUrl || await createMeeting(draft, { creatorId: await getPlannerIdentity(), displayName: name, subject });
 
             setMeetingUrl(url);
             submitting.current = false;

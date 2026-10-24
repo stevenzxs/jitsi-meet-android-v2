@@ -29,13 +29,15 @@ interface IProps {
     /**
      * Function to be invoked when pull-to-refresh is performed.
      */
-    onRefresh: Function;
+    onRefresh?: Function;
 
     /**
      * Function to be invoked when a secondary action is performed on an item.
      * The item's ID is passed.
      */
     onSecondaryAction: Function;
+
+    refreshing?: boolean;
 
     /**
      * Function to override the rendered default empty list component.
@@ -109,7 +111,7 @@ class NavigateSectionList extends Component<IProps> {
                 // @ts-ignore
                 onItemClick = { this.props.onPress }
                 onRefresh = { this._onRefresh }
-                refreshing = { false }
+                refreshing = { Boolean(this.props.refreshing) }
                 renderItem = { this._renderItem }
                 renderSectionHeader = { this._renderSectionHeader }
                 sections = { sections } />

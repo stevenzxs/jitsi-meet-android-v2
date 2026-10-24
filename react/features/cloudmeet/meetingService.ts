@@ -79,7 +79,7 @@ export async function postMeetingApi(path: string, body: object, request = fetch
  */
 export async function createMeeting(
         draft: IMeetingDraft,
-        details: { displayName: string; subject?: string; },
+        details: { creatorId?: string; displayName: string; subject?: string; },
         post: Post = postMeetingApi): Promise<string> {
     if (!details.displayName.trim()) {
         throw new Error('请输入昵称');
@@ -92,7 +92,7 @@ export async function createMeeting(
             subject: details.subject?.trim() || '我的会议',
             displayName: details.displayName.trim(),
             password: '',
-            creatorId: '',
+            creatorId: details.creatorId || '',
             durationMinutes: 1440
         });
     }

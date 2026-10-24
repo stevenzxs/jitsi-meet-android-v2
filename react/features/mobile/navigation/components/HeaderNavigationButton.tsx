@@ -2,6 +2,7 @@ import React from 'react';
 import { GestureResponderEvent } from 'react-native';
 
 import { StyleType } from '../../../base/styles/functions.native';
+import { useNativeTheme } from '../../../base/ui/NativeThemeContext';
 import Button from '../../../base/ui/components/native/Button';
 import IconButton from '../../../base/ui/components/native/IconButton';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
@@ -68,6 +69,7 @@ const HeaderNavigationButton = ({
     style,
     twoActions
 }: IProps) => {
+    const theme = useNativeTheme();
 
     let btnStyle;
     let labelStyle;
@@ -98,7 +100,8 @@ const HeaderNavigationButton = ({
                         style = { [
                             navigationStyles.headerNavigationButtonIcon,
                             style
-                        ] } />
+                        ] }
+                        tapColor = { theme.palette.ui03 } />
                 ) : (
                     <Button
                         accessibilityLabel = { accessibilityLabel }
