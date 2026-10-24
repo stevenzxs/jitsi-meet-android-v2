@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
+import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { createBreakoutRoomsEvent, createToolbarEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { appNavigate } from '../../../app/actions';
-import { IReduxState } from '../../../app/types';
+import { IReduxState, IStore } from '../../../app/types';
 import ColorSchemeRegistry from '../../../base/color-scheme/ColorSchemeRegistry';
 import { endConference } from '../../../base/conference/actions';
 import { hideSheet } from '../../../base/dialog/actions';
@@ -23,18 +24,22 @@ import { isInBreakoutRoom } from '../../../breakout-rooms/functions';
  * @returns {JSX.Element} - The hangup menu.
  */
 function HangupMenu() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<IStore['dispatch']>();
     const _styles: any = useSelector((state: IReduxState) => ColorSchemeRegistry.get(state, 'Toolbox'));
     const inBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerator = useSelector((state: IReduxState) =>
         getLocalParticipant(state)?.role === PARTICIPANT_ROLE.MODERATOR);
     const { DESTRUCTIVE, SECONDARY } = BUTTON_TYPES;
 
-    const handleEndConference = useCallback(() => {
-        dispatch(hideSheet());
-        sendAnalytics(createToolbarEvent('endmeeting'));
-        dispatch(endConference());
-    }, [ hideSheet ]);
+    const handleEndConference = useCallback(async () => {
+        try {
+            sendAnalytics(createToolbarEvent('endmeeting'));
+            await dispatch(endConference());
+            dispatch(hideSheet());
+        } catch (error) {
+            Alert.alert('结束会议失败', error instanceof Error ? error.message : '请检查网络后重试');
+        }
+    }, [ dispatch ]);
 
     const handleLeaveConference = useCallback(() => {
         dispatch(hideSheet());

@@ -1,11 +1,41 @@
 import 'react-native-get-random-values';
 import { NativeModules } from 'react-native';
 
-import { newMeetingDraft } from './meetingService';
+import { IMeetingDraft, newMeetingDraft } from './meetingService';
 import { IScheduledMeeting, fetchSchedules, saveSchedule } from './scheduleService';
 
 interface IPlanner {
     creatorId: string; meetings: IScheduledMeeting[];
+    quickMeetings?: IMeetingDraft[];
+}
+
+/**
+ * Store quick-meeting management credentials in the existing Keystore vault.
+ *
+ * @param {Object} draft - Private credentials, never placed in Redux or logs.
+ * @returns {Promise<void>} Durable write before creating the server meeting.
+ */
+export function persistQuickMeeting(draft: IMeetingDraft): Promise<void> {
+    return serialized(async () => {
+        const planner = await readPlanner();
+        const records = planner.quickMeetings || [];
+
+        planner.quickMeetings = [ ...records.filter(item => item.roomName !== draft.roomName), { ...draft } ];
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+    });
+}
+
+/**
+ * Resolve a locally held management key without trusting listing responses.
+ *
+ * @param {string} room - Exact official meeting ID.
+ * @returns {Promise<string|undefined>} Host credential if present.
+ */
+export async function readMeetingHostKey(room: string): Promise<string | undefined> {
+    const planner = await readPlanner();
+
+    return (planner.quickMeetings || []).find(item => item.roomName === room)?.hostKey
+        || planner.meetings.find(item => item.roomName === room)?.hostKey;
 }
 let queue: Promise<unknown> = Promise.resolve();
 
