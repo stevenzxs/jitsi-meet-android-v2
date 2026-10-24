@@ -14,7 +14,7 @@ export default StyleSheet.create({
     room: { fontSize: 15, color: BaseTheme.palette.text01 },
     footer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 8 },
     detail: { fontSize: 13, color: BaseTheme.palette.text02 },
-    empty: { paddingTop: 64, alignItems: 'center', gap: 12 },
-    emptyTitle: { fontSize: 16, color: BaseTheme.palette.text01 },
+    empty: { paddingTop: 64, alignItems: 'center', gap: 16 },
+    emptyTitle: { fontSize: 16, color: BaseTheme.palette.text02, textAlign: 'center' },
     message: { padding: 16, fontSize: 14, color: BaseTheme.palette.text02 }
 });

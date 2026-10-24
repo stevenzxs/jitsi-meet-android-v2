@@ -48,11 +48,12 @@ test('history requests only the scoped history endpoint and validates responses'
 
 test('server history supplies cards directly without local recent entries or avatars', () => {
     const source = fs.readFileSync('react/features/cloudmeet/HistoryMeetings.native.tsx', 'utf8');
-    assert.doesNotMatch(source, /import RecentList|<RecentList|<Avatar|<Icon/);
+    assert.doesNotMatch(source, /import RecentList|<RecentList|<Avatar/);
     assert.match(source, /data = \{ meetings \}/);
     assert.match(source, /<RefreshControl/);
     assert.match(source, /<HistoryMeetingCard/);
     const card = fs.readFileSync('react/features/cloudmeet/HistoryMeetingCard.native.tsx', 'utf8');
+    assert.doesNotMatch(card, /<Avatar|<Icon/);
     assert.match(card, /onLongPress/);
     assert.match(card, /meeting.status === 'RUNNING'/);
 });

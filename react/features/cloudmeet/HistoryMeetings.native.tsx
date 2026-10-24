@@ -2,6 +2,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
 import { GestureResponderEvent, RefreshControl } from 'react-native';
 
+import Icon from '../base/icons/components/Icon';
+import { IconRestore } from '../base/icons/svg';
 import { useNativeTheme } from '../base/ui/NativeThemeContext';
 import { useNativeScreenOptions } from '../base/ui/components/native/ThemedNavigation';
 import { FlatList, Text, View } from '../base/ui/components/native/ThemedPrimitives';
@@ -77,8 +79,11 @@ export default function HistoryMeetings(props: {
             <FlatList
                 ListEmptyComponent = {
                     <View style = { styles.empty }>
+                        <Icon
+                            color = { theme.palette.icon02 }
+                            size = { 56 }
+                            src = { IconRestore } />
                         <Text style = { styles.emptyTitle }>{ message ? '暂时无法读取历史会议' : '暂无历史会议' }</Text>
-                        <Text style = { styles.detail }>本机身份创建过的历史会议会显示在这里</Text>
                     </View>
                 }
                 contentContainerStyle = { styles.content }
