@@ -5,6 +5,9 @@ import BaseTheme from '../base/ui/components/BaseTheme.native';
 export default StyleSheet.create({
     screen: { flex: 1, backgroundColor: BaseTheme.palette.ui01 },
     panel: { padding: 24, gap: 20 },
+    refreshableContent: { flexGrow: 1 },
+    emptyState: { alignItems: 'center', paddingTop: 64, gap: 16 },
+    emptyStateText: { color: BaseTheme.palette.text02, fontSize: 16, textAlign: 'center' },
     row: { flexDirection: 'row', alignItems: 'center', gap: 12, flexWrap: 'wrap' },
     label: { color: BaseTheme.palette.text01, fontSize: 16 },
     hint: { color: BaseTheme.palette.text02, fontSize: 14 },

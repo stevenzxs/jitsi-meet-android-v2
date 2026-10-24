@@ -9,9 +9,11 @@ import {
     IconUsers,
     IconWarning
 } from '../../../base/icons/svg';
+import { useNativeTheme } from '../../../base/ui/NativeThemeContext';
 import BaseTheme from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import IconButton from '../../../base/ui/components/native/IconButton';
+import { useNativeScreenOptions } from '../../../base/ui/components/native/ThemedNavigation';
 import { Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_MODES, BUTTON_TYPES } from '../../../base/ui/constants.native';
 import { CHAR_LIMIT } from '../../../chat/constants';
@@ -20,7 +22,7 @@ import { NOTIFICATION_ICON, NOTIFICATION_TYPE } from '../../constants';
 import { INotificationProps } from '../../types';
 import { NotificationsTransitionContext } from '../NotificationsTransition';
 
-import styles from './styles';
+import staticStyles from './styles';
 
 
 /**
@@ -58,6 +60,8 @@ const Notification = ({
     uid
 }: IProps) => {
     const { t } = useTranslation();
+    const theme = useNativeTheme();
+    const styles = useNativeScreenOptions(staticStyles);
     const notificationOpacityAnimation = useRef(new Animated.Value(0)).current;
     const { unmounting } = useContext(NotificationsTransitionContext);
 
@@ -226,7 +230,7 @@ const Notification = ({
             </View>
             <IconButton
                 accessibilityLabel = { t('dialog.dismiss') }
-                color = { BaseTheme.palette.icon04 }
+                color = { theme.palette.icon01 }
                 onPress = { onDismiss }
                 src = { IconCloseLarge }
                 type = { BUTTON_TYPES.TERTIARY } />

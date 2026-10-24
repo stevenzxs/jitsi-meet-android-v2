@@ -1187,6 +1187,7 @@
             "title": "预定会议"
         },
         "chatWithPermissions": "聊天需要相关权限",
+        "privateChatWithPermissions": "禁止非主持人私聊",
         "desktopShareFramerate": "共享屏幕帧率",
         "desktopShareHighFpsWarning": "高帧率的共享屏幕的可能会影响你的网速，你需要重新启动共享屏幕以使新设置生效。",
         "desktopShareWarning": "你需要重新启动共享屏幕以使新设置生效。",

@@ -11,6 +11,7 @@ import Icon from '../../../base/icons/components/Icon';
 import { IconArrowRight } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { getLocalParticipant } from '../../../base/participants/functions';
+import { useNativeTheme } from '../../../base/ui/NativeThemeContext';
 import { ScrollView, Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { navigate } from '../../../mobile/navigation/components/settings/SettingsNavigationContainerRef';
 import { screen } from '../../../mobile/navigation/routes';
@@ -32,6 +33,7 @@ interface IProps {
 
 const SettingsView = ({ isInWelcomePage }: IProps) => {
     const { t } = useTranslation();
+    const theme = useNativeTheme();
     const { displayName } = useSelector((state: IReduxState) => state['features/base/settings']);
     const localParticipant = useSelector((state: IReduxState) => getLocalParticipant(state));
     const showModeratorSettings = useSelector((state: IReduxState) => shouldShowModeratorSettings(state));
@@ -61,7 +63,8 @@ const SettingsView = ({ isInWelcomePage }: IProps) => {
                         /* eslint-disable react/jsx-no-bind */
                         accessibilityLabel = { profileAccessibilityLabel }
                         accessibilityRole = 'button'
-                        onPress = { () => navigate(screen.settings.profile) }>
+                        onPress = { () => navigate(screen.settings.profile) }
+                        underlayColor = { theme.palette.ui03 }>
                         <View
                             style = { styles.profileContainer as ViewStyle }>
                             <Avatar

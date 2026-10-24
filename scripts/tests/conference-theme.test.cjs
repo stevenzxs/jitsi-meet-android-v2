@@ -31,3 +31,10 @@ test('dialog sibling tree receives persisted theme instead of default dark conte
     const provider = fs.readFileSync('react/features/base/ui/components/JitsiThemeProvider.native.tsx', 'utf8');
     assert.match(provider, /if \(props.contextOnly\) \{\s*return \(\s*<NativeThemeContext.Provider value = \{ theme \}>\s*\{ props.children \}\s*<\/NativeThemeContext.Provider>/);
 });
+test('animated notification surfaces and dismiss icons follow the active theme', () => {
+    const source = fs.readFileSync('react/features/notifications/components/native/Notification.tsx', 'utf8');
+    assert.match(source, /const styles = useNativeScreenOptions\(staticStyles\)/);
+    assert.match(source, /const theme = useNativeTheme\(\)/);
+    assert.match(source, /color = \{ theme.palette.icon01 \}/);
+    assert.doesNotMatch(source, /color = \{ BaseTheme.palette.icon04 \}/);
+});

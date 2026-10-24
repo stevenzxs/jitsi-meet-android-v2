@@ -10,6 +10,7 @@ import i18next, { DEFAULT_LANGUAGE, LANGUAGES } from '../../../base/i18n/i18next
 import { IconArrowLeft } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import { updateSettings } from '../../../base/settings/actions';
+import { useNativeTheme } from '../../../base/ui/NativeThemeContext';
 import BaseThemeNative from '../../../base/ui/components/BaseTheme.native';
 import { ScrollView, Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import HeaderNavigationButton from '../../../mobile/navigation/components/HeaderNavigationButton';
@@ -21,6 +22,7 @@ const LanguageSelectView = ({ goBack, isInWelcomePage }: {
     isInWelcomePage?: boolean;
 }) => {
     const { t } = useTranslation();
+    const theme = useNativeTheme();
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const { conference } = useSelector((state: IReduxState) => state['features/base/conference']);
@@ -67,7 +69,8 @@ const LanguageSelectView = ({ goBack, isInWelcomePage }: {
                             }}
                             disabled = { currentLanguage === language }
                             key = { language }
-                            onPress = { setLanguage(language) }>
+                            onPress = { setLanguage(language) }
+                            underlayColor = { theme.palette.ui03 }>
                             <View
                                 style = { styles.languageOption as ViewStyle }>
                                 <Text

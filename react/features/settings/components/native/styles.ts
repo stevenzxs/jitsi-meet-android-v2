@@ -9,6 +9,8 @@ export const PLACEHOLDER_COLOR = BaseTheme.palette.focus01;
 export default {
 
     profileContainerWrapper: {
+        borderRadius: BaseTheme.shape.borderRadius,
+        overflow: 'hidden',
         margin: BaseTheme.spacing[4]
     },
 

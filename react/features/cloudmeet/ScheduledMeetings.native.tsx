@@ -1,13 +1,16 @@
 /* eslint-disable react/jsx-no-bind */
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Alert, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { IStore } from '../app/types';
+import Icon from '../base/icons/components/Icon';
+import { IconCalendar } from '../base/icons/svg';
+import { useNativeTheme } from '../base/ui/NativeThemeContext';
 import Button from '../base/ui/components/native/Button';
 import { useNativeScreenOptions } from '../base/ui/components/native/ThemedNavigation';
-import { Text, TouchableOpacity, View } from '../base/ui/components/native/ThemedPrimitives';
+import { Text, View } from '../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../base/ui/constants.native';
 
 import { enterCreatedMeeting } from './actions.native';
@@ -22,41 +25,58 @@ import { persistSchedule, readPlanner } from './scheduleStorage.native';
  */
 export default function ScheduledMeetings() {
     const styles = useNativeScreenOptions(staticStyles);
+    const theme = useNativeTheme();
     const dispatch = useDispatch<IStore['dispatch']>();
     const [ meetings, setMeetings ] = useState<IScheduledMeeting[]>([]);
     const [ message, setMessage ] = useState('');
     const [ busy, setBusy ] = useState(false);
-    const [ revision, setRevision ] = useState(0);
+    const [ refreshing, setRefreshing ] = useState(false);
+    const refreshSession = useRef({ active: false, loading: false });
+
+    const refresh = useCallback(async (showIndicator = true) => {
+        const session = refreshSession.current;
+
+        if (!session.active || session.loading) {
+            return;
+        }
+        session.loading = true;
+        setRefreshing(showIndicator);
+        try {
+            const planner = await readPlanner();
+            const current = planner.meetings.filter(item => item.start + item.durationMinutes * 60000 > Date.now());
+
+            session.active && setMeetings(current);
+            if (!current.length) {
+                session.active && setMessage('');
+
+                return;
+            }
+            if (!session.active) {
+                return;
+            }
+            const records = await fetchSchedules(planner.creatorId);
+            const ids = new Set(records.map(item => item.roomName));
+
+            session.active && setMeetings(current.filter(item => !item.saved || ids.has(item.roomName)));
+            session.active && setMessage('');
+        } catch (error) {
+            session.active && setMessage(`同步失败，以下为本机记录：${error instanceof Error ? error.message : '请检查网络'}`);
+        } finally {
+            session.loading = false;
+            session.active && setRefreshing(false);
+        }
+    }, []);
 
     useFocusEffect(useCallback(() => {
-        let active = true;
+        const session = { active: true, loading: false };
 
-        (async () => {
-            try {
-                const planner = await readPlanner();
-                const current = planner.meetings.filter(item => item.start + item.durationMinutes * 60000 > Date.now());
-
-                active && setMeetings(current);
-                if (!current.length) {
-                    active && setMessage('暂无本机预定会议');
-
-                    return;
-                }
-                active && setMessage('正在同步预定状态…');
-                const records = await fetchSchedules(planner.creatorId);
-                const ids = new Set(records.map(item => item.roomName));
-
-                active && setMeetings(current.filter(item => !item.saved || ids.has(item.roomName)));
-                active && setMessage('');
-            } catch (error) {
-                active && setMessage(`同步失败，以下为本机记录：${error instanceof Error ? error.message : '请检查网络'}`);
-            }
-        })();
+        refreshSession.current = session;
+        void refresh(false);
 
         return () => {
-            active = false;
+            session.active = false;
         };
-    }, [ revision ]));
+    }, [ refresh ]));
 
     const join = async (meeting: IScheduledMeeting) => {
         if (busy) {
@@ -77,16 +97,27 @@ export default function ScheduledMeetings() {
 
     return (
         <ScrollView
-            contentContainerStyle = { styles.panel }
+            alwaysBounceVertical = { true }
+            contentContainerStyle = { [ styles.panel, styles.refreshableContent ] }
+            refreshControl = {
+                <RefreshControl
+                    colors = { [ theme.palette.action01 ] }
+                    onRefresh = { refresh }
+                    progressBackgroundColor = { theme.palette.ui01 }
+                    refreshing = { refreshing }
+                    tintColor = { theme.palette.action01 } />
+            }
             style = { styles.screen }>
-            <TouchableOpacity
-                accessibilityRole = 'button'
-                onPress = { () => setRevision(revision + 1) }
-                style = { styles.choice }>
-                <Text style = { styles.link }>刷新预定会议</Text>
-            </TouchableOpacity>
             { Boolean(message) && <Text style = { styles.hint }>{ message }</Text> }
-            { !message && !meetings.length && <Text style = { styles.hint }>暂无预定会议</Text> }
+            { !message && !meetings.length && (
+                <View style = { styles.emptyState }>
+                    <Icon
+                        color = { theme.palette.icon02 }
+                        size = { 56 }
+                        src = { IconCalendar } />
+                    <Text style = { styles.emptyStateText }>暂无本机预定会议</Text>
+                </View>
+            ) }
             { meetings.map(meeting => (
                 <View
                     key = { meeting.roomName }

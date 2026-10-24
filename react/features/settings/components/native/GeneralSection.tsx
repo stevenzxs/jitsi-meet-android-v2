@@ -8,6 +8,7 @@ import i18next, { DEFAULT_LANGUAGE } from '../../../base/i18n/i18next';
 import Icon from '../../../base/icons/components/Icon';
 import { IconArrowRight } from '../../../base/icons/svg';
 import { updateSettings } from '../../../base/settings/actions';
+import { useNativeTheme } from '../../../base/ui/NativeThemeContext';
 import Switch from '../../../base/ui/components/native/Switch';
 import { Text, TouchableHighlight, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { navigate } from '../../../mobile/navigation/components/settings/SettingsNavigationContainerRef';
@@ -21,6 +22,7 @@ import styles from './styles';
 
 const GeneralSection = () => {
     const { t } = useTranslation();
+    const theme = useNativeTheme();
     const dispatch = useDispatch();
     const {
         disableSelfView,
@@ -53,7 +55,8 @@ const GeneralSection = () => {
                     <TouchableHighlight
                         accessibilityLabel = { languageAccessibilityLabel }
                         accessibilityRole = 'button'
-                        onPress = { navigateToLanguageSelect }>
+                        onPress = { navigateToLanguageSelect }
+                        underlayColor = { theme.palette.ui03 }>
                         <View style = { styles.languageButton as ViewStyle }>
                             <Text
                                 style = { styles.languageText }>{t(`languages:${language}`)}</Text>

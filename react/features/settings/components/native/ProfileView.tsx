@@ -15,7 +15,7 @@ import { updateSettings } from '../../../base/settings/actions';
 import BaseThemeNative from '../../../base/ui/components/BaseTheme.native';
 import Button from '../../../base/ui/components/native/Button';
 import Input from '../../../base/ui/components/native/Input';
-import { ScrollView, Text, View } from '../../../base/ui/components/native/ThemedPrimitives';
+import { ScrollView, View } from '../../../base/ui/components/native/ThemedPrimitives';
 import { BUTTON_TYPES } from '../../../base/ui/constants.native';
 import HeaderNavigationButton
     from '../../../mobile/navigation/components/HeaderNavigationButton';
@@ -37,7 +37,7 @@ const ProfileView = ({ isInWelcomePage }: {
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
-    const { displayName: reduxDisplayName, email: reduxEmail } = useSelector(
+    const { displayName: reduxDisplayName } = useSelector(
         (state: IReduxState) => state['features/base/settings']
     );
     const participant = useSelector((state: IReduxState) => getLocalParticipant(state));
@@ -45,7 +45,6 @@ const ProfileView = ({ isInWelcomePage }: {
     const showAuthButton = !isInWelcomePage && !locationURL?.hostname?.includes('8x8.vc');
 
     const [ displayName, setDisplayName ] = useState(reduxDisplayName);
-    const [ email, setEmail ] = useState(reduxEmail);
 
     const { authLogin: isAutenticated } = useSelector((state: IReduxState) => state['features/base/conference']);
 
@@ -53,19 +52,14 @@ const ProfileView = ({ isInWelcomePage }: {
         setDisplayName(newDisplayName);
     }, [ setDisplayName ]);
 
-    const onEmailChanged = useCallback(newEmail => {
-        setEmail(newEmail);
-    }, [ setEmail ]);
-
     const onApplySettings = useCallback(() => {
         dispatch(updateSettings({
-            displayName,
-            email
+            displayName
         }));
 
         navigate(screen.settings.main);
     },
-    [ dispatch, updateSettings, email, displayName ]);
+    [ dispatch, updateSettings, displayName ]);
 
     const onLogin = useCallback(() => {
         dispatch(login());
@@ -137,18 +131,6 @@ const ProfileView = ({ isInWelcomePage }: {
                             placeholder = { t('settingsView.displayNamePlaceholderText') }
                             textContentType = { 'name' } // iOS only
                             value = { displayName ?? '' } />
-                        <Input
-                            autoCapitalize = 'none'
-                            customStyles = {{ container: styles.customContainer }}
-                            keyboardType = { 'email-address' }
-                            label = { t('settingsView.email') }
-                            onChange = { onEmailChanged }
-                            placeholder = { t('settingsView.emailPlaceholderText') }
-                            textContentType = { 'emailAddress' } // iOS only
-                            value = { email ?? '' } />
-                        <Text style = { styles.gavatarMessageContainer }>
-                            { t('settingsView.gavatarMessage') }
-                        </Text>
                     </FormSection>
                 </View>
                 <Button

@@ -19,8 +19,6 @@ import LiveStreamButton from '../../../recording/components/LiveStream/native/Li
 import RecordButton from '../../../recording/components/Recording/native/RecordButton';
 import SecurityDialogButton
     from '../../../security/components/security-dialog/native/SecurityDialogButton';
-import SharedVideoButton from '../../../shared-video/components/native/SharedVideoButton';
-import { isSharedVideoButtonVisible } from '../../../shared-video/functions';
 import SpeakerStatsButton from '../../../speaker-stats/components/native/SpeakerStatsButton';
 import { isSpeakerStatsDisabled } from '../../../speaker-stats/functions';
 import ClosedCaptionButton from '../../../subtitles/components/native/ClosedCaptionButton';
@@ -79,11 +77,6 @@ interface IProps {
     _shouldDisplayReactionsButtons: boolean;
 
     /**
-     * Whether the shared video button is shown, i.e. the local participant may share a video or shares one.
-     */
-    _showSharedVideoButton: boolean;
-
-    /**
      * Used for hiding the dialog when the selection was completed.
      */
     dispatch: IStore['dispatch'];
@@ -129,7 +122,6 @@ class OverflowMenu extends PureComponent<IProps, IState> {
         const {
             _isBreakoutRoomsSupported,
             _isSpeakerStatsDisabled,
-            _showSharedVideoButton,
             dispatch
         } = this.props;
 
@@ -169,7 +161,6 @@ class OverflowMenu extends PureComponent<IProps, IState> {
                 <CustomPanelButton { ...buttonProps } />
                 {/* @ts-ignore */}
                 <Divider style = { styles.divider as ViewStyle } />
-                {_showSharedVideoButton && <SharedVideoButton { ...buttonProps } />}
                 { this._renderOverflowMenuButtons(topButtonProps) }
                 {!_isSpeakerStatsDisabled && <SpeakerStatsButton { ...buttonProps } />}
                 {_isBreakoutRoomsSupported && <BreakoutRoomsButton { ...buttonProps } />}
@@ -284,7 +275,6 @@ function _mapStateToProps(state: IReduxState) {
 
     return {
         _isBreakoutRoomsSupported: conference?.getBreakoutRooms()?.isSupported(),
-        _showSharedVideoButton: isSharedVideoButtonVisible(state),
         _isSpeakerStatsDisabled: isSpeakerStatsDisabled(state),
         _shouldDisplayReactionsButtons: shouldDisplayReactionsButtons(state)
     };
