@@ -27,7 +27,7 @@ const staticStyles = StyleSheet.create({
 /* eslint-enable react-native/no-unused-styles */
 
 /**
- * Join an existing business meeting without changing the ordinary prejoin flow.
+ * Validate an existing business meeting and enter without a second join screen.
  *
  * @returns {ReactElement} Join meeting page.
  */
@@ -83,7 +83,7 @@ export default function JoinMeetingPage({ navigation }: { navigation: StackNavig
             const url = await joinMeeting(room, password);
 
             submitting.current = false;
-            await dispatch(appNavigate(url));
+            await dispatch(appNavigate(`${url}#config.prejoinConfig.enabled=false`));
         } catch (error) {
             Alert.alert('加入会议失败', error instanceof Error ? error.message : '请检查网络后重试');
         } finally {
