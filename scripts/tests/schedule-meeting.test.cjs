@@ -54,7 +54,10 @@ test('lost save response is reconciled before retry without duplicate create', a
         if (name === 'react-native') return { NativeModules: { MeetingPlanner: {
             read: async () => stored, write: async value => { stored = value; }
         } } };
-        if (name === './meetingService') return { newMeetingDraft: () => ({ creatorRecoveryKey: 'owner' }) };
+        if (name === './meetingService') return {
+            newMeetingDraft: () => ({ creatorRecoveryKey: 'owner' }),
+            postMeetingApi: async () => ({ token: 'signed' })
+        };
         if (name === './scheduleService') return {
             fetchSchedules: async () => [{ roomName: draft.roomName }],
             saveSchedule: async () => { creates++; throw Error('lost response'); }

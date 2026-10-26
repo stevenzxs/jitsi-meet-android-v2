@@ -13,6 +13,56 @@ export interface IScheduledMeeting extends IMeetingDraft, IScheduleDetails {
 }
 type Post = (path: string, body: object) => Promise<any>;
 
+export interface IScheduleRow extends Omit<IScheduleDetails, 'password'> {
+    end: number;
+    hostKey?: string;
+    password?: string;
+    roomName: string;
+}
+
+/**
+ * Map authoritative public metadata, supplementing private credentials only locally.
+ *
+ * @param {Array} records - Scoped server response.
+ * @param {Array} local - Encrypted local drafts.
+ * @param {string} creatorId - Persisted installation identity.
+ * @param {number} now - Expiry boundary.
+ * @returns {Array} Deduplicated, ordered active reservations.
+ */
+export function scheduleRows(records: any[], local: IScheduledMeeting[], creatorId: string, now = Date.now()): IScheduleRow[] {
+    const rows = new Map<string, IScheduleRow>();
+
+    for (const record of records) {
+        if (!record || typeof record.roomName !== 'string' || !/^\d{9}$/.test(record.roomName)) {
+            throw new Error('预定会议数据格式异常');
+        }
+        if (record.creatorId !== creatorId || record.status !== 'SCHEDULED') {
+            continue;
+        }
+        const start = Date.parse(record.scheduledStartTime);
+        const end = Date.parse(record.scheduledEndTime);
+
+        if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+            throw new Error('预定会议时间格式异常');
+        }
+        if (end <= now) {
+            continue;
+        }
+        const credentials = local.find(item => item.roomName === record.roomName);
+
+        rows.set(record.roomName, {
+            roomName: record.roomName,
+            subject: typeof record.subject === 'string' ? record.subject : '',
+            displayName: typeof record.displayName === 'string' ? record.displayName : '',
+            start, end, durationMinutes: (end - start) / 60000,
+            hostKey: credentials?.hostKey,
+            password: credentials?.password
+        });
+    }
+
+    return Array.from(rows.values()).sort((a, b) => a.start - b.start);
+}
+
 /**
  * Persist an explicit future schedule; never turn API failures into local success.
  *
@@ -49,7 +99,10 @@ export async function saveSchedule(draft: IMeetingDraft, details: IScheduleDetai
  * @param {Function} post - Transport.
  * @returns {Promise<string>} Scoped JWT URL.
  */
-export async function scheduledHostUrl(draft: IMeetingDraft, displayName: string, post: Post = postMeetingApi) {
+export async function scheduledHostUrl(draft: { hostKey?: string; roomName: string; }, displayName: string, post: Post = postMeetingApi) {
+    if (!draft.hostKey) {
+        throw new Error('本机未保存主持人密钥，无法以主持人身份加入');
+    }
     const result = await post(`/open/desktop/meetings/${draft.roomName}/host-token`, { hostKey: draft.hostKey, displayName });
 
     if (!result.token || typeof result.token !== 'string') {
@@ -66,6 +119,9 @@ export async function scheduledHostUrl(draft: IMeetingDraft, displayName: string
  * @returns {Promise<Array>} Server records (no credentials trusted from response).
  */
 export async function fetchSchedules(creatorId: string): Promise<any[]> {
+    if (!creatorId.trim()) {
+        throw new Error('缺少本机会议身份');
+    }
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
 
@@ -75,8 +131,8 @@ export async function fetchSchedules(creatorId: string): Promise<any[]> {
         });
         const result = await response.json();
 
-        if (!response.ok || (typeof result.code === 'number' && result.code !== 200)) {
-            throw new Error(result.message || '读取预定会议失败');
+        if (!result || !response.ok || (typeof result.code === 'number' && result.code !== 200)) {
+            throw new Error(result?.message || result?.msg || '读取预定会议失败');
         }
         const records = result.data ?? result;
 

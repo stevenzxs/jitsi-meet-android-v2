@@ -12,13 +12,29 @@ export interface IMeetingHistory {
 }
 
 /**
+ * Derive display state from API fields, preserving explicit closed/unknown states.
+ *
+ * @param {Object} record - Unmodified server history record.
+ * @param {number} now - Current instant for the server-provided deadline.
+ * @returns {string} Effective display state, not a database status update.
+ */
+export function historyStatus(record: IMeetingHistory, now = Date.now()): string {
+    const status = record.status || '';
+    const end = Date.parse(record.scheduledEndTime || '');
+
+    return (status === 'RUNNING' || status === 'SCHEDULED') && Number.isFinite(end) && now >= end
+        ? 'EXPIRED' : status;
+}
+
+/**
  * Display API reservation times explicitly as planned, never as actual attendance.
  *
  * @param {Object} record - Meeting metadata.
+ * @param {number} now - Current instant for expiry presentation.
  * @returns {Array<string>} Labeled history details.
  */
-export function historyLines(record: IMeetingHistory): string[] {
-    const statuses: Record<string, string> = { RUNNING: '进行中', ENDED: '已结束', SCHEDULED: '未开始', CANCELLED: '已取消' };
+export function historyLines(record: IMeetingHistory, now = Date.now()): string[] {
+    const statuses: Record<string, string> = { RUNNING: '进行中', ENDED: '已结束', SCHEDULED: '未开始', CANCELLED: '已取消', EXPIRED: '已过期' };
     const start = record.scheduledStartTime ? Date.parse(record.scheduledStartTime) : NaN;
     const end = record.scheduledEndTime ? Date.parse(record.scheduledEndTime) : NaN;
     const elapsed = end - start;
@@ -29,7 +45,7 @@ export function historyLines(record: IMeetingHistory): string[] {
 
     return [
         `会议号：${record.roomName}`,
-        `会议状态：${statuses[record.status || ''] || '状态未知'}`,
+        `会议状态：${statuses[historyStatus(record, now)] || '状态未知'}`,
         `计划时间：${Number.isFinite(start) ? new Date(start).toLocaleString() : '暂无数据'}`,
         `计划时长：${validDuration ? duration : '暂无数据'}`
     ];

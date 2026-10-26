@@ -9,6 +9,10 @@
         "saving": "正在保存…",
         "backToList": "返回列表",
         "joinAsHost": "以主持人身份加入",
+        "enter": "进入",
+        "copyInvite": "复制邀请",
+        "copied": "已复制",
+        "cancelSchedule": "取消",
         "retrySchedule": "核对预定并加入",
         "join": "加入会议"
     },

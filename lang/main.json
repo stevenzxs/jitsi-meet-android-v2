@@ -9,6 +9,10 @@
         "saving": "Saving…",
         "backToList": "Back to List",
         "joinAsHost": "Join as Host",
+        "enter": "Enter",
+        "copyInvite": "Copy invitation",
+        "copied": "Copied",
+        "cancelSchedule": "Cancel",
         "retrySchedule": "Verify Schedule and Join",
         "join": "Join meeting"
     },

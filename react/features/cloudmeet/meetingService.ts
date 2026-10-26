@@ -53,7 +53,7 @@ export async function postMeetingApi(path: string, body: object, request = fetch
             signal: controller.signal
         });
         // The existing explicit-end controller returns HTTP 200 with an empty body.
-        const isEnd = /^\/open\/desktop\/meetings\/\d{9}\/end$/.test(path);
+        const isEnd = /^\/open\/desktop\/meetings\/\d{9}\/(end|participants\/join)$/.test(path);
         const text = isEnd ? await response.text() : undefined;
 
         if (isEnd && !text?.trim()) {
@@ -66,7 +66,7 @@ export async function postMeetingApi(path: string, body: object, request = fetch
         const result = isEnd ? JSON.parse(text!) : await response.json();
 
         if (!response.ok || (typeof result.code === 'number' && result.code !== 200)) {
-            throw new Error(result.message || result.msg || '会议请求失败');
+            throw Object.assign(new Error(result.message || result.msg || '会议请求失败'), { code: result.code });
         }
 
         return result.data ?? result;

@@ -1,8 +1,8 @@
 import 'react-native-get-random-values';
 import { NativeModules } from 'react-native';
 
-import { IMeetingDraft, newMeetingDraft } from './meetingService';
-import { IScheduledMeeting, fetchSchedules, saveSchedule } from './scheduleService';
+import { IMeetingDraft, newMeetingDraft, postMeetingApi } from './meetingService';
+import { IScheduledMeeting, saveSchedule } from './scheduleService';
 
 interface IPlanner {
     creatorId: string; meetings: IScheduledMeeting[];
@@ -115,10 +115,24 @@ export function persistSchedule(meeting: IScheduledMeeting): Promise<void> {
             return;
         }
         if (existing) {
-            const records = await fetchSchedules(planner.creatorId);
+            try {
+                const result = await postMeetingApi(`/open/desktop/meetings/${record.roomName}/host-token`, {
+                    hostKey: record.hostKey, displayName: record.displayName
+                });
 
-            if (records.some(item => item.roomName === record.roomName)) {
+                if (typeof result?.token !== 'string' || !result.token) {
+                    throw new Error('无法确认预定结果，请重试');
+                }
                 record.saved = true;
+            } catch (error) {
+                const code = (error as { code?: number; }).code;
+
+                // These errors occur only after host-key validation on the server.
+                if (code === 40901 || code === 40902) {
+                    record.saved = true;
+                } else if (code !== 40401) {
+                    throw error;
+                }
             }
         } else {
             planner.meetings.push(record);

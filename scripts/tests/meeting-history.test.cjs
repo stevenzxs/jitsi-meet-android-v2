@@ -55,7 +55,38 @@ test('server history supplies cards directly without local recent entries or ava
     const card = fs.readFileSync('react/features/cloudmeet/HistoryMeetingCard.native.tsx', 'utf8');
     assert.doesNotMatch(card, /<Avatar|<Icon/);
     assert.match(card, /onLongPress/);
-    assert.match(card, /meeting.status === 'RUNNING'/);
+    assert.match(card, /historyStatus\(meeting/);
+    assert.doesNotMatch(card, /meeting.status === 'RUNNING'/);
+});
+
+test('history derives expiry from API timestamps without mutating raw status or closed states', () => {
+    const m = service();
+    const end = Date.parse('2026-10-26T02:00:00Z');
+    const record = { roomName: '551359704', status: 'RUNNING', scheduledEndTime: new Date(end).toISOString() };
+    assert.equal(m.historyStatus(record, end - 1), 'RUNNING');
+    assert.equal(m.historyStatus(record, end), 'EXPIRED');
+    assert.equal(m.historyStatus(record, end + 1), 'EXPIRED');
+    assert.equal(m.historyLines(record, end)[1], '会议状态：已过期');
+    assert.equal(record.status, 'RUNNING');
+    assert.equal(record.endedAt, undefined);
+    for (const status of ['CANCELLED', 'ENDED', 'UNKNOWN']) {
+        assert.equal(m.historyStatus({ ...record, status }, end), status);
+    }
+    assert.equal(m.historyStatus({ ...record, status: 'SCHEDULED' }, end), 'EXPIRED');
+    for (const scheduledEndTime of [null, undefined, 'invalid']) {
+        assert.equal(m.historyStatus({ ...record, scheduledEndTime }, end), 'RUNNING');
+    }
+});
+
+test('history enter rechecks expiry and API permission before navigating, handles rejection and expiry timer', () => {
+    const card = fs.readFileSync('react/features/cloudmeet/HistoryMeetingCard.native.tsx', 'utf8');
+    assert.match(card, /historyStatus\(meeting\) !== 'RUNNING'/);
+    assert.match(card, /await joinMeeting\(meeting.roomName, ''\)/);
+    assert.match(card, /dispatch\(appNavigate\(url\)\)/);
+    assert.match(card, /Alert.alert\('无法进入会议'/);
+    assert.match(card, /setTimeout/);
+    assert.match(card, /clearTimeout/);
+    assert.doesNotMatch(card, /appNavigate\(`\$\{CLOUDMEET_ORIGIN\}/);
 });
 
 test('history excludes another creator but preserves server historical records with any status', async () => {
