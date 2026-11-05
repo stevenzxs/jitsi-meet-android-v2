@@ -8,7 +8,8 @@ function load(file, dependencies = {}) {
     const source = ts.transpileModule(fs.readFileSync(`react/features/cloudmeet/${file}`, 'utf8'), {
         compilerOptions: { module: ts.ModuleKind.CommonJS }
     }).outputText;
-    new Function('module', 'exports', 'require', source)(module, module.exports, name => dependencies[name] || {});
+    new Function('module', 'exports', 'require', source)(module, module.exports, name =>
+        name === './deployment.json' ? { default: require('../../react/features/cloudmeet/deployment.json') } : dependencies[name] || {});
     return module.exports;
 }
 const now = Date.now();

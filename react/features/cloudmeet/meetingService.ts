@@ -1,4 +1,6 @@
-export const CLOUDMEET_ORIGIN = 'https://118.193.36.35:8443';
+import deployment from './deployment.json';
+
+export const CLOUDMEET_ORIGIN = deployment.origin;
 
 export interface IMeetingDraft {
     creatorRecoveryKey: string;

@@ -8,9 +8,10 @@ function model() {
     assert.ok(fs.existsSync(path), 'CloudMeet service must exist');
     const module = { exports: {} };
     const source = ts.transpileModule(fs.readFileSync(path, 'utf8'), {
-        compilerOptions: { module: ts.ModuleKind.CommonJS }
+        compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true }
     }).outputText;
-    new Function('module', 'exports', source)(module, module.exports);
+    new Function('module', 'exports', 'require', source)(module, module.exports,
+        id => id === './deployment.json' ? require('../../react/features/cloudmeet/deployment.json') : require(id));
     return module.exports;
 }
 

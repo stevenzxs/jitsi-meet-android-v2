@@ -54,7 +54,8 @@ test('end transport accepts the existing void API response without JSON parse fa
     const source = ts.transpileModule(fs.readFileSync('react/features/cloudmeet/meetingService.ts', 'utf8'), {
         compilerOptions: { module: ts.ModuleKind.CommonJS }
     }).outputText;
-    new Function('module', 'exports', source)(module, module.exports);
+    new Function('module', 'exports', 'require', source)(module, module.exports,
+        id => id === './deployment.json' ? { default: require('../../react/features/cloudmeet/deployment.json') } : require(id));
     assert.equal(await module.exports.postMeetingApi('/open/desktop/meetings/123456789/end', {hostKey:'key'},
         async () => ({ok:true, status:200, text:async () => ''})), undefined);
 });
