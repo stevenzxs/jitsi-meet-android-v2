@@ -32,8 +32,9 @@ MiddlewareRegistry.register(store => {
 
             noteSessionNetwork(store);
             stopPresence();
-            stopPresence = startMeetingPresence(getCurrentConferenceUrl(store.getState()), action.conference?.getMyUserId(),
-            postMeetingApi, () => logger.warn('Meeting status sync failed; retrying while connected'));
+            stopPresence = startMeetingPresence(
+                getCurrentConferenceUrl(store.getState()), action.conference?.myUserId(),
+                postMeetingApi, () => logger.warn('Meeting status sync failed; retrying while connected'));
 
             return result;
         }

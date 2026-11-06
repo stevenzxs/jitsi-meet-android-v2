@@ -43,7 +43,7 @@ test('presence failures are handled and retries do not overlap', async () => {
 test('native middleware starts only after joined and stops on leave or failure', () => {
     const source = fs.readFileSync('react/features/base/conference/middleware.native.ts', 'utf8');
     assert.match(source, /startMeetingPresence/);
-    assert.match(source, /getMyUserId\(\)/);
+    assert.match(source, /myUserId\(\)/);
     assert.match(source, /case CONFERENCE_LEFT:[\s\S]*stopPresence\(\)/);
     assert.match(source, /case CONFERENCE_FAILED:[\s\S]*stopPresence\(\)/);
 });
