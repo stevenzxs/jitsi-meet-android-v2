@@ -42,6 +42,14 @@ do not claim broader acceptance from this reconnect suite.
 
 ### Audio and bidirectional-load gate
 
+Record the instance bandwidth limit and distinguish reconnect correctness from
+capacity-limited media quality. For the 115 instance, the user reports a server
+limit of "1MBPS" (bit/byte units not independently confirmed): do not make packet
+loss percentage under bidirectional video a blocker for the reconnect fix or keep
+repeating load controls. Preserve observed stalls and recovery times without
+assuming bandwidth proves their root cause. Identity retention and eventual
+media recovery do not certify smooth playback or audible bidirectional audio.
+
 Confirm the Android microphone is unmuted in both device UI/logs and the current
 remote audio track. A muted microphone sending a few silence packets does not
 exercise audio recovery. Compare received/lost packet deltas for the active audio
