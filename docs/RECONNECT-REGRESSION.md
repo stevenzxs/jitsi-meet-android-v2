@@ -27,6 +27,14 @@ Frozen old RTP entries and the receiving client's own connected ICE are not proo
 of recovered Android media. An automatic conference reload with a new identity
 is a separate result, not a pass for same-session recovery.
 
+When a new stream starts and then freezes, compare its counters with Android
+capture/encode logs and the JVB receiver bandwidth allocator. Record bridge
+conference ID as well as XMPP participant IDs: a recreated bridge conference is
+not the same recovery context even when XMPP identities remain unchanged.
+Collect padding/probing RTP separately from video carrying decoded frames; loss
+on a zero-frame probing SSRC alone does not prove camera packet loss. A fresh
+receiver rejoin is a diagnostic control, never a substitute for recovery passing.
+
 Check both video directions, mute/camera controls and clean leave. Record exact
 APK/MSI versions and hashes, source commits, deployed Web asset and same-origin
 page/iframe. Explicitly list untested background/network-switch/share/soak cases;
