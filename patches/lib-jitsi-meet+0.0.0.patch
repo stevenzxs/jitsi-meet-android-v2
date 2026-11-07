@@ -1,3 +1,19 @@
+diff --git a/node_modules/lib-jitsi-meet/dist/esm/JitsiConference.js b/node_modules/lib-jitsi-meet/dist/esm/JitsiConference.js
+index 85eb6b7..9c86f0e 100644
+--- a/node_modules/lib-jitsi-meet/dist/esm/JitsiConference.js
++++ b/node_modules/lib-jitsi-meet/dist/esm/JitsiConference.js
+@@ -1588,6 +1588,11 @@ export default class JitsiConference extends Listenable {
+      * @param {JingleSessionPC} jingleSession - The Jingle session for which ICE connection was established.
+      */
+     _onIceConnectionEstablished(jingleSession) {
++        // Bound consecutive failed recovery attempts, not independent outages
++        // over the entire conference lifetime. Ignore late events from old PCs.
++        if (!jingleSession.isP2P && this.jvbJingleSession === jingleSession) {
++            this._iceRestarts = 0;
++        }
+         if (this.p2pJingleSession !== null) {
+             // store the establishment time of the p2p session as a field of the
+             // JitsiConference because the p2pJingleSession might get disposed (thus
 diff --git a/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js b/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js
 index 7c80c5e..43fff85 100644
 --- a/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js
