@@ -39,3 +39,17 @@ Check both video directions, mute/camera controls and clean leave. Record exact
 APK/MSI versions and hashes, source commits, deployed Web asset and same-origin
 page/iframe. Explicitly list untested background/network-switch/share/soak cases;
 do not claim broader acceptance from this reconnect suite.
+
+### Audio and bidirectional-load gate
+
+Confirm the Android microphone is unmuted in both device UI/logs and the current
+remote audio track. A muted microphone sending a few silence packets does not
+exercise audio recovery. Compare received/lost packet deltas for the active audio
+SSRC, and record concealment and decoded audio energy where available. Never
+judge audio quality from connected ICE, nonzero bytes, or video recovery alone.
+
+If loss appears under bidirectional video, use same-session video on/off/on
+controls and verify actual outbound byte/frame deltas. Temporary sender bitrate
+caps are diagnostic only: retain/restore original values, keep all other settings
+unchanged, and do not claim a product fix from reduced-quality playback. Device
+listening remains a separate acceptance gate from packet/energy evidence.
