@@ -1,0 +1,76 @@
+diff --git a/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js b/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js
+index 7c80c5e..43fff85 100644
+--- a/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js
++++ b/node_modules/lib-jitsi-meet/dist/esm/modules/connectivity/IceFailedHandling.js
+@@ -1,6 +1,7 @@
+ import { getLogger } from '@jitsi/logger';
+ import RTCStats from '../RTCStats/RTCStats';
+ import { RTCStatsEvents } from '../RTCStats/RTCStatsEvents';
++import XmppConnection from '../xmpp/XmppConnection';
+ const logger = getLogger('connectivity:IceFailedHandling');
+ /**
+  * This class deals with shenanigans around JVB media session's ICE failed status handling.
+@@ -17,6 +18,7 @@ export default class IceFailedHandling {
+     constructor(conference) {
+         this._canceled = false;
+         this._conference = conference;
++        this._session = conference.jvbJingleSession;
+     }
+     /**
+      * After making sure there's no way for the ICE connection to recover this method either sends ICE failed
+@@ -52,6 +54,10 @@ export default class IceFailedHandling {
+      * @returns {void}
+      */
+     start() {
++        if (this._canceled || !this._conference.room
++            || this._conference.jvbJingleSession !== this._session) {
++            return;
++        }
+         //  Using xmpp.ping allows to handle both XMPP being disconnected and internet offline cases. The ping function
+         // uses sendIQ2 method which is resilient to XMPP connection disconnected state and will patiently wait until it
+         // gets reconnected.
+@@ -62,7 +68,8 @@ export default class IceFailedHandling {
+         // communication with the server. Such resume attempt will result in unrecoverable conference failed event due
+         // to 'item-not-found' error returned by the server.
+         this._conference.xmpp.ping(65000).then(() => {
+-            if (!this._canceled) {
++            if (!this._canceled && this._conference.room
++                && this._conference.jvbJingleSession === this._session) {
+                 this._iceFailedTimeout = window.setTimeout(() => {
+                     this._iceFailedTimeout = undefined;
+                     this._actOnIceFailed();
+@@ -70,6 +77,25 @@ export default class IceFailedHandling {
+             }
+         }, error => {
+             logger.error('PING error/timeout - not sending ICE failed', error);
++            if (this._canceled || !this._conference.room
++                || this._conference.jvbJingleSession !== this._session) {
++                return;
++            }
++            // The server's smacks window starts when it notices the lost
++            // socket, not when this ping starts. A valid stream can therefore
++            // resume after this ping has timed out. Re-arm on that transition,
++            // rather than polling, increasing the timeout or auto-rejoining.
++            const connection = this._conference.xmpp.connection;
++            this._removeResumeListener?.();
++            this._removeResumeListener = connection.addCancellableListener(
++                XmppConnection.Events.CONN_STATUS_CHANGED, status => {
++                    if ((status === XmppConnection.Status.CONNECTED
++                        || status === XmppConnection.Status.ATTACHED) && connection.connected) {
++                        this._removeResumeListener?.();
++                        this._removeResumeListener = undefined;
++                        this.start();
++                    }
++                });
+         });
+     }
+     /**
+@@ -78,6 +104,8 @@ export default class IceFailedHandling {
+      */
+     cancel() {
+         this._canceled = true;
++        this._removeResumeListener?.();
++        this._removeResumeListener = undefined;
+         window.clearTimeout(this._iceFailedTimeout);
+     }
+ }
