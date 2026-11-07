@@ -11,7 +11,9 @@ if (googleServicesEnabled) {
 // This lets us upload a new build at most every 10 seconds for the
 // next ~680 years.
 // https://stackoverflow.com/a/38643838
-def vcode = (int) (((new Date().getTime() / 1000) - 1546297200) / 10)
+def vcode = project.hasProperty('cloudmeetVersionCode')
+    ? project.property('cloudmeetVersionCode').toInteger()
+    : (int) (((new Date().getTime() / 1000) - 1546297200) / 10)
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
