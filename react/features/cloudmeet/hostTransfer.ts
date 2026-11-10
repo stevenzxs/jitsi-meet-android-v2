@@ -181,7 +181,9 @@ export function attachNativeHostTransfer(options: IOptions): () => void {
                     await acknowledge(pending);
                 }
             } else if (!pending && conference.isModerator?.()) {
-                await request('claim', {});
+                // Claim is only a best-effort redelivery probe. ACTIVE owners
+                // legitimately receive conflict; this is not a storage failure.
+                await request('claim', {}).catch(() => undefined);
             }
         } catch { if (current()) options.onError(); }
         finally { if (current()) timer = setTimeout(() => { queue = queue.then(retry); }, 5000); }

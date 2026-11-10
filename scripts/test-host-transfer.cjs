@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const ts = require('typescript');
 const { DOMImplementation } = require('@xmldom/xmldom');
 const NS = 'urn:cloudmeet:host-control:1';
-function setup(failStorage = false, lostAck = false, recovery = false, badChallenge = false, apiReject = false) {
+function setup(failStorage = false, lostAck = false, recovery = false, badChallenge = false, apiReject = false, activeOwner = false) {
     const timers = [];
     const context = { exports: {}, Date, Promise, require,
         setTimeout: f => { timers.push(f); return timers.length; }, clearTimeout: () => {} };
@@ -19,6 +19,7 @@ function setup(failStorage = false, lostAck = false, recovery = false, badChalle
         addHandler: h => { handler = h; return h; }, deleteHandler: () => calls.push('delete'),
         sendIQ: (iq, ok, fail) => {
             const command = iq.childNodes[0];
+            if (command.localName === 'claim') { calls.push('claim'); fail(null); return; }
             if (recovery && command.localName === 'recover') {
                 calls.push('recover');
                 const reply = doc.createElement('iq'); reply.setAttribute('from', roomJid);
@@ -41,12 +42,12 @@ function setup(failStorage = false, lostAck = false, recovery = false, badChalle
             const ack = doc.createElementNS(NS, 'ack');
             ack.setAttribute('operationId', 'operation1'); ack.setAttribute('state', 'complete');reply.appendChild(ack);ok(reply);
         } };
-    const conference = { isJoined: () => true, room: { roomjid: roomJid },
+    const conference = { isJoined: () => true, isModerator: () => activeOwner, room: { roomjid: roomJid },
         getConnection: () => ({ xmpp: { connection } }) };
     const stop = context.exports.attachNativeHostTransfer({ conference, room: '123456789',
         persist: async () => { calls.push('persist'); if (failStorage) throw Error('storage failed'); },
         complete: async () => { calls.push('complete'); if(apiReject || (recovery && !calls.includes('rebind'))) throw Error('pending fence'); },
-        pending: recovery ? async () => ({ hostKey: 'saved-key', operationId: 'operation1', expiresAt: Date.now()+300000 }) : undefined,
+        pending: recovery ? async () => ({ hostKey: 'saved-key', operationId: 'operation1', expiresAt: Date.now()+300000 }) : activeOwner ? async () => undefined : undefined,
         proof: async (key, message) => { assert.equal(key,'saved-key');assert.ok(message.startsWith('host-transfer-rebind-v1\n123456789\n'));return 'signed-proof'; },
         revoked: async () => calls.push('revoke'),
         onError: () => calls.push('error') });
@@ -83,6 +84,10 @@ test('pending rejoin uses verified challenge and possession proof before rebind 
 test('wrong-session recovery challenge cannot produce rebind',async()=>{
     const x=setup(false,false,true,true);x.retry();await tick();
     assert.deepEqual(x.calls,['ack','complete','recover','error']);x.stop();
+});
+test('completed owner claim rejection is not misreported as credential persistence failure',async()=>{
+    const x=setup(false,false,false,false,false,true);x.retry();await tick();
+    assert.deepEqual(x.calls,['claim']);x.stop();
 });
 function outgoing(overrides = {}) {
     const context = { exports: {}, require, Date, Math, Promise };
