@@ -108,6 +108,33 @@ test('join ignores a pending or absent local host receipt', async () => {
     assert.equal(url, `${m.CLOUDMEET_ORIGIN}/123456789`);
 });
 
+test('server-rejected stale host key is retired before guest re-entry', async () => {
+    const m = model();
+    const calls = [];
+    const discarded = [];
+    const url = await m.joinMeeting('123456789', 'secret', async path => {
+        calls.push(path);
+        if (path.endsWith('host-token')) throw Object.assign(new Error('主持人密钥无效'), { code: 40304 });
+        return { roomName: '123456789' };
+    }, async () => 'stale-host-key', async (room, key) => discarded.push([room, key]));
+    assert.deepEqual(calls, [
+        '/open/desktop/meetings/123456789/join-check',
+        '/open/desktop/meetings/123456789/host-token'
+    ]);
+    assert.deepEqual(discarded, [['123456789', 'stale-host-key']]);
+    assert.equal(url, `${m.CLOUDMEET_ORIGIN}/123456789`);
+});
+
+test('transient host-token failure never discards a local active receipt', async () => {
+    const m = model();
+    let discarded = false;
+    await assert.rejects(m.joinMeeting('123456789', 'secret', async path => {
+        if (path.endsWith('host-token')) throw Object.assign(new Error('服务器繁忙'), { code: 500 });
+        return { roomName: '123456789' };
+    }, async () => 'active-host-key', async () => { discarded = true; }), /服务器繁忙/);
+    assert.equal(discarded, false);
+});
+
 test('HTTP and business errors are explicit failures; success envelopes unwrap', async () => {
     const { postMeetingApi } = model();
     await assert.rejects(postMeetingApi('/test', {}, async () => ({ ok: false, json: async () => ({ message: '会议不存在' }) })), /会议不存在/);

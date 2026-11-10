@@ -43,3 +43,8 @@ test('revocation of another operation cannot erase current receipt', async () =>
     await s.revokeHostReceipt(room, 'other-operation'); assert.equal(await s.readMeetingHostKey(room), receipt.hostKey);
     await s.revokeHostReceipt(room, receipt.operationId); assert.equal(await s.readMeetingHostKey(room), undefined);
 });
+test('server rejection tombstones only the exact active host key', async () => {
+    const s = setup(); await s.persistHostReceipt(room, receipt); await s.completeHostReceipt(room, receipt);
+    await s.discardMeetingHostKey(room, 'different-key'); assert.equal(await s.readMeetingHostKey(room), receipt.hostKey);
+    await s.discardMeetingHostKey(room, receipt.hostKey); assert.equal(await s.readMeetingHostKey(room), undefined);
+});

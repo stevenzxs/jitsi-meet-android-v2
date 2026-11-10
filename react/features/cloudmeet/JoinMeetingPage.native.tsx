@@ -16,7 +16,7 @@ import { BUTTON_TYPES } from '../base/ui/constants.native';
 
 import { stageJoinPassword } from './joinPassword.native';
 import { joinMeeting, postMeetingApi } from './meetingService';
-import { readMeetingHostKey } from './scheduleStorage.native';
+import { discardMeetingHostKey, readMeetingHostKey } from './scheduleStorage.native';
 
 /* eslint-disable react-native/no-unused-styles */
 const staticStyles = StyleSheet.create({
@@ -84,7 +84,7 @@ export default function JoinMeetingPage({ navigation }: { navigation: StackNavig
         let clearJoinPassword: (() => void) | undefined;
 
         try {
-            const url = await joinMeeting(room, password, postMeetingApi, readMeetingHostKey);
+            const url = await joinMeeting(room, password, postMeetingApi, readMeetingHostKey, discardMeetingHostKey);
 
             clearJoinPassword = stageJoinPassword(url, password);
             submitting.current = false;
