@@ -108,6 +108,25 @@ test('join ignores a pending or absent local host receipt', async () => {
     assert.equal(url, `${m.CLOUDMEET_ORIGIN}/123456789`);
 });
 
+test('pending receipt joins through host-token and activates after token success', async () => {
+    const m = model();
+    const calls = [];
+    const activated = [];
+    const url = await m.joinMeeting('123456789', 'secret', async (path, body) => {
+        calls.push([path, body]);
+        return path.endsWith('host-token') ? { token: 'pending-host.jwt' } : { roomName: '123456789' };
+    }, async () => ({ hostKey: 'pending-host-key', operationId: 'operation7', expiresAt: Date.now() + 300000, active: false }),
+    async () => undefined,
+    async (room, receipt) => activated.push([room, receipt]));
+    assert.deepEqual(calls.map(([path]) => path), [
+        '/open/desktop/meetings/123456789/join-check',
+        '/open/desktop/meetings/123456789/host-token'
+    ]);
+    assert.equal(calls[1][1].hostKey, 'pending-host-key');
+    assert.deepEqual(activated, [['123456789', { hostKey: 'pending-host-key', operationId: 'operation7', expiresAt: activated[0]?.[1].expiresAt, active: false }]]);
+    assert.equal(new URL(url).searchParams.get('jwt'), 'pending-host.jwt');
+});
+
 test('server-rejected stale host key is retired before guest re-entry', async () => {
     const m = model();
     const calls = [];

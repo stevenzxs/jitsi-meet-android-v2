@@ -8,6 +8,12 @@ export interface IMeetingDraft {
     roomName: string;
 }
 
+interface IHostReceipt {
+    expiresAt: number;
+    hostKey: string;
+    operationId: string;
+}
+
 type Post = (path: string, body: object) => Promise<any>;
 const attemptedDrafts = new WeakSet<IMeetingDraft>();
 
@@ -133,15 +139,17 @@ export async function joinMeeting(
         room: string,
         password: string,
         post: Post = postMeetingApi,
-        readHostKey?: (room: string) => Promise<string | undefined>,
-        discardHostKey?: (room: string, hostKey: string) => Promise<void>): Promise<string> {
+        readHostKey?: (room: string) => Promise<string | (IHostReceipt & { active: boolean; }) | undefined>,
+        discardHostKey?: (room: string, hostKey: string) => Promise<void>,
+        activateHostKey?: (room: string, receipt: IHostReceipt) => Promise<void>): Promise<string> {
     const id = room.trim().replace(/[\s-]/g, '');
 
     if (!/^\d{9}$/.test(id)) {
         throw new Error('请输入九位会议号');
     }
     await post(`/open/desktop/meetings/${id}/join-check`, { password });
-    const hostKey = await readHostKey?.(id);
+    const saved = await readHostKey?.(id);
+    const hostKey = typeof saved === 'string' ? saved : saved?.hostKey;
 
     if (!hostKey) {
         return `${CLOUDMEET_ORIGIN}/${id}`;
@@ -164,6 +172,12 @@ export async function joinMeeting(
 
     if (typeof result?.token !== 'string' || !result.token) {
         throw new Error('主持人身份验证失败，请重试');
+    }
+    if (typeof saved === 'object' && saved.active === false) {
+        if (!activateHostKey) {
+            throw new Error('主持人身份尚未安全保存，请重试');
+        }
+        await activateHostKey(id, saved);
     }
 
     return `${CLOUDMEET_ORIGIN}/${id}?jwt=${encodeURIComponent(result.token)}`;

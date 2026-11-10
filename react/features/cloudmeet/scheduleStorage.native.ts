@@ -108,6 +108,32 @@ export async function readPendingHostReceipt(room: string): Promise<IHostReceipt
     return saved && !saved.active && saved.hostKey ? saved : undefined;
 }
 
+/** Join may present a pending key only to the online token fence, never to writes. */
+export async function readJoinableHostReceipt(room: string):
+        Promise<(IHostReceipt & { active: boolean; }) | undefined> {
+    const saved = (await readPlanner()).hostReceipts?.[`${CLOUDMEET_ORIGIN}/${room}`];
+
+    if (!saved?.hostKey || (!saved.active && saved.expiresAt <= Date.now())) return undefined;
+
+    return saved;
+}
+
+/** Caller activates only after the same key has just received a fresh host token. */
+export function activateHostReceipt(room: string, receipt: IHostReceipt): Promise<void> {
+    const scope = `${CLOUDMEET_ORIGIN}/${room}`;
+
+    return serialized(async () => {
+        const planner = await readPlanner();
+        const saved = planner.hostReceipts?.[scope];
+
+        if (saved?.operationId !== receipt.operationId || saved.hostKey !== receipt.hostKey || saved.active) {
+            throw new Error('Host receipt superseded');
+        }
+        saved.active = true;
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+    });
+}
+
 /** Tombstone the current active receipt after a verified outgoing transfer. */
 export function discardActiveMeetingHostKey(room: string): Promise<void> {
     const scope = `${CLOUDMEET_ORIGIN}/${room}`;

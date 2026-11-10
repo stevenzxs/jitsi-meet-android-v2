@@ -52,3 +52,13 @@ test('successful outgoing transfer tombstones the current active receipt', async
     const s = setup(); await s.persistHostReceipt(room, receipt); await s.completeHostReceipt(room, receipt);
     await s.discardActiveMeetingHostKey(room); assert.equal(await s.readMeetingHostKey(room), undefined);
 });
+test('joinable pending receipt activates only after an explicit token success fence', async () => {
+    const s = setup(); await s.persistHostReceipt(room, receipt);
+    assert.equal(await s.readMeetingHostKey(room), undefined);
+    const joinable = await s.readJoinableHostReceipt(room);
+    assert.equal(joinable.hostKey, receipt.hostKey);
+    assert.equal(joinable.operationId, receipt.operationId);
+    assert.equal(joinable.active, false);
+    await s.activateHostReceipt(room, receipt);
+    assert.equal(await s.readMeetingHostKey(room), receipt.hostKey);
+});
