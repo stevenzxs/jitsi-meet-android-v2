@@ -3,7 +3,7 @@ import { DOMImplementation } from '@xmldom/xmldom';
 const NS = 'urn:cloudmeet:host-control:1';
 
 /** Native transfer replaces grantOwner; the server is the authority boundary. */
-export async function requestNativeHostTransfer(conference: any, participantId: string): Promise<void> {
+export async function requestNativeHostTransfer(conference: any, participantId: string): Promise<string> {
     const room = conference?.room;
     const wrapper = conference?.getConnection?.()?.xmpp?.connection;
     const connection = wrapper?._stropheConn ?? wrapper;
@@ -37,6 +37,8 @@ export async function requestNativeHostTransfer(conference: any, participantId: 
         || result?.getAttribute('operationId') !== operationId || result?.getAttribute('state') !== 'roles-committed') {
         throw new Error('转让结果尚未核实');
     }
+
+    return operationId;
 }
 
 export interface IHostReceipt {

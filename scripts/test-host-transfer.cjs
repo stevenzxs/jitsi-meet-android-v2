@@ -113,3 +113,7 @@ test('native transfer uses custom IQ not grantOwner', async()=>{
 test('native non-host cannot submit transfer IQ',async()=>{
     const x=outgoing({isModerator:()=>false});await assert.rejects(x.run());assert.equal(x.calls.length,0);
 });
+test('verified native transfer returns its operation for local receipt retirement',async()=>{
+    const x=outgoing();const operation=await x.run();
+    assert.equal(operation,x.calls[0].childNodes[0].getAttribute('operationId'));
+});

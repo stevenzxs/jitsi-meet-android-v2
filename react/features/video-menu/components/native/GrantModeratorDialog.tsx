@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 
 import { requestNativeHostTransfer } from '../../../cloudmeet/hostTransfer';
 import { CLOUDMEET_ORIGIN } from '../../../cloudmeet/meetingService';
+import { revokeHostReceipt } from '../../../cloudmeet/scheduleStorage.native';
 import { getCurrentConferenceUrl } from '../../../base/connection/functions';
 
 import ConfirmDialog from '../../../base/dialog/components/native/ConfirmDialog';
@@ -17,10 +18,19 @@ import AbstractGrantModeratorDialog, { abstractMapStateToProps }
 class GrantModeratorDialog extends AbstractGrantModeratorDialog {
     override _onSubmit() {
         this.props.dispatch((dispatch, getState) => {
-            if (getCurrentConferenceUrl(getState())?.startsWith(`${CLOUDMEET_ORIGIN}/`)) {
-                const conference = getState()['features/base/conference'].conference;
+            const url = getCurrentConferenceUrl(getState());
 
-                void requestNativeHostTransfer(conference, this.props.participantID).catch(() => {
+            if (url?.startsWith(`${CLOUDMEET_ORIGIN}/`)) {
+                const conference = getState()['features/base/conference'].conference;
+                const room = url.slice(CLOUDMEET_ORIGIN.length + 1).split(/[?#]/)[0];
+
+                void requestNativeHostTransfer(conference, this.props.participantID).then(operation => {
+                    if (/^\d{9}$/.test(room)) {
+                        void revokeHostReceipt(room, operation).catch(() => {
+                            Alert.alert('主持人已转让', '本机旧凭据未能安全退役，请重启后核对权限。');
+                        });
+                    }
+                }).catch(() => {
                     Alert.alert('主持人转让尚未确认', '请检查成员与会议状态，勿重复操作。');
                 });
             } else {
