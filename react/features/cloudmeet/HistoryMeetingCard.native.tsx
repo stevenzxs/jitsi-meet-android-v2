@@ -10,7 +10,8 @@ import { Text, TouchableOpacity, View } from '../base/ui/components/native/Theme
 
 import { IMeetingHistory, historyLines, historyStatus } from './historyService';
 import staticStyles from './historyStyles.native';
-import { joinMeeting } from './meetingService';
+import { joinMeeting, postMeetingApi } from './meetingService';
+import { readMeetingHostKey } from './scheduleStorage.native';
 
 /**
  * Avatar-free server history card; only running meetings can be entered.
@@ -49,7 +50,7 @@ export default function HistoryMeetingCard({ meeting, disabled }: { disabled: bo
         entering.current = true;
         setJoining(true);
         try {
-            const url = await joinMeeting(meeting.roomName, '');
+            const url = await joinMeeting(meeting.roomName, '', postMeetingApi, readMeetingHostKey);
 
             if (historyStatus(meeting) === 'RUNNING') {
                 dispatch(appNavigate(url));

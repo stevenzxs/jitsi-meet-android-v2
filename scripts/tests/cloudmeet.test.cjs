@@ -78,6 +78,36 @@ test('join validates a formatted nine digit ID and awaits business validation', 
     await assert.rejects(m.joinMeeting('123456789', '', async () => { throw Error('expired'); }), /expired/);
 });
 
+test('join uses a locally completed host receipt instead of anonymous re-entry', async () => {
+    const m = model();
+    const calls = [];
+    const url = await m.joinMeeting('123456789', 'secret', async (path, body) => {
+        calls.push([path, body]);
+        return path.endsWith('host-token') ? { token: 'active-host.jwt' } : { roomName: '123456789' };
+    }, async room => {
+        assert.equal(room, '123456789');
+        return 'completed-host-key';
+    });
+    assert.deepEqual(calls.map(([path]) => path), [
+        '/open/desktop/meetings/123456789/join-check',
+        '/open/desktop/meetings/123456789/host-token'
+    ]);
+    assert.equal(calls[1][1].hostKey, 'completed-host-key');
+    assert.equal(new URL(url).searchParams.get('jwt'), 'active-host.jwt');
+    assert.ok(!url.includes('completed-host-key'));
+});
+
+test('join ignores a pending or absent local host receipt', async () => {
+    const m = model();
+    const calls = [];
+    const url = await m.joinMeeting('123456789', 'secret', async path => {
+        calls.push(path);
+        return { roomName: '123456789' };
+    }, async () => undefined);
+    assert.deepEqual(calls, ['/open/desktop/meetings/123456789/join-check']);
+    assert.equal(url, `${m.CLOUDMEET_ORIGIN}/123456789`);
+});
+
 test('HTTP and business errors are explicit failures; success envelopes unwrap', async () => {
     const { postMeetingApi } = model();
     await assert.rejects(postMeetingApi('/test', {}, async () => ({ ok: false, json: async () => ({ message: '会议不存在' }) })), /会议不存在/);

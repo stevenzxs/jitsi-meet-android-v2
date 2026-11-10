@@ -15,7 +15,8 @@ import { Text, TouchableOpacity, View } from '../base/ui/components/native/Theme
 import { BUTTON_TYPES } from '../base/ui/constants.native';
 
 import { stageJoinPassword } from './joinPassword.native';
-import { joinMeeting } from './meetingService';
+import { joinMeeting, postMeetingApi } from './meetingService';
+import { readMeetingHostKey } from './scheduleStorage.native';
 
 /* eslint-disable react-native/no-unused-styles */
 const staticStyles = StyleSheet.create({
@@ -83,7 +84,7 @@ export default function JoinMeetingPage({ navigation }: { navigation: StackNavig
         let clearJoinPassword: (() => void) | undefined;
 
         try {
-            const url = await joinMeeting(room, password);
+            const url = await joinMeeting(room, password, postMeetingApi, readMeetingHostKey);
 
             clearJoinPassword = stageJoinPassword(url, password);
             submitting.current = false;

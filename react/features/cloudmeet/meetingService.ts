@@ -129,13 +129,30 @@ export async function createMeeting(
  * @param {Function} post - API transport.
  * @returns {Promise<string>} Native meeting URL.
  */
-export async function joinMeeting(room: string, password: string, post: Post = postMeetingApi): Promise<string> {
+export async function joinMeeting(
+        room: string,
+        password: string,
+        post: Post = postMeetingApi,
+        readHostKey?: (room: string) => Promise<string | undefined>): Promise<string> {
     const id = room.trim().replace(/[\s-]/g, '');
 
     if (!/^\d{9}$/.test(id)) {
         throw new Error('请输入九位会议号');
     }
     await post(`/open/desktop/meetings/${id}/join-check`, { password });
+    const hostKey = await readHostKey?.(id);
 
-    return `${CLOUDMEET_ORIGIN}/${id}`;
+    if (!hostKey) {
+        return `${CLOUDMEET_ORIGIN}/${id}`;
+    }
+    const result = await post(`/open/desktop/meetings/${id}/host-token`, {
+        hostKey,
+        displayName: '主持人'
+    });
+
+    if (typeof result?.token !== 'string' || !result.token) {
+        throw new Error('主持人身份验证失败，请重试');
+    }
+
+    return `${CLOUDMEET_ORIGIN}/${id}?jwt=${encodeURIComponent(result.token)}`;
 }

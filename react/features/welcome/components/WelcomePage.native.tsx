@@ -19,7 +19,8 @@ import { TouchableHighlight, View } from '../../base/ui/components/native/Themed
 import { BUTTON_TYPES } from '../../base/ui/constants.native';
 import getUnsafeRoomText from '../../base/util/getUnsafeRoomText.native';
 import MeetingShortcuts from '../../cloudmeet/MeetingShortcuts.native';
-import { CLOUDMEET_ORIGIN, joinMeeting } from '../../cloudmeet/meetingService';
+import { CLOUDMEET_ORIGIN, joinMeeting, postMeetingApi } from '../../cloudmeet/meetingService';
+import { readMeetingHostKey } from '../../cloudmeet/scheduleStorage.native';
 import WelcomePageTabs
     from '../../mobile/navigation/components/welcome/components/WelcomePageTabs';
 import { screen } from '../../mobile/navigation/routes';
@@ -65,7 +66,8 @@ class WelcomePage extends AbstractWelcomePage<IProps> {
         }
         this.setState({ joining: true });
         try {
-            const url = await joinMeeting(this.state.room, this.state.meetingPassword || '');
+            const url = await joinMeeting(this.state.room, this.state.meetingPassword || '',
+                postMeetingApi, readMeetingHostKey);
 
             await this.props.dispatch(appNavigate(url));
         } catch (error) {
