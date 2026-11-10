@@ -1,6 +1,11 @@
+import { NativeModules } from 'react-native';
+
 import { appNavigate } from '../../app/actions.native';
 import { startMeetingPresence } from '../../cloudmeet/meetingPresence';
 import { postMeetingApi } from '../../cloudmeet/meetingService';
+import { CLOUDMEET_ORIGIN } from '../../cloudmeet/meetingService';
+import { attachNativeHostTransfer } from '../../cloudmeet/hostTransfer';
+import { completeHostReceipt, persistHostReceipt, readPendingHostReceipt, revokeHostReceipt } from '../../cloudmeet/scheduleStorage.native';
 import { notifyConferenceFailed } from '../../conference/actions.native';
 import { getCurrentConferenceUrl } from '../connection/functions';
 import { JitsiConferenceErrors } from '../lib-jitsi-meet';
@@ -21,6 +26,7 @@ import {
 
 MiddlewareRegistry.register(store => {
     let stopPresence: () => void = () => undefined;
+    let stopHostTransfer: () => void = () => undefined;
 
     return next => action => {
         const { dispatch } = store;
@@ -34,12 +40,28 @@ MiddlewareRegistry.register(store => {
             stopPresence();
             stopPresence = startMeetingPresence(
                 getCurrentConferenceUrl(store.getState()), action.conference?.myUserId(),
-                postMeetingApi, () => logger.warn('Meeting status sync failed; retrying while connected'));
+                 postMeetingApi, () => logger.warn('Meeting status sync failed; retrying while connected'));
+            stopHostTransfer();
+            const url = getCurrentConferenceUrl(store.getState());
+            const prefix = `${CLOUDMEET_ORIGIN}/`;
+            const room = typeof url === 'string' && url.startsWith(prefix)
+                ? url.slice(prefix.length).split(/[?#]/)[0] : '';
+
+            if (/^\d{9}$/.test(room)) {
+                stopHostTransfer = attachNativeHostTransfer({ conference: action.conference, room,
+                    persist: receipt => persistHostReceipt(room, receipt),
+                    complete: receipt => completeHostReceipt(room, receipt),
+                    revoked: operation => revokeHostReceipt(room, operation),
+                    pending: () => readPendingHostReceipt(room),
+                    proof: (key, message) => NativeModules.MeetingPlanner.hostTransferProof(key, message),
+                    onError: () => logger.warn('Host receipt unconfirmed; private credentials retained') });
+            }
 
             return result;
         }
 
         case CONFERENCE_LEFT:
+            stopHostTransfer();
             stopPresence();
             resetNetworkChangeState();
             break;
@@ -53,6 +75,7 @@ MiddlewareRegistry.register(store => {
         }
 
         case CONFERENCE_FAILED: {
+            stopHostTransfer();
             stopPresence();
             const { getState } = store;
             const state = getState();

@@ -1,12 +1,14 @@
 import 'react-native-get-random-values';
 import { NativeModules } from 'react-native';
 
-import { IMeetingDraft, newMeetingDraft, postMeetingApi } from './meetingService';
+import { CLOUDMEET_ORIGIN, IMeetingDraft, newMeetingDraft, postMeetingApi } from './meetingService';
 import { IScheduledMeeting, saveSchedule } from './scheduleService';
+import { IHostReceipt } from './hostTransfer';
 
 interface IPlanner {
     creatorId: string; meetings: IScheduledMeeting[];
     quickMeetings?: IMeetingDraft[];
+    hostReceipts?: Record<string, IHostReceipt & { active: boolean; }>;
 }
 
 /**
@@ -33,9 +35,77 @@ export function persistQuickMeeting(draft: IMeetingDraft): Promise<void> {
  */
 export async function readMeetingHostKey(room: string): Promise<string | undefined> {
     const planner = await readPlanner();
+    const receipt = planner.hostReceipts?.[`${CLOUDMEET_ORIGIN}/${room}`];
+
+    if (receipt) return receipt.active ? receipt.hostKey : undefined;
 
     return (planner.quickMeetings || []).find(item => item.roomName === room)?.hostKey
         || planner.meetings.find(item => item.roomName === room)?.hostKey;
+}
+
+/** Persist and read back encrypted credentials before sending a receipt ack. */
+export function persistHostReceipt(room: string, receipt: IHostReceipt): Promise<void> {
+    const scope = `${CLOUDMEET_ORIGIN}/${room}`;
+
+    return serialized(async () => {
+        const planner = await readPlanner();
+        const prior = planner.hostReceipts?.[scope];
+
+        if (prior?.operationId === receipt.operationId && prior.hostKey === receipt.hostKey && prior.active) return;
+
+        if (prior && prior.operationId !== receipt.operationId && !prior.active && prior.expiresAt > Date.now()) {
+            throw new Error('Existing host receipt requires recovery');
+        }
+        planner.hostReceipts = { ...planner.hostReceipts, [scope]: { ...receipt, active: false } };
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+        const saved = (await readPlanner()).hostReceipts?.[scope];
+
+        if (saved?.hostKey !== receipt.hostKey || saved?.operationId !== receipt.operationId || saved.active) {
+            throw new Error('Host receipt storage unconfirmed');
+        }
+    });
+}
+
+/** API token issuance is the durable completion fence, not a local role event. */
+export async function completeHostReceipt(room: string, receipt: IHostReceipt): Promise<void> {
+    const scope = `${CLOUDMEET_ORIGIN}/${room}`;
+    const result = await postMeetingApi(`/open/desktop/meetings/${room}/host-token`, {
+        hostKey: receipt.hostKey, displayName: '主持人'
+    });
+
+    if (typeof result?.token !== 'string' || !result.token) throw new Error('Host authority unconfirmed');
+    await serialized(async () => {
+        const planner = await readPlanner();
+        const saved = planner.hostReceipts?.[scope];
+
+        if (saved?.operationId !== receipt.operationId || saved.hostKey !== receipt.hostKey) {
+            throw new Error('Host receipt superseded');
+        }
+        saved.active = true;
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+    });
+}
+
+/** Exact-operation revocation cannot erase a replacement receipt. */
+export function revokeHostReceipt(room: string, operation: string): Promise<void> {
+    const scope = `${CLOUDMEET_ORIGIN}/${room}`;
+
+    return serialized(async () => {
+        const planner = await readPlanner();
+        const saved = planner.hostReceipts?.[scope];
+
+        if (saved?.operationId !== operation) return;
+        // Keep a tombstone/fence so stale original meeting keys cannot reappear.
+        saved.active = false;
+        saved.hostKey = '';
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+    });
+}
+
+export async function readPendingHostReceipt(room: string): Promise<IHostReceipt | undefined> {
+    const saved = (await readPlanner()).hostReceipts?.[`${CLOUDMEET_ORIGIN}/${room}`];
+
+    return saved && !saved.active && saved.hostKey ? saved : undefined;
 }
 let queue: Promise<unknown> = Promise.resolve();
 

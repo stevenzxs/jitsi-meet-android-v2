@@ -18,6 +18,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /** Native date/time pickers and Keystore-backed private planner persistence. */
 class MeetingPlannerModule extends ReactContextBaseJavaModule {
@@ -89,5 +91,21 @@ class MeetingPlannerModule extends ReactContextBaseJavaModule {
                 dialog.show();
             }
         });
+    }
+
+    /** HMAC possession proof; never stores or logs the supplied capability. */
+    @ReactMethod public void hostTransferProof(String key, String message, Promise promise) {
+        try {
+            if (key == null || key.isEmpty() || key.length() > 128 || message == null
+                    || message.length() > 2048 || !message.startsWith("host-transfer-rebind-v1\n")) {
+                throw new IllegalArgumentException();
+            }
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+            promise.resolve(Base64.encodeToString(mac.doFinal(message.getBytes(StandardCharsets.UTF_8)),
+                    Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING));
+        } catch (Exception error) {
+            promise.reject("HOST_PROOF", "无法生成主持凭据恢复证明");
+        }
     }
 }
