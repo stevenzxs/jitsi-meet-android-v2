@@ -108,6 +108,21 @@ export async function readPendingHostReceipt(room: string): Promise<IHostReceipt
     return saved && !saved.active && saved.hostKey ? saved : undefined;
 }
 
+/** Tombstone the current active receipt after a verified outgoing transfer. */
+export function discardActiveMeetingHostKey(room: string): Promise<void> {
+    const scope = `${CLOUDMEET_ORIGIN}/${room}`;
+
+    return serialized(async () => {
+        const planner = await readPlanner();
+        const saved = planner.hostReceipts?.[scope];
+
+        if (!saved?.active) return;
+        saved.active = false;
+        saved.hostKey = '';
+        await NativeModules.MeetingPlanner.write(JSON.stringify(planner));
+    });
+}
+
 /** Tombstone only a key the server explicitly rejected as superseded. */
 export function discardMeetingHostKey(room: string, hostKey: string): Promise<void> {
     const scope = `${CLOUDMEET_ORIGIN}/${room}`;

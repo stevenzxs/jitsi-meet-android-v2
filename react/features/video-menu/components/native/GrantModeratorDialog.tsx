@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 
 import { requestNativeHostTransfer } from '../../../cloudmeet/hostTransfer';
 import { CLOUDMEET_ORIGIN } from '../../../cloudmeet/meetingService';
-import { revokeHostReceipt } from '../../../cloudmeet/scheduleStorage.native';
+import { discardActiveMeetingHostKey } from '../../../cloudmeet/scheduleStorage.native';
 import { getCurrentConferenceUrl } from '../../../base/connection/functions';
 
 import ConfirmDialog from '../../../base/dialog/components/native/ConfirmDialog';
@@ -24,9 +24,9 @@ class GrantModeratorDialog extends AbstractGrantModeratorDialog {
                 const conference = getState()['features/base/conference'].conference;
                 const room = url.slice(CLOUDMEET_ORIGIN.length + 1).split(/[?#]/)[0];
 
-                void requestNativeHostTransfer(conference, this.props.participantID).then(operation => {
+                void requestNativeHostTransfer(conference, this.props.participantID).then(() => {
                     if (/^\d{9}$/.test(room)) {
-                        void revokeHostReceipt(room, operation).catch(() => {
+                        void discardActiveMeetingHostKey(room).catch(() => {
                             Alert.alert('主持人已转让', '本机旧凭据未能安全退役，请重启后核对权限。');
                         });
                     }

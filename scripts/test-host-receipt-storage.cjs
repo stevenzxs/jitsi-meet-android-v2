@@ -48,3 +48,7 @@ test('server rejection tombstones only the exact active host key', async () => {
     await s.discardMeetingHostKey(room, 'different-key'); assert.equal(await s.readMeetingHostKey(room), receipt.hostKey);
     await s.discardMeetingHostKey(room, receipt.hostKey); assert.equal(await s.readMeetingHostKey(room), undefined);
 });
+test('successful outgoing transfer tombstones the current active receipt', async () => {
+    const s = setup(); await s.persistHostReceipt(room, receipt); await s.completeHostReceipt(room, receipt);
+    await s.discardActiveMeetingHostKey(room); assert.equal(await s.readMeetingHostKey(room), undefined);
+});
