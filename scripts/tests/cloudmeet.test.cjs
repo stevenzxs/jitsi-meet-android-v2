@@ -127,6 +127,20 @@ test('pending receipt joins through host-token and activates after token success
     assert.equal(new URL(url).searchParams.get('jwt'), 'pending-host.jwt');
 });
 
+test('pending receipt falls back to XMPP recovery while authority fence is transferring', async () => {
+    const m = model();
+    let discarded = false;
+    let activated = false;
+    const url = await m.joinMeeting('123456789', 'secret', async path => {
+        if (path.endsWith('host-token')) throw Object.assign(new Error('Host authority is transferring'), { status: 409 });
+        return { roomName: '123456789' };
+    }, async () => ({ hostKey: 'pending-host-key', operationId: 'operation7', expiresAt: Date.now() + 300000, active: false }),
+    async () => { discarded = true; }, async () => { activated = true; });
+    assert.equal(url, `${m.CLOUDMEET_ORIGIN}/123456789`);
+    assert.equal(discarded, false);
+    assert.equal(activated, false);
+});
+
 test('server-rejected stale host key is retired before guest re-entry', async () => {
     const m = model();
     const calls = [];
@@ -158,6 +172,8 @@ test('HTTP and business errors are explicit failures; success envelopes unwrap',
     const { postMeetingApi } = model();
     await assert.rejects(postMeetingApi('/test', {}, async () => ({ ok: false, json: async () => ({ message: '会议不存在' }) })), /会议不存在/);
     await assert.rejects(postMeetingApi('/test', {}, async () => ({ ok: true, json: async () => ({ code: 500, msg: '拒绝' }) })), /拒绝/);
+    await assert.rejects(postMeetingApi('/test', {}, async () => ({ ok: false, status: 409, json: async () => ({ status: 409, error: 'Conflict' }) })),
+        error => error.status === 409 && /会议请求失败/.test(error.message));
     assert.deepEqual(await postMeetingApi('/test', {}, async () => ({ ok: true, json: async () => ({ code: 200, data: { ok: true } }) })), { ok: true });
 });
 

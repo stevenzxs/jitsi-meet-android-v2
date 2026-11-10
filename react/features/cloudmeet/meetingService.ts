@@ -74,7 +74,10 @@ export async function postMeetingApi(path: string, body: object, request = fetch
         const result = isEnd ? JSON.parse(text!) : await response.json();
 
         if (!response.ok || (typeof result.code === 'number' && result.code !== 200)) {
-            throw Object.assign(new Error(result.message || result.msg || '会议请求失败'), { code: result.code });
+            throw Object.assign(new Error(result.message || result.msg || '会议请求失败'), {
+                code: result.code,
+                status: response.status
+            });
         }
 
         return result.data ?? result;
@@ -162,6 +165,9 @@ export async function joinMeeting(
             displayName: '主持人'
         });
     } catch (error) {
+        if ((error as { status?: number; }).status === 409) {
+            return `${CLOUDMEET_ORIGIN}/${id}`;
+        }
         if ((error as { code?: number; }).code !== 40304 || !discardHostKey) {
             throw error;
         }
