@@ -47,6 +47,17 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            def releaseProps = rootProject.file('keystores/release.keystore.properties')
+            if (releaseProps.exists()) {
+                def p = new Properties()
+                p.load(new FileInputStream(releaseProps))
+                storeFile rootProject.file("keystores/${p.getProperty('storeFile')}")
+                storePassword p.getProperty('storePassword')
+                keyAlias p.getProperty('keyAlias')
+                keyPassword p.getProperty('keyPassword')
+            }
+        }
     }
 
     buildTypes {
@@ -56,8 +67,13 @@ android {
             applicationIdSuffix ".debug"
         }
         release {
-            // Uncomment the following line for signing a test release build.
-            signingConfig signingConfigs.debug
+            // Use the official release keystore when present; fall back to debug signing
+            // so check environments without the keystore can still compile.
+            if (signingConfigs.release.storeFile != null) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-release.pro'
             buildConfigField "boolean", "GOOGLE_SERVICES_ENABLED", "${googleServicesEnabled}"
