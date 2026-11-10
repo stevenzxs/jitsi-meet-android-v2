@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const ts = require('typescript');
 const { DOMImplementation } = require('@xmldom/xmldom');
 const NS = 'urn:cloudmeet:host-control:1';
-function setup(failStorage = false, lostAck = false, recovery = false) {
+function setup(failStorage = false, lostAck = false, recovery = false, badChallenge = false, apiReject = false) {
     const timers = [];
     const context = { exports: {}, Date, Promise, require,
         setTimeout: f => { timers.push(f); return timers.length; }, clearTimeout: () => {} };
@@ -24,7 +24,7 @@ function setup(failStorage = false, lostAck = false, recovery = false) {
                 const reply = doc.createElement('iq'); reply.setAttribute('from', roomJid);
                 const challenge = doc.createElementNS(NS, 'challenge');
                 for (const [ k, v ] of Object.entries({ roomName: '123456789', operationId: 'operation1',
-                    targetSession: connection.jid, expectedRoomInstance: 'old-instance', roomInstance: 'new-instance',
+                    targetSession: badChallenge ? 'attacker@meet.jitsi/r' : connection.jid, expectedRoomInstance: 'old-instance', roomInstance: 'new-instance',
                     nonce: 'nonce01234567890123456789', expiresAt: String(Date.now()/1000+60) })) challenge.setAttribute(k,v);
                 reply.appendChild(challenge);ok(reply);return;
             }
@@ -45,7 +45,7 @@ function setup(failStorage = false, lostAck = false, recovery = false) {
         getConnection: () => ({ xmpp: { connection } }) };
     const stop = context.exports.attachNativeHostTransfer({ conference, room: '123456789',
         persist: async () => { calls.push('persist'); if (failStorage) throw Error('storage failed'); },
-        complete: async () => { calls.push('complete'); if(recovery && !calls.includes('rebind')) throw Error('pending fence'); },
+        complete: async () => { calls.push('complete'); if(apiReject || (recovery && !calls.includes('rebind'))) throw Error('pending fence'); },
         pending: recovery ? async () => ({ hostKey: 'saved-key', operationId: 'operation1', expiresAt: Date.now()+300000 }) : undefined,
         proof: async (key, message) => { assert.equal(key,'saved-key');assert.ok(message.startsWith('host-transfer-rebind-v1\n123456789\n'));return 'signed-proof'; },
         revoked: async () => calls.push('revoke'),
@@ -72,9 +72,17 @@ test('participant spoof and stopped connection cannot deliver receipts', async (
 test('lost ack response reconciles through API completion fence without losing receipt', async () => {
     const x=setup(false,true);x.message();await tick();assert.deepEqual(x.calls,['persist','ack','complete']);
 });
+test('lost ack with pending API fence is not reported as completed',async()=>{
+    const x=setup(false,true,false,false,true);x.message();await tick();
+    assert.deepEqual(x.calls,['persist','ack','complete','error']);
+});
 test('pending rejoin uses verified challenge and possession proof before rebind and ack', async () => {
     const x=setup(false,false,true);x.retry();await tick();
     assert.deepEqual(x.calls,['ack','complete','recover','rebind','ack','complete']);x.stop();
+});
+test('wrong-session recovery challenge cannot produce rebind',async()=>{
+    const x=setup(false,false,true,true);x.retry();await tick();
+    assert.deepEqual(x.calls,['ack','complete','recover','error']);x.stop();
 });
 function outgoing(overrides = {}) {
     const context = { exports: {}, require, Date, Math, Promise };
