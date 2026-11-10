@@ -1,3 +1,5 @@
+import { DOMImplementation } from '@xmldom/xmldom';
+
 const NS = 'urn:cloudmeet:host-control:1';
 
 /** Native transfer replaces grantOwner; the server is the authority boundary. */
@@ -189,4 +191,3 @@ export function attachNativeHostTransfer(options: IOptions): () => void {
 
     return () => { stopped = true; if (timer) clearTimeout(timer); connection.deleteHandler(handler); };
 }
-import { DOMImplementation } from '@xmldom/xmldom';
