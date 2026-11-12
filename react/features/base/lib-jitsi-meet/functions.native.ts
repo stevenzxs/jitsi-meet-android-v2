@@ -25,7 +25,17 @@ export async function loadConfig(url: string): Promise<Object> {
     try {
         const configTxt = await loadScript(url, 10 * 1000, true);
 
-        const parseConfigAsync = workletContext.createRunAsync(function parseConfig(configText: string): string {
+        const configURL = new URL(url);
+        const locationJson = JSON.stringify({
+            protocol: configURL.protocol,
+            host: configURL.host,
+            hostname: configURL.hostname,
+            port: configURL.port,
+            origin: configURL.origin,
+            search: ''
+        });
+        const parseConfigAsync = workletContext.createRunAsync(function parseConfig(
+                configText: string, locationData: string): string {
             'worklet';
             try {
                 // Used IIFE wrapper to capture config object from config.js
@@ -33,7 +43,7 @@ export async function loadConfig(url: string): Promise<Object> {
                     '(function(){\n'
                     // Native config is not a browser page. Do not expose a host JWT
                     // to server-side UI visibility checks; native roles come from XMPP.
-                    + 'var window = { location: { search: "" } };\n'
+                    + 'var window = { location: ' + locationData + ' };\n'
                     + 'var URLSearchParams = function(search) { this.search = search; };\n'
                     + 'URLSearchParams.prototype.get = function(key) { '
                     + 'var parts = this.search.replace(/^\\?/, "").split("&"); '
@@ -58,7 +68,7 @@ export async function loadConfig(url: string): Promise<Object> {
             }
         });
 
-        const workletConfig = await parseConfigAsync(configTxt);
+        const workletConfig = await parseConfigAsync(configTxt, locationJson);
 
         if (typeof workletConfig !== 'string') {
             throw new Error('Worklet error: workletConfig is not a string');
